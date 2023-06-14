@@ -27,9 +27,4 @@ int main(int argc, char* argv[]){
     std::cout << "ERROR: Could not open file " << file2 << std::endl;
     return 1;
   }
-
-  // XXX: Is this necessary to de before the program exits?
-  //      If so, how do we ensure that it happens even under error conditions?
-  stream1.close();
-  stream2.close();
 }
