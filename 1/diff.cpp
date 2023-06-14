@@ -1,5 +1,9 @@
-// finds the location of the first difference between two text files
+//
+// Finds the location of the first difference between two text files.
+// Returns 0 if they are the same, 1 if they differ, 2 if there is an error.
+//
 // Zaz Brown
+//
 
 #include <iostream>
 #include <fstream>
@@ -42,6 +46,7 @@ int main(int argc, char* argv[]){
       }
       // print a ^ under the first character that differs
       std::cout << std::string(10+i, ' ') << '^' << std::endl;
+      // exit with return code 1 to indicate the files differ
       return 1;
     }
     ++line_number;
