@@ -19,22 +19,22 @@ int main(int argc, char* argv[]){
   // XXX: Is it safe to assume argc == argv.size()?
   if (argc != 3) error("You must specify 2 files to diff");
 
-  std::string file1 = argv[1];
-  std::string file2 = argv[2];
+  const std::string file1 = argv[1];
+  const std::string file2 = argv[2];
 
   // calculate the amount of left padding needed for printing the filenames
-  int filenameLengthDifference = file2.length() - file1.length();
-  auto file1Padding = std::string(std::max(0,  filenameLengthDifference), ' ');
-  auto file2Padding = std::string(std::max(0, -filenameLengthDifference), ' ');
+  const int filenameLengthDifference = file2.length() - file1.length();
+  const auto file1Padding =
+    std::string(std::max(0,  filenameLengthDifference), ' ');
+  const auto file2Padding =
+    std::string(std::max(0, -filenameLengthDifference), ' ');
 
   // filename prefixes for later printing in a pretty way. e.g.:
   //          file.txt:
   // modified_file.txt:
-  auto file1Prefix = file1Padding + file1 + ": ";
-  auto file2Prefix = file2Padding + file2 + ": ";
+  const auto file1Prefix = file1Padding + file1 + ": ";
+  const auto file2Prefix = file2Padding + file2 + ": ";
   //assert(file1Prefix.length() == file2Prefix.length());
-
-  int prefixLength = file1Prefix.length();
 
   // Open the files
   // XXX: Is there a better way than .fail() to check if the file is readable?
@@ -59,11 +59,11 @@ int main(int argc, char* argv[]){
     return 0;
   }
 
-  auto prefix1 = file1Prefix + std::to_string(line_number) + ": ";
+  const auto prefix1 = file1Prefix + std::to_string(line_number) + ": ";
   std::cout << prefix1 << lineFrom1 << std::endl;
   std::cout << file2Prefix << line_number << ": " << lineFrom2 << std::endl;
 
-  int minLineLength = std::min(lineFrom1.length(), lineFrom2.length());
+  const int minLineLength = std::min(lineFrom1.length(), lineFrom2.length());
   int i = 0;
   while (i < minLineLength) {
     if (lineFrom1[i] != lineFrom2[i]) break;
