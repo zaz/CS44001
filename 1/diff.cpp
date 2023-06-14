@@ -2,6 +2,7 @@
 // Zaz Brown
 
 #include <iostream>
+#include <fstream>
 
 int main(int argc, char* argv[]){
   // throw an error if we are not given two command line arguments
@@ -10,4 +11,25 @@ int main(int argc, char* argv[]){
     std::cout << "ERROR: You must specify 2 files to diff" << std::endl;
     return 1;
   }
+
+  std::string file1 = argv[1];
+  std::string file2 = argv[2];
+
+  std::ifstream stream1(file1);
+  // XXX: Is there a better way to check if the file is readable?
+  if(stream1.fail()){
+    std::cout << "ERROR: Could not open file " << file1 << std::endl;
+    return 1;
+  }
+
+  std::ifstream stream2(file2);
+  if(stream2.fail()){
+    std::cout << "ERROR: Could not open file " << file2 << std::endl;
+    return 1;
+  }
+
+  // XXX: Is this necessary to de before the program exits?
+  //      If so, how do we ensure that it happens even under error conditions?
+  stream1.close();
+  stream2.close();
 }
