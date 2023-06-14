@@ -6,7 +6,8 @@
 
 void error(std::string message) {
   std::cout << "ERROR: " << message << std::endl;
-  exit(1);
+  // XXX: Does exit call destructors on everything in main?
+  exit(2);
 }
 
 int main(int argc, char* argv[]){
@@ -27,11 +28,12 @@ int main(int argc, char* argv[]){
   std::string lineFrom1;
   std::string lineFrom2;
   int line_number = 1;
+  // until we reach the end of one of the files
   while (getline(stream1, lineFrom1) && getline(stream2, lineFrom2)) {
     if (lineFrom1 != lineFrom2) {
       std::cout << "file1: " << line_number << ": " << lineFrom1 << std::endl;
       std::cout << "file2: " << line_number << ": " << lineFrom2 << std::endl;
-      return 0;
+      return 1;
     }
     ++line_number;
   }
