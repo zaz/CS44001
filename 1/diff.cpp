@@ -33,6 +33,14 @@ int main(int argc, char* argv[]){
     if (lineFrom1 != lineFrom2) {
       std::cout << "file1: " << line_number << ": " << lineFrom1 << std::endl;
       std::cout << "file2: " << line_number << ": " << lineFrom2 << std::endl;
+      int minLineLength = std::min(lineFrom1.length(), lineFrom2.length());
+      for (int i = 0; i < minLineLength; ++i) {
+        if (lineFrom1[i] != lineFrom2[i]) {
+          // print a ^ under the first character that differs
+          std::cout << std::string(10+i, ' ') << '^' << std::endl;
+          return 1;
+        }
+      }
       return 1;
     }
     ++line_number;
