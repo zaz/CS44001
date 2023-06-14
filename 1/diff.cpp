@@ -6,6 +6,7 @@
 int main(int argc, char* argv[]){
   // throw an error if we are not given two command line arguments
   if (argc != 3) {
-    throw std::invalid_argument("Invalid number of arguments");
+    std::cout << "ERROR: You must specify 2 files to diff" << std::endl;
+    return 1;
   }
 }
