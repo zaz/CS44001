@@ -35,4 +35,7 @@ int main(int argc, char* argv[]){
     }
     ++line_number;
   }
+
+  if (stream1.bad()) error("While reading file " + file1);
+  if (stream2.bad()) error("While reading file " + file2);
 }
