@@ -1,6 +1,6 @@
 //
 // Counts how many times each word occurs in a file.
-// Words are separated by whitespace or punctuation. Case is ignored.
+// Words are separated by whitespace or punctuation. TODO: Case is ignored.
 //
 // Zaz Brown
 //
@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <set>
+// #include <cstring>  // TODO
 
 void error(std::string message) {
   std::cout << "ERROR: " << message << std::endl;
@@ -34,6 +35,7 @@ int main(int argc, char* argv[]){
   // until we reach the end of one of the files
   while (getline(stream, line)) {
     // TODO: downcase
+      // TODO: turn line into C string ?
     // TODO: split into words
     // TODO: add words to bag
   }
