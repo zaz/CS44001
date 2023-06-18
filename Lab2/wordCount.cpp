@@ -36,7 +36,11 @@ int main(int argc, char* argv[]){
   while (getline(stream, line)) {
     // TODO: downcase
       // TODO: turn line into C string ?
+      // XXX: Why are C strings still used? My understanding was a string is the
+      //      same, just that it automatically handles memory allocation and has
+      //      some nice helper functions.
     // TODO: split into words
+
     // TODO: add words to bag
   }
 
