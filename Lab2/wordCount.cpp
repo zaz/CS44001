@@ -19,7 +19,7 @@ void error(std::string message) {
 int main(int argc, char* argv[]){
   // throw an error if we are not given two command line arguments
   // XXX: Is it safe to assume argc == argv.size()?
-  if (argc != 1) error("You must specify 2 files to diff");
+  if (argc != 1) error("You must specify a file to count words in.");
 
   const std::string file = argv[1];
 
