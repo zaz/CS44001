@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <fstream>
-// TODO include multiset
+#include <set>
 
 void error(std::string message) {
   std::cout << "ERROR: " << message << std::endl;
@@ -29,12 +29,10 @@ int main(int argc, char* argv[]){
 
   // create a bag
 
+  std::multiset<std::string> wordCounts;
+  std::string line;
   // until we reach the end of one of the files
-  // TODO create multiset
-  // TODO: more idiomatic way of doing this: while(getline) ?
-  while (!stream.eof()) {
-    std::string line;
-    getline(stream, line);
+  while (getline(stream, line)) {
     // TODO: downcase
     // TODO: split into words
     // TODO: add words to bag
