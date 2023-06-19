@@ -1,0 +1,1 @@
+Here are some test-words; it!should|test,splitting.on punctuation. And+here)are'some"redundant}words.
