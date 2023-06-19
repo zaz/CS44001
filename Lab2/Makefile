@@ -1,0 +1,23 @@
+# file to build
+sources = wordCount.cpp
+
+# file to output
+target = wordCount
+
+compiler = g++
+
+# compiler flags
+flags = -Wall -Wextra -std=c++17
+
+# build file
+wordCount: wordCount.cpp
+	$(compiler) $(flags) $(sources) -o $(target)
+
+# delete built file
+clean:
+	rm -f $(target)
+
+# TODO: actually test
+# check if the program compiles and runs without errors
+test:
+	$(compiler) $(flags) $(sources) -o $(target) && ./$(target) test.txt
