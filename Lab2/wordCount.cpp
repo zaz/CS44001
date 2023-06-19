@@ -8,7 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <set>
-// #include <cstring>  // TODO
+#include <regex>
 
 void error(std::string message) {
   std::cout << "ERROR: " << message << std::endl;
@@ -17,7 +17,7 @@ void error(std::string message) {
 }
 
 int main(int argc, char* argv[]){
-  // throw an error if we are not given two command line arguments
+  // throw an error if we are not given one command line arguments
   // XXX: Is it safe to assume argc == argv.size()?
   if (argc != 2) error("You must specify a file to count words in.");
 
@@ -28,8 +28,6 @@ int main(int argc, char* argv[]){
   std::ifstream stream(file);
   if (stream.fail()) error("Could not open file " + file);
 
-  // create a bag
-
   std::multiset<std::string> wordCounts;
   std::string line;
   // until we reach the end of one of the files
@@ -39,12 +37,20 @@ int main(int argc, char* argv[]){
       // XXX: Why are C strings still used? My understanding was a string is the
       //      same, just that it automatically handles memory allocation and has
       //      some nice helper functions.
-    // TODO: split into words
 
-    // TODO: add words to bag
+    // match words
+    std::regex re("\\w+");
+    std::sregex_token_iterator first{line.begin(), line.end(), re}, last;
+
+    // TODO: cannot use vector
+    std::vector<std::string> tokens{first, last};
+
+    // store each item from sregex iterator in the multiset
+    for ( auto& token : tokens ) wordCounts.insert(token);
   }
 
-  // TODO: output word counts
-
   if (stream.bad()) error("While reading file " + file);
+
+  // TODO: output word counts instead of outputting the word multiple times
+  for ( auto& wordCount : wordCounts ) std::cout << wordCount << '\n';
 }
