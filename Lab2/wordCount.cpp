@@ -40,13 +40,10 @@ int main(int argc, char* argv[]){
 
     // match words
     std::regex re("\\w+");
-    std::sregex_token_iterator first{line.begin(), line.end(), re}, last;
+    std::sregex_token_iterator match{line.begin(), line.end(), re}, last;
 
-    // TODO: cannot use vector
-    std::vector<std::string> tokens{first, last};
-
-    // store each item from sregex iterator in the multiset
-    for ( auto& token : tokens ) wordCounts.insert(token);
+    // store each token from sregex iterator in the multiset
+    for (auto& token = *match; match != last; ++match) wordCounts.insert(token);
   }
 
   if (stream.bad()) error("While reading file " + file);
