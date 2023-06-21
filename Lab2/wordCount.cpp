@@ -18,6 +18,12 @@ void error(std::string message) {
   exit(1);
 }
 
+// convert each letter in a string to lower case
+void downcase(std::string& line) {
+  std::transform(line.begin(), line.end(), line.begin(),
+                  [](unsigned char c){ return std::tolower(c); } );
+}
+
 int main(int argc, char* argv[]){
   // throw an error if we are not given one command line arguments
   // XXX: Is it safe to assume argc == argv.size()?
@@ -34,16 +40,15 @@ int main(int argc, char* argv[]){
   std::string line;
   // until we reach the end of one of the files
   while (getline(stream, line)) {
-    // downcase each letter
-    std::transform(line.begin(), line.end(), line.begin(),
-                   [](unsigned char c){ return std::tolower(c); } );
+    downcase(line);
 
     // match words
     std::regex re("\\w+");
     std::sregex_token_iterator match{line.begin(), line.end(), re}, last;
 
     // store each token from sregex iterator in the multiset
-    for (auto& token = *match; match != last; ++match) wordCounts.insert(token);
+    for (auto& token = *match; match != last; ++match)
+      wordCounts.insert(token);
   }
 
   if (stream.bad()) error("While reading file " + file);
