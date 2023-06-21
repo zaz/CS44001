@@ -14,12 +14,12 @@ int main(){
    // manipulating integers
    Collection<int> cone;
    cout << "Integer collection: ";
-   cout << "adding 1 ";  cone.add(1); 
-   cout << "adding 2 ";  cone.add(2); 
-   cout << "adding 3 ";  cone.add(3); 
+   cout << "adding 1 ";  cone.add(1);
+   cout << "adding 2 ";  cone.add(2);
+   cout << "adding 3 ";  cone.add(3);
    cout << "adding duplicate 2 "; cone.add(2);
    cout << endl;
-   
+
    cone.print();
 
    cout << "removing 2 " ; cone.remove(2);
@@ -33,7 +33,7 @@ int main(){
 
    /*
    // uncomment when you debugged the code above
-    
+
 
    // manipulating strings
    string sa[] = {"yellow", "orange", "green", "blue"};
@@ -69,6 +69,6 @@ int main(){
 
    // printing characters from last collection added
    cout << "Last added character collection: ";
-   cpile.last().print(); 
-   */   
+   cpile.last().print();
+   */
 }
