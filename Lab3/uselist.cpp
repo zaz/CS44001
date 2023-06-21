@@ -1,6 +1,9 @@
+//
 // demoes list template usage
-// 6/17/14
+//
 // Mikhail Nesterenko
+// Modified by: Zaz Brown
+//
 
 #include <iostream>
 #include "list.hpp" // list template

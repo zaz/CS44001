@@ -11,6 +11,7 @@ using std::string;
 
 int main(){
 
+   try {
    // manipulating integers
    Collection<int> cone;
    cout << "Integer collection: ";
@@ -29,7 +30,11 @@ int main(){
 
    if(equal(cone, cone))
       cout << "cone list is equal to itself" << endl;
-
+   }
+   catch(const char* msg){
+      cout << msg << endl;
+      exit(1);
+   }
 
    /*
    // uncomment when you debugged the code above

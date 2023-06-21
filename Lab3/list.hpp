@@ -1,6 +1,9 @@
-// node class tempate used to contruct lists
+//
+// node class template used to contruct lists
+//
 // Mikhail Nesterenko
-// 5/01/00
+// Modified by: Zaz Brown
+//
 
 #ifndef LIST_HPP_
 #define LIST_HPP_
@@ -10,7 +13,6 @@
 template <typename T>
 class node{
 public:
-
   node(): next_(nullptr) {}
 
   // functions can be inlined
