@@ -1,12 +1,14 @@
 //
 // Counts how many times each word occurs in a file.
-// Words are separated by whitespace or punctuation. TODO: Case is ignored.
+// Words are separated by whitespace or punctuation. Case is ignored.
 //
 // Zaz Brown
 //
 
 #include <iostream>
 #include <fstream>
+#include <algorithm>
+#include <cctype>
 #include <set>
 #include <regex>
 
@@ -32,11 +34,9 @@ int main(int argc, char* argv[]){
   std::string line;
   // until we reach the end of one of the files
   while (getline(stream, line)) {
-    // TODO: downcase
-      // TODO: turn line into C string ?
-      // XXX: Why are C strings still used? My understanding was a string is the
-      //      same, just that it automatically handles memory allocation and has
-      //      some nice helper functions.
+    // downcase each letter
+    std::transform(line.begin(), line.end(), line.begin(),
+                   [](unsigned char c){ return std::tolower(c); } );
 
     // match words
     std::regex re("\\w+");
