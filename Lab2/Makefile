@@ -17,7 +17,6 @@ wordCount: wordCount.cpp
 clean:
 	rm -f $(target)
 
-# TODO: actually test
 # check if the program compiles and runs without errors
 test:
 	$(compiler) $(flags) $(sources) -o $(target) && \
