@@ -51,11 +51,7 @@ int main(int argc, char* argv[]){
 
   std::set<std::string> words(wordCounts.begin(), wordCounts.end());
   std::string wordArray[words.size()];
-  unsigned int i = 0;
-  for (auto& word : words) {
-    wordArray[i] = word;
-    ++i;
-  }
+  std::copy(words.begin(), words.end(), wordArray);
 
   unsigned int size = sizeof(wordArray) / sizeof(wordArray[0]);
 
