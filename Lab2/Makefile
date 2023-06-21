@@ -20,4 +20,5 @@ clean:
 # TODO: actually test
 # check if the program compiles and runs without errors
 test:
-	$(compiler) $(flags) $(sources) -o $(target) && ./$(target) test.txt
+	$(compiler) $(flags) $(sources) -o $(target) && \
+	diff -U 3 <(./$(target) test.txt) <(cat testOutput.txt)
