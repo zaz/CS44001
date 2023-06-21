@@ -36,8 +36,11 @@ public:
   }
 
   void remove(T data) { throw "remove() not implemented"; }
-  void last() { throw "last() not implemented"; }
+
+  T last() { return tail_->getData(); }
+
   void print() { throw "print() not implemented"; }
+
   friend bool equal<T>(const Collection&, const Collection&);
 
 private:
