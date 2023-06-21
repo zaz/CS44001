@@ -50,8 +50,16 @@ int main(int argc, char* argv[]){
   if (stream.bad()) error("While reading file " + file);
 
   std::set<std::string> words(wordCounts.begin(), wordCounts.end());
-  std::vector<std::string> wordArray(words.begin(), words.end());
-  std::sort(wordArray.begin(), wordArray.end(),
+  std::string wordArray[words.size()];
+  unsigned int i = 0;
+  for (auto& word : words) {
+    wordArray[i] = word;
+    ++i;
+  }
+
+  unsigned int size = sizeof(wordArray) / sizeof(wordArray[0]);
+
+  std::sort(wordArray, wordArray + size,
             [&](const std::string &w1, const std::string &w2) {
               return wordCounts.count(w1) < wordCounts.count(w2);
             });
