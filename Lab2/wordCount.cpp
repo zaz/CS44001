@@ -56,7 +56,6 @@ int main(int argc, char* argv[]){
               return wordCounts.count(w1) < wordCounts.count(w2);
             });
 
-  for (auto& word : wordArray) {
+  for (auto& word : wordArray)
     std::cout << wordCounts.count(word) << ' ' << word << '\n';
-  }
 }
