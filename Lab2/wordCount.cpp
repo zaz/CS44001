@@ -49,11 +49,14 @@ int main(int argc, char* argv[]){
 
   if (stream.bad()) error("While reading file " + file);
 
-  // TODO: order from rarest to most common
-  std::string prevWord = "";
-  for ( auto& word : wordCounts ) {
-    if (word == prevWord) continue;
-    prevWord = word;
+  std::set<std::string> words(wordCounts.begin(), wordCounts.end());
+  std::vector<std::string> wordArray(words.begin(), words.end());
+  std::sort(wordArray.begin(), wordArray.end(),
+            [&](const std::string &w1, const std::string &w2) {
+              return wordCounts.count(w1) < wordCounts.count(w2);
+            });
+
+  for (auto& word : wordArray) {
     std::cout << wordCounts.count(word) << ' ' << word << '\n';
   }
 }
