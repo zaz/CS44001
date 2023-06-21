@@ -20,13 +20,11 @@ void error(std::string message) {
 
 int main(int argc, char* argv[]){
   // throw an error if we are not given one command line arguments
-  // XXX: Is it safe to assume argc == argv.size()?
   if (argc != 2) error("You must specify a file to count words in.");
 
   const std::string file = argv[1];
 
   // Open the files
-  // XXX: Is there a better way than .fail() to check if the file is readable?
   std::ifstream stream(file);
   if (stream.fail()) error("Could not open file " + file);
 
@@ -50,6 +48,7 @@ int main(int argc, char* argv[]){
   if (stream.bad()) error("While reading file " + file);
 
   std::set<std::string> words(wordCounts.begin(), wordCounts.end());
+  // XXX: Why use an array instead of a vector?
   std::string wordArray[words.size()];
   std::copy(words.begin(), words.end(), wordArray);
 
