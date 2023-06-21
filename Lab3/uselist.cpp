@@ -10,9 +10,9 @@ using std::cout; using std::endl;
 int main(){
    node<int> *head, *currentPtr;
 
-   // 
+   //
    // integer list manipulation
-   // 
+   //
 
    // first node
    head =new node<int>;
@@ -36,10 +36,10 @@ int main(){
    delete head;
 
 
-   // 
+   //
    // character list manipulation
-   // 
-   
+   //
+
    // allocating head node
    node<char> *charHead = new node<char>;
    node<char> *current = charHead;
