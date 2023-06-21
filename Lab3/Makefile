@@ -15,9 +15,10 @@ $(target): $(sources)
 
 # delete built file
 clean:
-	rm -f $(target)
+	rm -f $(target) testCollection
 
-# check if the program compiles and runs without errors
 test:
-	$(compiler) $(flags) $(sources) -o $(target) && \
-	./$(target)
+# check if the program compiles and runs without errors
+	$(compiler) $(flags) $(sources) -o $(target) && ./$(target)
+# run testCollection
+	$(compiler) $(flags) testCollection.cpp -o testCollection && ./testCollection
