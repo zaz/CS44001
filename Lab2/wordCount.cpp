@@ -18,12 +18,6 @@ void error(std::string message) {
   exit(1);
 }
 
-// convert each letter in a string to lower case
-void downcase(std::string& line) {
-  std::transform(line.begin(), line.end(), line.begin(),
-                  [](unsigned char c){ return std::tolower(c); } );
-}
-
 int main(int argc, char* argv[]){
   // throw an error if we are not given one command line arguments
   // XXX: Is it safe to assume argc == argv.size()?
@@ -40,7 +34,9 @@ int main(int argc, char* argv[]){
   std::string line;
   // until we reach the end of one of the files
   while (getline(stream, line)) {
-    downcase(line);
+    // convert each letter in line to lower case
+    std::transform(line.begin(), line.end(), line.begin(),
+                    [](unsigned char c){ return std::tolower(c); } );
 
     // match words
     std::regex re("\\w+");
