@@ -20,8 +20,21 @@ bool equal(const Collection<T>&, const Collection<T>&);
 template <typename T>
 class Collection {
 public:
+  // TODO: check this does what I think it does
   Collection() : head_(nullptr), tail_(nullptr) {}
-  void add(T data) { tail_ = &data; }
+
+  void add(const T data) {
+    auto newNode = new node<T>;
+    newNode->setData(data);
+    if (head_ == nullptr) {
+      head_ = newNode;
+      tail_ = newNode;
+      return;
+    }
+    tail_->setNext(newNode);
+    tail_ = newNode;
+  }
+
   void remove(T data) { throw "remove() not implemented"; }
   void last() { throw "last() not implemented"; }
   void print() { throw "print() not implemented"; }
