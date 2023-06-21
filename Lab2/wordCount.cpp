@@ -48,6 +48,11 @@ int main(int argc, char* argv[]){
 
   if (stream.bad()) error("While reading file " + file);
 
-  // TODO: output word counts instead of outputting the word multiple times
-  for ( auto& wordCount : wordCounts ) std::cout << wordCount << '\n';
+  // TODO: order from rarest to most common
+  std::string prevWord = "";
+  for ( auto& word : wordCounts ) {
+    if (word == prevWord) continue;
+    prevWord = word;
+    std::cout << wordCounts.count(word) << ' ' << word << '\n';
+  }
 }
