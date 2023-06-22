@@ -45,32 +45,36 @@ int main(int argc, char* argv[]){
 
   std::string lineFrom1;
   std::string lineFrom2;
-  int line_number = 0;
+  unsigned int line_number = 0;
+  unsigned int ret = 0;
   // until we reach the end of one of the files
   while (!stream1.eof() && !stream2.eof()) {
     getline(stream1, lineFrom1);
     getline(stream2, lineFrom2);
     ++line_number;
-    if (lineFrom1 != lineFrom2) break;
+    if (lineFrom1 != lineFrom2) {
+      ret = 1;
+      const auto prefix1 = file1Prefix + std::to_string(line_number) + ": ";
+      std::cout << prefix1 << lineFrom1 << std::endl;
+      std::cout << file2Prefix << line_number << ": " << lineFrom2 << std::endl;
+
+      const int minLineLength = std::min(lineFrom1.length(), lineFrom2.length());
+      int i = 0;
+      while (i < minLineLength) {
+        if (lineFrom1[i] != lineFrom2[i]) break;
+        ++i;
+      }
+      // print a ^ under the first character that differs
+      std::cout << std::string(prefix1.length()+i, ' ') << '^' << std::endl;
+    }
   }
 
+  // if the files have the same number of lines
   if (stream1.eof() && stream2.eof()) {
-    // we reached the end of both files without finding a difference!
-    return 0;
+    // exit 0 as long as there were no differences
+    return ret;
   }
 
-  const auto prefix1 = file1Prefix + std::to_string(line_number) + ": ";
-  std::cout << prefix1 << lineFrom1 << std::endl;
-  std::cout << file2Prefix << line_number << ": " << lineFrom2 << std::endl;
-
-  const int minLineLength = std::min(lineFrom1.length(), lineFrom2.length());
-  int i = 0;
-  while (i < minLineLength) {
-    if (lineFrom1[i] != lineFrom2[i]) break;
-    ++i;
-  }
-  // print a ^ under the first character that differs
-  std::cout << std::string(prefix1.length()+i, ' ') << '^' << std::endl;
   // exit with return code 1 to indicate the files differ
   return 1;
 
