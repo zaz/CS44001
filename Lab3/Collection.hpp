@@ -72,6 +72,7 @@ public:
       std::cout << current->getData() << ' ';
       current = current->getNext();
     }
+    std::cout << std::endl;
   }
 
   friend bool equal<T>(const Collection&, const Collection&);
