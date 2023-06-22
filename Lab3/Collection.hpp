@@ -4,6 +4,7 @@
 // Zaz Brown
 //
 
+#include <iostream>
 #include "list.hpp"
 
 #ifndef COLLECTION_HPP_
@@ -64,7 +65,14 @@ public:
 
   T last() { return tail_->getData(); }
 
-  void print() { throw "print() not implemented"; }
+  void print() {
+    auto current = head_;
+    // while not nullptr
+    while (current) {
+      std::cout << current->getData() << std::endl;
+      current = current->getNext();
+    }
+  }
 
   friend bool equal<T>(const Collection&, const Collection&);
 
