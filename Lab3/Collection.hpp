@@ -69,7 +69,7 @@ public:
     auto current = head_;
     // while not nullptr
     while (current) {
-      std::cout << current->getData() << std::endl;
+      std::cout << current->getData() << ' ';
       current = current->getNext();
     }
   }
