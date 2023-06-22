@@ -81,9 +81,20 @@ private:
   node<T> *tail_;
 };
 
+// return true if two collections contain the exact same elements
 template<typename T>
 bool equal(const Collection<T>& lhs, const Collection<T>& rhs) {
-  throw "equal() not implemented";
+  auto lhsCurrent = lhs.head_;
+  auto rhsCurrent = rhs.head_;
+  while (lhsCurrent && rhsCurrent) {
+    if (lhsCurrent->getData() != rhsCurrent->getData()) {
+      return false;
+    }
+    lhsCurrent = lhsCurrent->getNext();
+    rhsCurrent = rhsCurrent->getNext();
+  }
+  // return false if one list is longer than the other
+  return not(lhsCurrent || rhsCurrent);
 }
 
 #endif // COLLECTION_HPP_
