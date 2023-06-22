@@ -23,6 +23,7 @@ public:
   // TODO: check this does what I think it does
   Collection() : head_(nullptr), tail_(nullptr) {}
 
+  // add a node to collection
   void add(const T data) {
     auto newNode = new node<T>;
     newNode->setData(data);
@@ -35,7 +36,31 @@ public:
     tail_ = newNode;
   }
 
-  void remove(T data) { throw "remove() not implemented"; }
+  // XXX: What's a more succinct way to do this?
+  // remove all nodes matching data from collection
+  void remove(T data) {
+    auto prev = head_;
+    auto current = head_;
+    // while not nullptr
+    while (current) {
+      if (current->getData() == data) {
+        // if head
+        if (current == head_) {
+          head_ = head_->getNext();
+          delete current;
+          current = head_;
+          prev = head_;
+        } else {
+          prev->setNext(current->getNext());
+          delete current;
+          current = prev->getNext();
+        }
+      } else {
+        prev = current;
+        current = current->getNext();
+      }
+    }
+  }
 
   T last() { return tail_->getData(); }
 
