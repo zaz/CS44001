@@ -36,9 +36,6 @@ int main(){
       exit(1);
    }
 
-   /*
-   // uncomment when you debugged the code above
-
 
    // manipulating strings
    string sa[] = {"yellow", "orange", "green", "blue"};
@@ -75,5 +72,4 @@ int main(){
    // printing characters from last collection added
    cout << "Last added character collection: ";
    cpile.last().print();
-   */
 }
