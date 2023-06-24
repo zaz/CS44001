@@ -19,6 +19,10 @@ clean:
 
 test:
 # check if the program compiles and runs without errors
-	$(compiler) $(flags) $(sources) -o $(target) && ./$(target)
+	$(compiler) $(flags) $(sources) -o $(target)
+	valgrind --leak-check=full --error-exitcode=1 --quiet \
+	         --show-possibly-lost=no ./$(target)
 # run testCollection
-	$(compiler) $(flags) testCollection.cpp -o testCollection && ./testCollection
+	$(compiler) $(flags) testCollection.cpp -o testCollection
+	valgrind --leak-check=full --error-exitcode=1 --quiet \
+	         --show-possibly-lost=no ./testCollection
