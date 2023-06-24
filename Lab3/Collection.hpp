@@ -26,7 +26,7 @@ public:
 
   // add a node to collection
   void add(const T data) {
-    auto newNode = new node<T>;
+    auto newNode = std::make_shared<node<T>>();
     newNode->setData(data);
     if (head_ == nullptr) {
       head_ = newNode;
@@ -48,12 +48,10 @@ public:
         // if head
         if (current == head_) {
           head_ = head_->getNext();
-          delete current;
           current = head_;
           prev = head_;
         } else {
           prev->setNext(current->getNext());
-          delete current;
           current = prev->getNext();
         }
       } else {
@@ -78,8 +76,8 @@ public:
   friend bool equal<T>(const Collection&, const Collection&);
 
 private:
-  node<T> *head_;
-  node<T> *tail_;
+  std::shared_ptr<node<T>> head_;
+  std::shared_ptr<node<T>> tail_;
 };
 
 // return true if two collections contain the exact same elements

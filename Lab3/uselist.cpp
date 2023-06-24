@@ -6,22 +6,23 @@
 //
 
 #include <iostream>
+#include <memory>
 #include "list.hpp" // list template
 
 using std::cout; using std::endl;
 
 int main(){
-   node<int> *head, *currentPtr;
+   std::shared_ptr<node<int>> head, currentPtr;
 
    //
    // integer list manipulation
    //
 
    // first node
-   head = new node<int>;
+   head = std::make_shared<node<int>>();
    head->setData(1);
 
-   currentPtr=new node<int>;  // second node
+   currentPtr = std::make_shared<node<int>>();  // second node
    currentPtr->setData(2);
 
    head->setNext(currentPtr); // list contains two nodes
@@ -31,11 +32,9 @@ int main(){
    // deallocating head node
    currentPtr = head;
    head = head->getNext();
-   delete currentPtr;
 
    // printing and deallocating the last element
    cout << head->getData() << endl;
-   delete head;
 
 
    //
@@ -43,13 +42,13 @@ int main(){
    //
 
    // allocating head node
-   node<char> *charHead = new node<char>;
-   node<char> *current = charHead;
+   auto charHead = std::make_shared<node<char>>();
+   auto current = charHead;
    current->setData('A');
 
    // creating list
    for(char letter = 'B'; letter <= 'Z'; ++letter){
-      node<char> *const newNode = new node<char>;
+      auto const newNode = std::make_shared<node<char>>();
       newNode->setData(letter);
       current->setNext(newNode);
       current = newNode;
@@ -63,7 +62,6 @@ int main(){
    current = charHead;
    while(current != nullptr){
       charHead = charHead->getNext();
-      delete current;
       current = charHead;
    }
 }
