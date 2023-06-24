@@ -18,9 +18,8 @@ int main(){
    //
 
    // first node
-   head =new node<int>;
+   head = new node<int>;
    head->setData(1);
-
 
    currentPtr=new node<int>;  // second node
    currentPtr->setData(2);
@@ -30,8 +29,8 @@ int main(){
    cout << head->getData() << " "; // printing head node
 
    // deallocating head node
-   currentPtr=head;
-   head=head->getNext();
+   currentPtr = head;
+   head = head->getNext();
    delete currentPtr;
 
    // printing and deallocating the last element
@@ -56,8 +55,15 @@ int main(){
       current = newNode;
    }
 
-
    for(current = charHead;  current != nullptr; current=current->getNext())
      cout << current->getData() << ' ';
    cout << endl;
+
+   // deallocate list
+   current = charHead;
+   while(current != nullptr){
+      charHead = charHead->getNext();
+      delete current;
+      current = charHead;
+   }
 }
