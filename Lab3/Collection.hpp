@@ -21,7 +21,6 @@ bool equal(const Collection<T>&, const Collection<T>&);
 template <typename T>
 class Collection {
 public:
-  // TODO: check this does what I think it does
   Collection() : head_(nullptr), tail_(nullptr) {}
 
   // add a node to collection
