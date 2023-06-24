@@ -1,5 +1,5 @@
 # file to build
-sources = wordCount.cpp wordList.cpp wordList.hpp
+sources = wordCount.cpp WordList.cpp WordList.hpp
 
 # file to output
 target = wordCount
