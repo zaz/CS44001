@@ -9,7 +9,6 @@ using string = std::string;
 class WordList{
 public:
     WordList() : size_(0) {};
-    // add copy constructor, destructor, overloaded assignment
 
     // implement comparison as friend
     friend bool equal(const WordList&, const WordList&);
