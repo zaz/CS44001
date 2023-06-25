@@ -13,6 +13,9 @@ flags = -Wall -Wextra -std=c++17
 wordCount: wordCount.cpp
 	$(compiler) $(flags) $(sources) -o $(target)
 
+# "clean" and "test" are not produced by make
+.PHONY: clean test
+
 # delete built file
 clean:
 	rm -f $(target)
@@ -20,4 +23,4 @@ clean:
 # check if the program compiles and runs without errors
 test:
 	$(compiler) $(flags) $(sources) -o $(target) && \
-	diff -U 3 <(./$(target) test.txt) <(cat testOutput.txt)
+	diff -U 3 <(./$(target) test/1.txt) <(cat test/1.out)
