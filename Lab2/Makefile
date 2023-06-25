@@ -22,5 +22,7 @@ clean:
 
 # check if the program compiles and runs without errors
 test:
-	$(compiler) $(flags) $(sources) -o $(target) && \
+	$(compiler) $(flags) $(sources) -o $(target)
 	diff -U 3 <(./$(target) test/1.txt) <(cat test/1.out)
+	$(compiler) $(flags) test/WordList.cpp WordList.cpp WordList.hpp -o test/WordList
+	diff -U 3 <(test/WordList) <(cat test/WordList.out)
