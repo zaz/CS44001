@@ -16,6 +16,10 @@ void WordList::print() {
     std::cout << wordCounts_.count(word) << ' ' << word << '\n';
 }
 
+unsigned int WordList::count(const std::string& word) {
+  return wordCounts_.count(word);
+}
+
 bool equal(const WordList& w1, const WordList& w2) {
   return w1.wordCounts_ == w2.wordCounts_;
 }

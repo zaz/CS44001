@@ -11,6 +11,7 @@
 #include <cctype>
 #include <set>
 #include <regex>
+#include "WordList.hpp"
 
 void error(std::string message) {
   std::cout << "ERROR: " << message << std::endl;
@@ -28,7 +29,7 @@ int main(int argc, char* argv[]){
   std::ifstream stream(file);
   if (stream.fail()) error("Could not open file " + file);
 
-  std::multiset<std::string> wordCounts;
+  WordList wordCounts;
   std::string line;
   // until we reach the end of one of the files
   while (getline(stream, line)) {
@@ -41,13 +42,13 @@ int main(int argc, char* argv[]){
     std::sregex_token_iterator match{line.begin(), line.end(), re}, last;
 
     // store each token from sregex iterator in the multiset
-    for (auto& token = *match; match != last; ++match)
-      wordCounts.insert(token);
+    for (auto& word = *match; match != last; ++match)
+      wordCounts.addWord(word);
   }
 
   if (stream.bad()) error("While reading file " + file);
 
-  std::set<std::string> words(wordCounts.begin(), wordCounts.end());
+  std::set<std::string> words = wordCounts.uniqueWords();
   // XXX: Why use an array instead of a vector?
   std::string wordArray[words.size()];
   std::copy(words.begin(), words.end(), wordArray);

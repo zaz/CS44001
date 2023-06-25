@@ -16,6 +16,7 @@ public:
     std::set<string> uniqueWords();
     void addWord(const string &);
     void print();
+    unsigned int count(const string &);
 private:
     std::multiset<string> wordCounts_;
     int size_;
