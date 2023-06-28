@@ -56,10 +56,7 @@ list<list<string>> getStudentEntries(const vector<list<string>>& courseStudents,
       list<string> entry;
       entry.push_back(student + ":");
       for (auto& lst : courseStudents) {
-         printRoster(lst);
-         cout << "student: " + student + '\n';
          if (std::find(lst.begin(), lst.end(), student) != lst.end()) {
-            cout << "ADDING student: " + student + '\n';
             std::filesystem::path csI = argv[&lst - &courseStudents[0] + 1];
             // get only the filename, not the whole path, and not the extension
             csI = csI.filename();
