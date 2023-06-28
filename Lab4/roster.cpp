@@ -19,9 +19,11 @@ using std::cout; using std::endl; using std::cerr;
 using std::move;
 
 // reading in a file of names into a list of strings
-void readRoster(list<string>& roster, string fileName){
+void readRoster(list<string>& roster, string fileName) {
    ifstream course(fileName);
    string first, last;
+   // For each line in the file, read the first and second whitespace-separated
+   // words into first and last, respectively.
    while(course >> first >> last)
       roster.push_back(first + ' ' + last);
    course.close();
@@ -33,7 +35,7 @@ void printRoster(const list<string>& roster){
       cout << str << endl;
 }
 
-int main(int argc, char* argv[]){
+int main(int argc, char* argv[]) {
    if (argc <= 1){
       cerr << "usage: " << argv[0]
       << " list of courses, dropouts last"
@@ -42,16 +44,14 @@ int main(int argc, char* argv[]){
    }
 
    // vector of courses of students
-   vector <list<string>> courseStudents;
-
-   for(int i=1; i < argc-1; ++i){
+   vector<list<string>> courseStudents;
+   for(int i=1; i < argc-1; ++i) {
       list<string> roster;
       readRoster(roster, argv[i]);
       cout << "\n\n" << argv[i] << "\n";
       printRoster(roster);
       courseStudents.push_back(move(roster));
    }
-
 
    // reading in dropouts
    list<string> dropouts;
