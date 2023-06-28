@@ -4,6 +4,8 @@ sources = roster.cpp
 # file to output
 target = roster
 
+arguments = test/cs[1-4].txt test/dropouts.txt
+
 compiler = g++
 
 # compiler flags
@@ -21,9 +23,10 @@ $(target): $(sources)
 clean:
 	rm -f $(target) rosterObject
 
-# check if the program compiles and runs without errors or memory leaks
 test:
+# check if the program compiles and runs without errors or memory leaks
 	$(compiler) $(flags) $(sources) -o $(target)
 	valgrind --leak-check=full --error-exitcode=1 --quiet \
-	         --show-possibly-lost=no \
-	         ./$(target) test/cs[1-4].txt test/dropouts.txt
+	         --show-possibly-lost=no ./$(target) $(arguments)
+# check that program output matches expected output
+	diff -U 3 test/roster.out <(./$(target) $(arguments))
