@@ -11,6 +11,8 @@
 #include <list>
 #include <string>
 #include <cstdlib>
+#include <algorithm>
+#include <filesystem>  // for proper handling of file paths
 
 using std::ifstream;
 using std::string; using std::getline;
@@ -18,7 +20,7 @@ using std::list; using std::vector;
 using std::cout; using std::endl; using std::cerr;
 using std::move;
 
-// reading in a file of names into a list of strings
+// read a file of names into a list of strings
 void readRoster(list<string>& roster, string fileName) {
    ifstream course(fileName);
    string first, last;
@@ -29,14 +31,23 @@ void readRoster(list<string>& roster, string fileName) {
    course.close();
 }
 
-// printing a list out
+// print a list
 void printRoster(const list<string>& roster, bool stderr = false) {
    if (stderr) for(const auto& str : roster) cerr << str << '\n';
    else for(const auto& str : roster) cout << str << '\n';
 }
 
+// print student entries
+void printEntries(const list<list<string>>& entries) {
+   for (const auto& student : entries) {
+      for (const auto& str : student)
+         cout << str;
+      cout << '\n';
+      }
+}
+
 int main(int argc, char* argv[]) {
-   if (argc <= 1){
+   if (argc <= 1) {
       cerr << "usage: " << argv[0]
       << " list of courses, dropouts last"
       << endl;
@@ -45,9 +56,10 @@ int main(int argc, char* argv[]) {
 
    // vector of courses of students
    vector<list<string>> courseStudents;
-   for(int i=1; i < argc-1; ++i) {
+   for (int i=1; i < argc-1; ++i) {
       list<string> roster;
       readRoster(roster, argv[i]);
+      // roster now contains a list of students in course argv[i]
       cerr << "\n\n" << argv[i] << "\n";
       printRoster(roster, true);
       courseStudents.push_back(move(roster));
@@ -61,11 +73,34 @@ int main(int argc, char* argv[]) {
 
    // master list of students
    list<string> allStudents;
-   for(auto& lst : courseStudents)
-     allStudents.splice(allStudents.end(), lst);
+   for (const auto& lst : courseStudents)
+      // copy list instead of splicing:
+      allStudents.insert(allStudents.end(), lst.begin(), lst.end());
+
+   // XXX UGLY. We should use associative containers.
+   // create studentEntries, a list of lists of:
+   //          name:, [courses enrolled...]
+   list<list<string>> studentEntries;
+   for (auto& student : allStudents) {
+      list<string> entry;
+      entry.push_back(student + ":");
+      for (auto& lst : courseStudents) {
+         printRoster(lst);
+         cout << "student: " + student + '\n';
+         if (std::find(lst.begin(), lst.end(), student) != lst.end()) {
+            cout << "ADDING student: " + student + '\n';
+            std::filesystem::path csI = argv[&lst - &courseStudents[0] + 1];
+            // get only the filename, not the whole path, and not the extension
+            csI = csI.filename();
+            csI.replace_extension();
+            entry.push_back(" " + string(csI));
+         }
+      }
+      studentEntries.push_back(move(entry));
+   }
 
    cout << "All students\nfirst name last name: courses enrolled";
-   printRoster(allStudents);
+   printEntries(studentEntries);
 
    // sorting master list
    allStudents.sort();
