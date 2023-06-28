@@ -29,4 +29,4 @@ test:
 	valgrind --leak-check=full --error-exitcode=1 --quiet \
 	         --show-possibly-lost=no ./$(target) $(arguments)
 # check that program output matches expected output
-	diff -U 3 test/roster.out <(./$(target) $(arguments))
+	wdiff test/roster.out <(./$(target) $(arguments))
