@@ -61,19 +61,16 @@ int main(int argc, char* argv[]) {
 
    // master list of students
    list<string> allStudents;
-
    for(auto& lst : courseStudents)
      allStudents.splice(allStudents.end(), lst);
 
    cout << "\n\n all students unsorted \n";
            printRoster(allStudents);
 
-
    // sorting master list
    allStudents.sort();
    cerr << "\n\n all students sorted \n";
    printRoster(allStudents, true);
-
 
    // eliminating duplicates
    allStudents.unique();
