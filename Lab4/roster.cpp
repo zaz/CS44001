@@ -16,66 +16,66 @@ using std::cout; using std::endl;
 using std::move;
 
 // reading a list from a fileName
-void readRoster(list<string>& roster, string fileName);  
+void readRoster(list<string>& roster, string fileName);
 
 // printing a list out
-void printRoster(const list<string>& roster); 
+void printRoster(const list<string>& roster);
 
 int main(int argc, char* argv[]){
 
-   if (argc <= 1){ 
-      cout << "usage: " << argv[0] 
-      << " list of courses, dropouts last" 
+   if (argc <= 1){
+      cout << "usage: " << argv[0]
+      << " list of courses, dropouts last"
       << endl;
       exit(1);
    }
 
    // vector of courses of students
-   vector <list<string>> courseStudents; 
+   vector <list<string>> courseStudents;
 
    for(int i=1; i < argc-1; ++i){
       list<string> roster;
-      readRoster(roster, argv[i]);  
-      cout << "\n\n" << argv[i] << "\n";  
+      readRoster(roster, argv[i]);
+      cout << "\n\n" << argv[i] << "\n";
       printRoster(roster);
       courseStudents.push_back(move(roster));
    }
 
-  
+
    // reading in dropouts
-   list<string> dropouts; 
-   readRoster(dropouts, argv[argc-1]); 
+   list<string> dropouts;
+   readRoster(dropouts, argv[argc-1]);
    cout << "\n\n dropouts \n";
    printRoster(dropouts);
 
    // master list of students
-   list<string> allStudents;  
+   list<string> allStudents;
 
-   for(auto& lst : courseStudents) 
+   for(auto& lst : courseStudents)
      allStudents.splice(allStudents.end(), lst);
 
-   cout << "\n\n all students unsorted \n"; 
+   cout << "\n\n all students unsorted \n";
            printRoster(allStudents);
 
-   
+
    // sorting master list
    allStudents.sort();
-   cout << "\n\n all students sorted \n"; 
+   cout << "\n\n all students sorted \n";
    printRoster(allStudents);
 
-   
+
    // eliminating duplicates
-   allStudents.unique(); 
-   cout << "\n\n all students, duplicates removed \n"; 
+   allStudents.unique();
+   cout << "\n\n all students, duplicates removed \n";
    printRoster(allStudents);
 
    // removing individual dropouts
-   for (const auto& str : dropouts)  
+   for (const auto& str : dropouts)
       allStudents.remove(str);
 
-   cout << "\n\n all students, dropouts removed \n"; 
+   cout << "\n\n all students, dropouts removed \n";
    printRoster(allStudents);
-   
+
 }
 
 // reading in a file of names into a list of strings
