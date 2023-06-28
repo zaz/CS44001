@@ -46,6 +46,32 @@ void printEntries(const list<list<string>>& entries) {
       }
 }
 
+// XXX UGLY. We should use maps instead.
+// create studentEntries, a list of lists of: "name: [courses enrolled...]"
+list<list<string>> getStudentEntries(const vector<list<string>>& courseStudents,
+                                     const list<string>& allStudents,
+                                     char* argv[]) {
+   list<list<string>> studentEntries;
+   for (auto& student : allStudents) {
+      list<string> entry;
+      entry.push_back(student + ":");
+      for (auto& lst : courseStudents) {
+         printRoster(lst);
+         cout << "student: " + student + '\n';
+         if (std::find(lst.begin(), lst.end(), student) != lst.end()) {
+            cout << "ADDING student: " + student + '\n';
+            std::filesystem::path csI = argv[&lst - &courseStudents[0] + 1];
+            // get only the filename, not the whole path, and not the extension
+            csI = csI.filename();
+            csI.replace_extension();
+            entry.push_back(" " + string(csI));
+         }
+      }
+      studentEntries.push_back(move(entry));
+   }
+   return studentEntries;
+}
+
 int main(int argc, char* argv[]) {
    if (argc <= 1) {
       cerr << "usage: " << argv[0]
@@ -77,27 +103,7 @@ int main(int argc, char* argv[]) {
       // copy list instead of splicing:
       allStudents.insert(allStudents.end(), lst.begin(), lst.end());
 
-   // XXX UGLY. We should use associative containers.
-   // create studentEntries, a list of lists of:
-   //          name:, [courses enrolled...]
-   list<list<string>> studentEntries;
-   for (auto& student : allStudents) {
-      list<string> entry;
-      entry.push_back(student + ":");
-      for (auto& lst : courseStudents) {
-         printRoster(lst);
-         cout << "student: " + student + '\n';
-         if (std::find(lst.begin(), lst.end(), student) != lst.end()) {
-            cout << "ADDING student: " + student + '\n';
-            std::filesystem::path csI = argv[&lst - &courseStudents[0] + 1];
-            // get only the filename, not the whole path, and not the extension
-            csI = csI.filename();
-            csI.replace_extension();
-            entry.push_back(" " + string(csI));
-         }
-      }
-      studentEntries.push_back(move(entry));
-   }
+   auto studentEntries = getStudentEntries(courseStudents, allStudents, argv);
 
    cout << "All students\nfirst name last name: courses enrolled";
    printEntries(studentEntries);
