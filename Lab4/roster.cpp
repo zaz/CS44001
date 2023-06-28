@@ -1,6 +1,9 @@
-// vector and list algorithms
+//
+// Student roster
+//
 // Mikhail Nesterenko
-// 3/11/2014
+// Modified by Zaz Brown
+//
 
 #include <fstream>
 #include <iostream>
@@ -15,14 +18,22 @@ using std::list; using std::vector;
 using std::cout; using std::endl;
 using std::move;
 
-// reading a list from a fileName
-void readRoster(list<string>& roster, string fileName);
+// reading in a file of names into a list of strings
+void readRoster(list<string>& roster, string fileName){
+   ifstream course(fileName);
+   string first, last;
+   while(course >> first >> last)
+      roster.push_back(first + ' ' + last);
+   course.close();
+}
 
 // printing a list out
-void printRoster(const list<string>& roster);
+void printRoster(const list<string>& roster){
+   for(const auto& str : roster)
+      cout << str << endl;
+}
 
 int main(int argc, char* argv[]){
-
    if (argc <= 1){
       cout << "usage: " << argv[0]
       << " list of courses, dropouts last"
@@ -75,20 +86,4 @@ int main(int argc, char* argv[]){
 
    cout << "\n\n all students, dropouts removed \n";
    printRoster(allStudents);
-
-}
-
-// reading in a file of names into a list of strings
-void readRoster(list<string>& roster, string fileName){
-   ifstream course(fileName);
-   string first, last;
-   while(course >> first >> last)
-      roster.push_back(first + ' ' + last);
-   course.close();
-}
-
-// printing a list out
-void printRoster(const list<string>& roster){
-   for(const auto& str : roster)
-      cout << str << endl;
 }
