@@ -30,9 +30,9 @@ void readRoster(list<string>& roster, string fileName) {
 }
 
 // printing a list out
-void printRoster(const list<string>& roster){
-   for(const auto& str : roster)
-      cout << str << endl;
+void printRoster(const list<string>& roster, bool stderr = false) {
+   if (stderr) for(const auto& str : roster) cerr << str << '\n';
+   else for(const auto& str : roster) cout << str << '\n';
 }
 
 int main(int argc, char* argv[]) {
@@ -48,16 +48,16 @@ int main(int argc, char* argv[]) {
    for(int i=1; i < argc-1; ++i) {
       list<string> roster;
       readRoster(roster, argv[i]);
-      cout << "\n\n" << argv[i] << "\n";
-      printRoster(roster);
+      cerr << "\n\n" << argv[i] << "\n";
+      printRoster(roster, true);
       courseStudents.push_back(move(roster));
    }
 
    // reading in dropouts
    list<string> dropouts;
    readRoster(dropouts, argv[argc-1]);
-   cout << "\n\n dropouts \n";
-   printRoster(dropouts);
+   cerr << "\n\n dropouts \n";
+   printRoster(dropouts, true);
 
    // master list of students
    list<string> allStudents;
@@ -71,14 +71,14 @@ int main(int argc, char* argv[]) {
 
    // sorting master list
    allStudents.sort();
-   cout << "\n\n all students sorted \n";
-   printRoster(allStudents);
+   cerr << "\n\n all students sorted \n";
+   printRoster(allStudents, true);
 
 
    // eliminating duplicates
    allStudents.unique();
-   cout << "\n\n all students, duplicates removed \n";
-   printRoster(allStudents);
+   cerr << "\n\n all students, duplicates removed \n";
+   printRoster(allStudents, true);
 
    // removing individual dropouts
    for (const auto& str : dropouts)
