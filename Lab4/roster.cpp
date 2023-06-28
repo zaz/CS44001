@@ -119,7 +119,9 @@ int main(int argc, char* argv[]) {
    for (const auto& str : dropouts)
       allStudents.remove(str);
 
+   studentEntries = getStudentEntries(courseStudents, allStudents, argv);
+
    cout << "All students, dropouts removed and sorted\n";
    cout << "first name last name:  courses enrolled\n";
-   printRoster(allStudents);
+   printEntries(studentEntries);
 }
