@@ -15,7 +15,7 @@
 using std::ifstream;
 using std::string; using std::getline;
 using std::list; using std::vector;
-using std::cout; using std::endl;
+using std::cout; using std::endl; using std::cerr;
 using std::move;
 
 // reading in a file of names into a list of strings
@@ -35,7 +35,7 @@ void printRoster(const list<string>& roster){
 
 int main(int argc, char* argv[]){
    if (argc <= 1){
-      cout << "usage: " << argv[0]
+      cerr << "usage: " << argv[0]
       << " list of courses, dropouts last"
       << endl;
       exit(1);
