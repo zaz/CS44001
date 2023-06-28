@@ -64,8 +64,8 @@ int main(int argc, char* argv[]) {
    for(auto& lst : courseStudents)
      allStudents.splice(allStudents.end(), lst);
 
-   cout << "\n\n all students unsorted \n";
-           printRoster(allStudents);
+   cout << "All students\nfirst name last name: courses enrolled";
+   printRoster(allStudents);
 
    // sorting master list
    allStudents.sort();
@@ -81,6 +81,7 @@ int main(int argc, char* argv[]) {
    for (const auto& str : dropouts)
       allStudents.remove(str);
 
-   cout << "\n\n all students, dropouts removed \n";
+   cout << "All students, dropouts removed and sorted\n";
+   cout << "first name last name:  courses enrolled\n";
    printRoster(allStudents);
 }
