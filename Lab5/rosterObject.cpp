@@ -61,11 +61,13 @@ private:
    std::set<string> classes_;
 };
 
-void readRoster(list<Student>& roster, string fileName) {
-   ifstream course(fileName);
+void readRoster(std::map<Student, std::set<string>>& studentCourses,
+                string filePath,
+                string courseName) {
+   ifstream course(filePath);
    string first, last;
    while(course >> first >> last)
-      roster.push_back(Student(first, last));
+      studentCourses[Student(first, last)].insert(courseName);
    course.close();
 }
 
@@ -83,6 +85,7 @@ int main(int argc, char* argv[]) {
    if (argc <= 1) { cout << "usage: " << argv[0]
       << " list of courses, dropouts last" << endl; exit(1); }
 
+   vector<string> paths;
    vector<string> courses;
    for (int i = 1; i < argc-1; ++i)
       courses.push_back(getCourseNameFromPath(argv[i]));
@@ -91,39 +94,14 @@ int main(int argc, char* argv[]) {
       std::cerr << course << endl;
 
    // XXX: should I use enums instead of strings?
-   std::multimap<Student, std::set<string>> studentCourses;
+   std::map<Student, std::set<string>> studentCourses;
 
-   // vector of courses of students
-   vector <list<Student>> courseStudents;
-
-   for(int i=1; i < argc-1; ++i) {
+   for(int i=0; i < argc-2; ++i) {
       list<Student> roster;
-      readRoster(roster, argv[i]);
+      readRoster(studentCourses, argv[i+1], courses[i]);
       cout << "\n\n" << argv[i] << "\n";
-      printRoster(roster);
-      courseStudents.push_back(move(roster));
    }
 
-   // reading in dropouts
-   list<Student> dropouts;
-   readRoster(dropouts, argv[argc-1]);
-   cout << "\n\n dropouts \n"; printRoster(dropouts);
-
-   list<Student> allStudents;  // master list of students
-
-   for(auto& lst : courseStudents)
-     allStudents.splice(allStudents.end(),lst);
-
-   cout << "\n\n all students unsorted \n";
-           printRoster(allStudents);
-
-   allStudents.sort(); // sorting master list
-   cout << "\n\n all students sorted \n"; printRoster(allStudents);
-
-   allStudents.unique(); // eliminating duplicates
-   cout << "\n\n all students, duplicates removed \n"; printRoster(allStudents);
-
-   for (const auto& str : dropouts)  // removing individual dropouts
-      allStudents.remove(str);
-   cout << "\n\n all students, dropouts removed \n"; printRoster(allStudents);
+   for (const auto& [student, courses] : studentCourses)
+      std::cerr << student.print() << " " << student.getClasses() << endl;
 }
