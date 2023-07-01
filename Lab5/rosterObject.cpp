@@ -24,8 +24,7 @@ public:
    // move constructor, not really needed, generated automatically
    Student(Student && org) noexcept:
       firstName_(move(org.firstName_)),
-      lastName_(move(org.lastName_))
-   {}
+      lastName_(move(org.lastName_)) {}
 
    // force generation of default copy constructor
    Student(const Student & org) = default;
@@ -35,20 +34,19 @@ public:
     // needed for unique() and for remove()
    friend bool operator== (Student left, Student right){
       return left.lastName_ == right.lastName_ &&
-	     left.firstName_ == right.firstName_;
+         left.firstName_ == right.firstName_;
    }
 
    // needed for sort()
    friend bool operator< (Student left, Student right){
       return left.lastName_ < right.lastName_ ||
-	     (left.lastName_ == right.lastName_ &&
-	      left.firstName_ < right.firstName_);
+         (left.lastName_ == right.lastName_ &&
+          left.firstName_ < right.firstName_);
    }
 private:
    string firstName_;
    string lastName_;
 };
-
 
 
 
@@ -58,7 +56,6 @@ void readRoster(list<Student>& roster, string fileName);
 void printRoster(const list<Student>& roster);
 
 int main(int argc, char* argv[]){
-
    if (argc <= 1){ cout << "usage: " << argv[0]
       << " list of courses, dropouts last" << endl; exit(1);}
 
@@ -72,7 +69,6 @@ int main(int argc, char* argv[]){
       printRoster(roster);
       courseStudents.push_back(move(roster));
    }
-
 
    // reading in dropouts
    list<Student> dropouts;
@@ -96,7 +92,6 @@ int main(int argc, char* argv[]){
    for (const auto& str : dropouts)  // removing individual dropouts
       allStudents.remove(str);
    cout << "\n\n all students, dropouts removed \n"; printRoster(allStudents);
-
 }
 
 
