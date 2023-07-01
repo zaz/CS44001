@@ -47,12 +47,19 @@ private:
    string lastName_;
 };
 
+void readRoster(list<Student>& roster, string fileName){
+   ifstream course(fileName);
+   string first, last;
+   while(course >> first >> last)
+      roster.push_back(Student(first, last));
+   course.close();
+}
 
-
-// reading a list from a fileName
-void readRoster(list<Student>& roster, string fileName);
 // printing a list out
-void printRoster(const list<Student>& roster);
+void printRoster(const list<Student>& roster){
+   for(const auto& student : roster)
+      cout << student.print() << endl;
+}
 
 int main(int argc, char* argv[]){
    if (argc <= 1){ cout << "usage: " << argv[0]
@@ -91,19 +98,4 @@ int main(int argc, char* argv[]){
    for (const auto& str : dropouts)  // removing individual dropouts
       allStudents.remove(str);
    cout << "\n\n all students, dropouts removed \n"; printRoster(allStudents);
-}
-
-
-void readRoster(list<Student>& roster, string fileName){
-   ifstream course(fileName);
-   string first, last;
-   while(course >> first >> last)
-      roster.push_back(Student(first, last));
-   course.close();
-}
-
-// printing a list out
-void printRoster(const list<Student>& roster){
-   for(const auto& student : roster)
-      cout << student.print() << endl;
 }
