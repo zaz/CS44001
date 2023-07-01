@@ -13,7 +13,6 @@ using std::ifstream;
 using std::string; using std::getline;
 using std::list; using std::vector;
 using std::cout; using std::endl;
-using std::move;
 
 
 class Student{
@@ -23,8 +22,8 @@ public:
 
    // move constructor, not really needed, generated automatically
    Student(Student && org) noexcept:
-      firstName_(move(org.firstName_)),
-      lastName_(move(org.lastName_)) {}
+      firstName_(std::move(org.firstName_)),
+      lastName_(std::move(org.lastName_)) {}
 
    // force generation of default copy constructor
    Student(const Student & org) = default;
