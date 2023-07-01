@@ -20,10 +20,10 @@ public:
    Student(string firstName, string lastName):
       firstName_(firstName), lastName_(lastName) {}
 
-   // move constructor, not really needed, generated automatically
-   Student(Student && org) noexcept:
-      firstName_(std::move(org.firstName_)),
-      lastName_(std::move(org.lastName_)) {}
+   // Move constructor. Not needed; generated automatically.
+   // Student(Student && org) noexcept:
+   //    firstName_(std::move(org.firstName_)),
+   //    lastName_(std::move(org.lastName_)) {}
 
    // force generation of default copy constructor
    Student(const Student & org) = default;
