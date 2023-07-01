@@ -83,16 +83,12 @@ int main(int argc, char* argv[]) {
       list<string> roster;
       readRoster(roster, argv[i]);
       // roster now contains a list of students in course argv[i]
-      cerr << "\n\n" << argv[i] << "\n";
-      printRoster(roster, true);
       courseStudents.push_back(move(roster));
    }
 
    // reading in dropouts
    list<string> dropouts;
    readRoster(dropouts, argv[argc-1]);
-   cerr << "\n\n dropouts \n";
-   printRoster(dropouts, true);
 
    // master list of students
    list<string> allStudents;
@@ -100,28 +96,19 @@ int main(int argc, char* argv[]) {
       // copy list instead of splicing:
       allStudents.insert(allStudents.end(), lst.begin(), lst.end());
 
-   auto studentEntries = getStudentEntries(courseStudents, allStudents, argv);
-
-   cout << "All students\nfirst name last name: courses enrolled\n";
-   printEntries(studentEntries);
-
    // sorting master list
    allStudents.sort();
-   cerr << "\n\n all students sorted \n";
-   printRoster(allStudents, true);
 
    // eliminating duplicates
    allStudents.unique();
-   cerr << "\n\n all students, duplicates removed \n";
-   printRoster(allStudents, true);
 
    // removing individual dropouts
    for (const auto& str : dropouts)
       allStudents.remove(str);
 
-   studentEntries = getStudentEntries(courseStudents, allStudents, argv);
+   auto studentEntries = getStudentEntries(courseStudents, allStudents, argv);
 
-   cout << "\n\nAll students, dropouts removed and sorted\n";
+   cout << "All students, dropouts removed and sorted\n";
    cout << "first name last name:  courses enrolled\n";
    printEntries(studentEntries);
 }
