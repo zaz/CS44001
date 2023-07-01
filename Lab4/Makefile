@@ -24,9 +24,10 @@ clean:
 	rm -f $(target) rosterObject
 
 test:
-# check if the program compiles and runs without errors or memory leaks
+# Check if the program compiles and runs without errors or memory leaks. Regular
+# program output is discarded, but stderr from Valgrind and program is printed.
 	$(compiler) $(flags) $(sources) -o $(target)
 	valgrind --leak-check=full --error-exitcode=1 --quiet \
-	         --show-possibly-lost=no ./$(target) $(arguments)
+	         --show-possibly-lost=no ./$(target) $(arguments) >/dev/null
 # check that program output matches expected output
-	wdiff test/roster.out <(./$(target) $(arguments))
+	diff -U 3 test/roster.out <(./$(target) $(arguments))
