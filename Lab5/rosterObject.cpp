@@ -8,6 +8,7 @@
 #include <list>
 #include <string>
 #include <cstdlib>
+#include <set>
 
 using std::ifstream;
 using std::string; using std::getline;
@@ -28,23 +29,33 @@ public:
    // force generation of default copy constructor
    Student(const Student & org) = default;
 
-   string print() const {return firstName_ + ' ' + lastName_;}
+   string print() const { return firstName_ + ' ' + lastName_; }
 
    // needed for unique() and for remove()
-   friend bool operator== (Student left, Student right){
+   friend bool operator== (Student left, Student right) {
       return left.lastName_ == right.lastName_ &&
          left.firstName_ == right.firstName_;
    }
 
    // needed for sort()
-   friend bool operator< (Student left, Student right){
+   friend bool operator< (Student left, Student right) {
       return left.lastName_ < right.lastName_ ||
          (left.lastName_ == right.lastName_ &&
           left.firstName_ < right.firstName_);
    }
+
+   void addClass(string className) { classes_.insert(className); }
+
+   string getClasses() const {
+      string classes;
+      for (const auto& str : classes_)
+         classes += " " + str;
+      return classes;
+   }
 private:
    string firstName_;
    string lastName_;
+   std::set<string> classes_;
 };
 
 void readRoster(list<Student>& roster, string fileName){
