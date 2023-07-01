@@ -99,7 +99,7 @@ int main(int argc, char* argv[]) {
    for(int i=0; i < argc-2; ++i) {
       list<Student> roster;
       readRoster(studentCourses, argv[i+1], courses[i]);
-      cout << "\n\n" << argv[i] << "\n";
+      std::cerr << '\n' << argv[i+1] << ' ' << courses[i] << '\n';
    }
 
    for (const auto& [student, courses] : studentCourses)
