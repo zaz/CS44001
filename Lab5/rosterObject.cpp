@@ -29,9 +29,9 @@ public:
    // force generation of default copy constructor
    Student(const Student & org) = default;
 
-  string print() const {return firstName_ + ' ' + lastName_;}
+   string print() const {return firstName_ + ' ' + lastName_;}
 
-    // needed for unique() and for remove()
+   // needed for unique() and for remove()
    friend bool operator== (Student left, Student right){
       return left.lastName_ == right.lastName_ &&
          left.firstName_ == right.firstName_;
