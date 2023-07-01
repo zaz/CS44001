@@ -58,7 +58,7 @@ private:
    std::set<string> classes_;
 };
 
-void readRoster(list<Student>& roster, string fileName){
+void readRoster(list<Student>& roster, string fileName) {
    ifstream course(fileName);
    string first, last;
    while(course >> first >> last)
@@ -67,19 +67,19 @@ void readRoster(list<Student>& roster, string fileName){
 }
 
 // printing a list out
-void printRoster(const list<Student>& roster){
+void printRoster(const list<Student>& roster) {
    for(const auto& student : roster)
       cout << student.print() << endl;
 }
 
-int main(int argc, char* argv[]){
-   if (argc <= 1){ cout << "usage: " << argv[0]
-      << " list of courses, dropouts last" << endl; exit(1);}
+int main(int argc, char* argv[]) {
+   if (argc <= 1) { cout << "usage: " << argv[0]
+      << " list of courses, dropouts last" << endl; exit(1); }
 
    // vector of courses of students
    vector <list<Student>> courseStudents;
 
-   for(int i=1; i < argc-1; ++i){
+   for(int i=1; i < argc-1; ++i) {
       list<Student> roster;
       readRoster(roster, argv[i]);
       cout << "\n\n" << argv[i] << "\n";
