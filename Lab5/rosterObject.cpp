@@ -9,6 +9,9 @@
 #include <string>
 #include <cstdlib>
 #include <set>
+#include <map>
+#include <algorithm>
+#include <filesystem>  // for proper handling of file paths
 
 using std::ifstream;
 using std::string; using std::getline;
@@ -72,9 +75,23 @@ void printRoster(const list<Student>& roster) {
       cout << student.print() << endl;
 }
 
+string getCourseNameFromPath(const std::filesystem::path& path) {
+   return path.filename().replace_extension().string();
+}
+
 int main(int argc, char* argv[]) {
    if (argc <= 1) { cout << "usage: " << argv[0]
       << " list of courses, dropouts last" << endl; exit(1); }
+
+   vector<string> courses;
+   for (int i = 1; i < argc-1; ++i)
+      courses.push_back(getCourseNameFromPath(argv[i]));
+
+   for (const auto& course : courses)
+      std::cerr << course << endl;
+
+   // XXX: should I use enums instead of strings?
+   std::multimap<Student, std::set<string>> studentCourses;
 
    // vector of courses of students
    vector <list<Student>> courseStudents;
