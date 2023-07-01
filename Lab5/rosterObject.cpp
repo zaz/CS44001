@@ -47,27 +47,28 @@ public:
           left.firstName_ < right.firstName_);
    }
 
-   void addClass(string className) { classes_.insert(className); }
+   void addCourse(string courseName) { courses_.insert(courseName); }
 
-   string getClasses() const {
-      string classes;
-      for (const auto& str : classes_)
-         classes += " " + str;
-      return classes;
+   string getCourses() const {
+      string courses;
+      for (const auto& str : courses_)
+         courses += " " + str;
+      return courses;
    }
 private:
    string firstName_;
    string lastName_;
-   std::set<string> classes_;
+   std::set<string> courses_;
 };
 
-void readRoster(std::map<Student, std::set<string>>& studentCourses,
+void readRoster(std::set<Student>& studentCourses,
                 string filePath,
                 string courseName) {
    ifstream course(filePath);
    string first, last;
    while(course >> first >> last)
-      studentCourses[Student(first, last)].insert(courseName);
+      // FIXME: access element of set
+      studentCourses[Student(first, last)].addCourse(courseName);
    course.close();
 }
 
@@ -94,7 +95,7 @@ int main(int argc, char* argv[]) {
       std::cerr << course << endl;
 
    // XXX: should I use enums instead of strings?
-   std::map<Student, std::set<string>> studentCourses;
+   std::set<Student> studentCourses;
 
    for(int i=0; i < argc-2; ++i) {
       list<Student> roster;
@@ -103,5 +104,5 @@ int main(int argc, char* argv[]) {
    }
 
    for (const auto& [student, courses] : studentCourses)
-      std::cerr << student.print() << " " << student.getClasses() << endl;
+      std::cerr << student.print() << ' ' << student.getCourses() << '\n';
 }
