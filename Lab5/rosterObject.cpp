@@ -13,10 +13,8 @@
 #include <algorithm>
 #include <filesystem>  // for proper handling of file paths
 
-using std::ifstream;
-using std::string; using std::getline;
-using std::list; using std::vector;
-using std::cout; using std::endl;
+using std::string;
+using std::vector;
 
 class Student : public std::pair<string, string> {
 public:
@@ -28,6 +26,7 @@ public:
       return os << s.first << ' ' << s.second;
    }
 
+   // compare by last name first
    friend bool operator<(const Student& left, const Student& right) {
       return left.second < right.second ||
          (left.second == right.second &&
@@ -47,7 +46,7 @@ class CourseSet : public std::set<string> {
 void readRoster(std::map<Student, CourseSet>& studentCourses,
                 string filePath,
                 string courseName) {
-   ifstream course(filePath);
+   std::ifstream course(filePath);
    string first, last;
    while(course >> first >> last)
       // FIXME: access element of set
@@ -60,8 +59,8 @@ string getCourseNameFromPath(const std::filesystem::path& path) {
 }
 
 int main(int argc, char* argv[]) {
-   if (argc <= 1) { cout << "usage: " << argv[0]
-      << " list of courses, dropouts last" << endl; exit(1); }
+   if (argc <= 1) { std::cout << "usage: " << argv[0]
+      << " list of courses, dropouts last\n"; exit(1); }
 
    vector<string> paths;
    vector<string> courses;
@@ -69,7 +68,7 @@ int main(int argc, char* argv[]) {
       courses.push_back(getCourseNameFromPath(argv[i]));
 
    for (const auto& course : courses)
-      std::cerr << course << endl;
+      std::cerr << course << std::endl;
 
    // XXX: should I use enums instead of strings?
    std::map<Student, CourseSet> studentCourses;
