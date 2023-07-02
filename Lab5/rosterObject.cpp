@@ -49,7 +49,6 @@ void readRoster(std::map<Student, CourseSet>& studentCourses,
    std::ifstream course(filePath);
    string first, last;
    while(course >> first >> last)
-      // FIXME: access element of set
       studentCourses[Student(first, last)].insert(courseName);
    course.close();
 }
@@ -59,25 +58,21 @@ string getCourseNameFromPath(const std::filesystem::path& path) {
 }
 
 int main(int argc, char* argv[]) {
-   if (argc <= 1) { std::cout << "usage: " << argv[0]
-      << " list of courses, dropouts last\n"; exit(1); }
+   if (argc <= 1) {
+      std::cerr << "usage: " << argv[0] << " course.txt... dropouts.txt\n";
+      exit(1);
+   }
 
-   vector<string> paths;
    vector<string> courses;
    for (int i = 1; i < argc-1; ++i)
       courses.push_back(getCourseNameFromPath(argv[i]));
 
-   for (const auto& course : courses)
-      std::cerr << course << std::endl;
-
    // XXX: should I use enums instead of strings?
    std::map<Student, CourseSet> studentCourses;
 
-   for(int i=0; i < argc-2; ++i) {
+   for(int i=0; i < argc-2; ++i)
       readRoster(studentCourses, argv[i+1], courses[i]);
-      std::cerr << '\n' << argv[i+1] << ' ' << courses[i] << '\n';
-   }
 
    for (const auto& [student, courses] : studentCourses)
-      std::cerr << student << courses << '\n';
+      std::cout << student << ':' << courses << '\n';
 }
