@@ -1,6 +1,8 @@
-// vector and list algorithms with objects in containers
-// Mikhail Nesterenko
-// 9/10/2018
+//
+// Student roster using associative containers
+//
+// Zaz Brown
+//
 
 #include <fstream>
 #include <iostream>
