@@ -108,7 +108,5 @@ int main(int argc, char* argv[]) {
 
    auto studentEntries = getStudentEntries(courseStudents, allStudents, argv);
 
-   cout << "All students, dropouts removed and sorted\n";
-   cout << "first name last name:  courses enrolled\n";
    printEntries(studentEntries);
 }
