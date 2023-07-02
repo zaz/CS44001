@@ -5,12 +5,9 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
-#include <list>
 #include <string>
-#include <cstdlib>
 #include <set>
 #include <map>
-#include <algorithm>
 #include <filesystem>  // for proper handling of file paths
 
 using std::string;
