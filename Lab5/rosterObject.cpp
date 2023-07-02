@@ -73,16 +73,20 @@ int main(int argc, char* argv[]) {
       exit(1);
    }
 
+   // "dropouts" is added as a special course
    vector<string> courses;
-   for (int i = 1; i < argc-1; ++i)
+   for (int i = 1; i < argc; ++i)
       courses.push_back(getCourseNameFromPath(argv[i]));
 
    // XXX: should I use enums instead of strings?
    std::map<Student, CourseSet> studentCourses;
-
-   for(int i=0; i < argc-2; ++i)
+   for(int i = 0; i < argc-1; ++i)
       readRoster(studentCourses, argv[i+1], courses[i]);
 
-   for (const auto& [student, courses] : studentCourses)
-      std::cout << student << ':' << courses << '\n';
+   for (const auto& [student, courseload] : studentCourses) {
+      // print "student: courseload" unless the courseload contains the special
+      // course "dropouts"
+      if (courseload.find(courses.back()) == courseload.end())
+         std::cout << student << ':' << courseload << '\n';
+   }
 }
