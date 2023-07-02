@@ -18,64 +18,41 @@ using std::string; using std::getline;
 using std::list; using std::vector;
 using std::cout; using std::endl;
 
-
-class Student{
+class Student : public std::pair<string, string> {
 public:
-   Student(string firstName, string lastName):
-      firstName_(firstName), lastName_(lastName) {}
+   // constructor
+   Student(string firstName, string lastName) :
+      std::pair<string, string>(firstName, lastName) {}
 
-   // Move constructor. Not needed; generated automatically.
-   // Student(Student && org) noexcept:
-   //    firstName_(std::move(org.firstName_)),
-   //    lastName_(std::move(org.lastName_)) {}
-
-   // force generation of default copy constructor
-   Student(const Student & org) = default;
-
-   string print() const { return firstName_ + ' ' + lastName_; }
-
-   // needed for unique() and for remove()
-   friend bool operator== (Student left, Student right) {
-      return left.lastName_ == right.lastName_ &&
-         left.firstName_ == right.firstName_;
+   friend std::ostream& operator<<(std::ostream& os, const Student& s) {
+      return os << s.first << ' ' << s.second;
    }
 
-   // needed for sort()
-   friend bool operator< (Student left, Student right) {
-      return left.lastName_ < right.lastName_ ||
-         (left.lastName_ == right.lastName_ &&
-          left.firstName_ < right.firstName_);
+   friend bool operator<(const Student& left, const Student& right) {
+      return left.second < right.second ||
+         (left.second == right.second &&
+          left.first < right.first);
    }
-
-   void addCourse(string courseName) { courses_.insert(courseName); }
-
-   string getCourses() const {
-      string courses;
-      for (const auto& str : courses_)
-         courses += " " + str;
-      return courses;
-   }
-private:
-   string firstName_;
-   string lastName_;
-   std::set<string> courses_;
 };
 
-void readRoster(std::set<Student>& studentCourses,
+class CourseSet : public std::set<string> {
+   friend std::ostream& operator<<(std::ostream& os, const CourseSet& cs) {
+      for (const auto& course : cs)
+         os << ' ' << course;
+      return os;
+   }
+};
+
+
+void readRoster(std::map<Student, CourseSet>& studentCourses,
                 string filePath,
                 string courseName) {
    ifstream course(filePath);
    string first, last;
    while(course >> first >> last)
       // FIXME: access element of set
-      studentCourses[Student(first, last)].addCourse(courseName);
+      studentCourses[Student(first, last)].insert(courseName);
    course.close();
-}
-
-// printing a list out
-void printRoster(const list<Student>& roster) {
-   for(const auto& student : roster)
-      cout << student.print() << endl;
 }
 
 string getCourseNameFromPath(const std::filesystem::path& path) {
@@ -95,14 +72,13 @@ int main(int argc, char* argv[]) {
       std::cerr << course << endl;
 
    // XXX: should I use enums instead of strings?
-   std::set<Student> studentCourses;
+   std::map<Student, CourseSet> studentCourses;
 
    for(int i=0; i < argc-2; ++i) {
-      list<Student> roster;
       readRoster(studentCourses, argv[i+1], courses[i]);
       std::cerr << '\n' << argv[i+1] << ' ' << courses[i] << '\n';
    }
 
    for (const auto& [student, courses] : studentCourses)
-      std::cerr << student.print() << ' ' << student.getCourses() << '\n';
+      std::cerr << student << courses << '\n';
 }
