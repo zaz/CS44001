@@ -15,6 +15,10 @@
 using std::string;
 using std::vector;
 
+// I changed the implementation because adding set<string> courses_ to Student
+// would make Student mutable. So we wouldn't easily be able to have a set of
+// students.
+
 class Student : public std::pair<string, string> {
 public:
    // constructor
