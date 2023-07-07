@@ -12,7 +12,8 @@
 #include <string>
 #include <cstdlib>
 #include <algorithm>
-#include <filesystem>  // for proper handling of file paths
+// XXX: is <filesystem> not standard in C++17?
+//#include <filesystem>  // for proper handling of file paths
 
 using std::ifstream;
 using std::string; using std::getline;
@@ -57,11 +58,11 @@ list<list<string>> getStudentEntries(const vector<list<string>>& courseStudents,
       entry.push_back(student + ":");
       for (auto& lst : courseStudents) {
          if (std::find(lst.begin(), lst.end(), student) != lst.end()) {
-            std::filesystem::path csI = argv[&lst - &courseStudents[0] + 1];
+            string csI = argv[&lst - &courseStudents[0] + 1];
             // get only the filename, not the whole path, and not the extension
-            csI = csI.filename();
-            csI.replace_extension();
-            entry.push_back(" " + string(csI));
+            csI = csI.substr(csI.find_last_of('/') + 1);
+            csI = csI.substr(0, csI.find_last_of('.'));
+            entry.push_back(" " + csI);
          }
       }
       studentEntries.push_back(move(entry));
