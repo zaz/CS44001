@@ -10,7 +10,6 @@
 #include <string>
 #include <set>
 #include <map>
-#include <filesystem>  // for proper handling of file paths
 
 using std::string;
 using std::vector;
@@ -63,8 +62,11 @@ void readRoster(std::map<Student, CourseSet>& studentCourses,
    course.close();
 }
 
-string getCourseNameFromPath(const std::filesystem::path& path) {
-   return path.filename().replace_extension().string();
+string getCourseNameFromPath(string path) {
+   // get only the filename, not the whole path, and not the extension
+   path = path.substr(path.find_last_of('/') + 1);
+   path = path.substr(0, path.find_last_of('.'));
+   return path;
 }
 
 int main(int argc, char* argv[]) {
