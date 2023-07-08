@@ -1,13 +1,17 @@
-// picking the best quality lemons
-// converting vectors to priority queue
+//
+// Pick the best quality lemons using a priority queue.
+//
 // Mikhail Nesterenko
-// 2/17/2023
+// Modified by Zaz Brown
+//
 
 
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
 #include <vector>
+#include <queue>
+#include <algorithm>
 
 using std::cin; using std::cout; using std::endl;
 using std::string;
@@ -25,22 +29,19 @@ const int highestQuality = 10;
 
 int main() {
     srand(time(nullptr));
-    vector <Lemon> box(rand() % maxBoxSize + 1); // random box size
-
-    // random quality assingment
-    for (auto& lemon : box)
-        lemon.quality = static_cast<double>(rand()) / RAND_MAX * highestQuality;
+    std::priority_queue<Lemon> box;
+    // randomly generate Lemons:
+    const int boxSize = rand() % maxBoxSize + 1;
+    for (int i = 0; i < boxSize; ++i)
+        box.push(Lemon{static_cast<double>(rand()) / RAND_MAX * highestQuality});
 
     cout << "Here are the lemons (best first): ";
 
-    // replace this code with priority queue
+    // print each element in the prioroity queue
     while (!box.empty()) {
-        auto bestLemon = box.begin();
-        for (auto lemon = bestLemon+1; lemon != box.end(); ++lemon)
-            if (*bestLemon < *lemon) bestLemon = lemon;
-        cout << bestLemon->quality << ", ";
-        box.erase(bestLemon);
+        cout << box.top().quality << ", ";
+        box.pop();
     }
+
     cout << endl;
 }
-
