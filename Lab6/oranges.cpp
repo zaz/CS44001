@@ -16,21 +16,19 @@
 
 using std::cout; using std::endl;
 using std::string;
-using std::vector;
 
 const int maxNumber = 100;
 
 enum class Variety {orange, pear, apple};
-vector<string> colors = {"red", "green", "yellow"};
+std::vector<string> colors = {"red", "green", "yellow"};
 
 int main(){
     // random number of fruit
     srand(time(nullptr));
     const int numberOfFruit = rand() % maxNumber + 1;
 
+    // randomly generate colored fruits:
     std::multimap<Variety, string> tree;
-
-    // random fruit and color selection
     for (int i = 0; i < numberOfFruit; ++i) {
         tree.emplace(static_cast<Variety>(rand() % 3),  // random variety
                      colors[rand()%3]);                 // random color
