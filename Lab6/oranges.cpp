@@ -1,7 +1,9 @@
-// selecting oranges
-// converting vectors to multimaps
+//
+// Selecting oranges using multimaps.
+//
 // Mikhail Nesterenko
-// 9/26/2022
+// Modified by Zaz Brown
+//
 
 
 #include <iostream>
@@ -9,36 +11,34 @@
 #include <cstdlib>
 #include <vector>
 #include <string>
+#include <map>
+#include <algorithm>
 
-using std::cin; using std::cout; using std::endl;
+using std::cout; using std::endl;
 using std::string;
 using std::vector;
+
+const int maxNumber = 100;
 
 enum class Variety {orange, pear, apple};
 vector<string> colors = {"red", "green", "yellow"};
 
-struct Fruit{
-   Variety v;
-   string color; // red, green or orange
-};
-
-
 int main(){
-   srand(time(nullptr));
-   vector <Fruit> tree(rand()%100+1);
+    // random number of fruit
+    srand(time(nullptr));
+    const int numberOfFruit = rand() % maxNumber + 1;
 
-   // random fruit and color selection
-   for(auto f=tree.begin(); f!=tree.end(); ++f){
-      f->v = static_cast<Variety>(rand() % 3);
-      f->color = colors[rand()%3];
-   }
+    std::multimap<Variety, string> tree;
 
+    // random fruit and color selection
+    for (int i = 0; i < numberOfFruit; ++i) {
+        tree.emplace(static_cast<Variety>(rand() % 3),  // random variety
+                     colors[rand()%3]);                 // random color
+    }
 
-   // printing colors of oranges
-   cout << "Colors of the oranges: ";
-   for(auto f=tree.begin(); f!=tree.end(); ++f)
-      if(f->v == Variety::orange) cout << f->color << ", ";
-   cout << endl;
-
+    cout << "Colors of the oranges: ";
+    std::for_each(tree.lower_bound(Variety::orange),
+                  tree.upper_bound(Variety::orange),
+                  [](auto orangeColor) { cout << orangeColor.second << ", "; } );
+    cout << endl;
 }
-
