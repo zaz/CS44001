@@ -5,17 +5,12 @@
 // Modified by Zaz Brown
 //
 
-
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
-#include <vector>
 #include <queue>
-#include <algorithm>
 
-using std::cin; using std::cout; using std::endl;
-using std::string;
-using std::vector;
+using std::cout; using std::endl;
 
 struct Lemon {
     double quality;
@@ -28,10 +23,12 @@ const int maxBoxSize = 30;
 const int highestQuality = 10;
 
 int main() {
+    // random box size
     srand(time(nullptr));
-    std::priority_queue<Lemon> box;
-    // randomly generate Lemons:
     const int boxSize = rand() % maxBoxSize + 1;
+
+    // randomly generate Lemons:
+    std::priority_queue<Lemon> box;
     for (int i = 0; i < boxSize; ++i)
         box.push(Lemon{static_cast<double>(rand()) / RAND_MAX * highestQuality});
 
