@@ -37,7 +37,7 @@ int main(){
    // assign random weight and color to apples in the crate
    // replace with generate()
    for(auto it = crate.begin(); it != crate.end(); ++it){
-      it->weight = minWeight + 
+      it->weight = minWeight +
 	           static_cast<double>(rand())/RAND_MAX*(maxWeight - minWeight);
       it->color = rand() % 2 == 1 ? "green" : "red";
    }
@@ -49,17 +49,17 @@ int main(){
       e.print();
    }
 
-   
+
    cout << "Enter weight to find: ";
    double toFind;
    cin >> toFind;
 
    // count_if()
    int cnt = 0;
-   for(auto it = crate.cbegin(); it != crate.cend(); ++it) 
+   for(auto it = crate.cbegin(); it != crate.cend(); ++it)
       if(it->weight > toFind) ++cnt;
 
-   cout << "There are " << cnt << " apples heavier than " 
+   cout << "There are " << cnt << " apples heavier than "
 	<< toFind << " oz" <<  endl;
 
    // find_if()
@@ -73,7 +73,7 @@ int main(){
    // max_element()
    double heaviest = crate[0].weight;
    for(int i=1; i < size; ++i)
-      if(crate[i].weight > heaviest) heaviest = crate[i].weight; 
+      if(crate[i].weight > heaviest) heaviest = crate[i].weight;
    cout << "Heaviest apple weighs: " << heaviest << " oz" << endl;
 
 

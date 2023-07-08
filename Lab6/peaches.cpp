@@ -37,16 +37,16 @@ int main(){
    // assign random weight and ripeness peaches in the basket
    // replace with generate()
    for(auto it = basket.begin(); it != basket.end(); ++it){
-      it->weight = minWeight + 
+      it->weight = minWeight +
 	           static_cast<double>(rand())/RAND_MAX*(maxWeight - minWeight);
       it->ripe = rand() % 2;
    }
 
-   
+
    // for_each() possibly
    cout << "all peaches"<< endl;
    for(const auto &e: basket) {
-      e.print(); 
+      e.print();
    }
 
    // moving all the ripe peaches from basket to peck
@@ -62,7 +62,7 @@ int main(){
    // for_each() possibly
    cout << "peaches remainng in the basket"<< endl;
    for(const auto &e: basket) {
-      e.print(); 
+      e.print();
    }
 
    cout << endl;
@@ -71,22 +71,22 @@ int main(){
    cout << "peaches moved to the peck"<< endl;
    for(const auto &e: peck) {
       e.print();
-   } 
+   }
 
 
    // prints every "space" peach in the peck
-   const int space=3; 
+   const int space=3;
    cout << "\nevery " << space << "\'d peach in the peck"<< endl;
 
    // replace with advance()/next()/distance()
    // no explicit iterator arithmetic
-   auto it=peck.cbegin(); int i = 1;   
+   auto it=peck.cbegin(); int i = 1;
    while(it != peck.cend()){
       if(i == space){
 	 it->print();
 	 i=0;
       }
-      ++i; 
+      ++i;
       ++it;
    }
 
@@ -95,7 +95,7 @@ int main(){
    // use a binder to create a functor with configurable max weight
    // accumulate() or count_if() then remove_if()
    const double weightToJam = 10.0;
-   double jamWeight = 0; 
+   double jamWeight = 0;
    for(auto it=peck.begin(); it != peck.end();)
       if(it->weight < weightToJam){
 	 jamWeight += it->weight;
