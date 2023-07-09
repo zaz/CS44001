@@ -25,6 +25,9 @@ struct Apple {
     double weight;  // oz
     string color;   // red or green
     void print() const { cout << color << ", " <<  weight << endl; }
+    friend bool operator<(const Apple& left, const Apple& right) {
+        return left.weight < right.weight;
+    }
 };
 
 
@@ -108,9 +111,7 @@ int main(){
     } while(removed);
     cout << "removed " << size - crate.size() << " elements" << endl;
 
-    std::sort(crate.begin(), crate.end(), [](const Apple &a, const Apple &b) {
-        return a.weight < b.weight;
-    });
+    std::sort(crate.begin(), crate.end());
 
     // for_each() possibly
     cout << "sorted remaining apples" << endl;
