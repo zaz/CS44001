@@ -1,8 +1,10 @@
+//
 // sorting apples
 // non STL-algorithm code to be replaced by algorthms
+//
 // Mikhail Nesterenko
-// 09/26/2022
-
+// Modified by Zaz Brown
+//
 
 #include <iostream>
 #include <ctime>
@@ -16,8 +18,8 @@ using std::string;
 using std::vector; using std::deque;
 
 struct Apples{
-   double weight; // oz
-   string color;  // red or green
+   double weight;  // oz
+   string color;   // red or green
    void print() const { cout << color << ", " <<  weight << endl; }
 };
 
@@ -36,7 +38,7 @@ int main(){
 
    // assign random weight and color to apples in the crate
    // replace with generate()
-   for(auto it = crate.begin(); it != crate.end(); ++it){
+   for (auto it = crate.begin(); it != crate.end(); ++it) {
       it->weight = minWeight +
 	           static_cast<double>(rand())/RAND_MAX*(maxWeight - minWeight);
       it->color = rand() % 2 == 1 ? "green" : "red";
@@ -45,7 +47,7 @@ int main(){
 
     // for_each() possibly
    cout << "all appleas"<< endl;
-   for(const auto &e: crate) {
+   for (const auto &e: crate) {
       e.print();
    }
 
@@ -56,17 +58,17 @@ int main(){
 
    // count_if()
    int cnt = 0;
-   for(auto it = crate.cbegin(); it != crate.cend(); ++it)
+   for (auto it = crate.cbegin(); it != crate.cend(); ++it)
       if(it->weight > toFind) ++cnt;
 
    cout << "There are " << cnt << " apples heavier than "
-	<< toFind << " oz" <<  endl;
+        << toFind << " oz" <<  endl;
 
    // find_if()
    cout << "at positions ";
-   for(int i=0; i < size; ++i)
-      if(crate[i].weight > toFind)
-	 cout << i << ", ";
+   for (int i=0; i < size; ++i)
+      if (crate[i].weight > toFind)
+         cout << i << ", ";
    cout << endl;
 
 
@@ -88,7 +90,7 @@ int main(){
    cout << "How much should they grow: ";
    double toGrow;
    cin >> toGrow;
-   for(int i=0; i < crate.size(); ++i)
+   for(unsigned int i=0; i < crate.size(); ++i)
       crate[i].weight += toGrow;
 
    // remove_if()
@@ -116,19 +118,18 @@ int main(){
    bool swapped;
    do{
       swapped = false;
-      for(int i=0; i < crate.size()-1; ++i)
-	 if(crate[i].weight > crate[i+1].weight){
+      for (unsigned int i=0; i < crate.size()-1; ++i)
+	 if (crate[i].weight > crate[i+1].weight) {
 	    std::swap(crate[i], crate[i+1]);
 	    swapped = true;
 	 }
-   }while(swapped);
+   } while(swapped);
 
 
    // for_each() possibly
-   cout << "sorted remaining apples"<< endl;
-   for(const auto &e: crate) {
+   cout << "sorted remaining apples" << endl;
+   for (const auto &e: crate) {
       e.print();
    }
 
 }
-
