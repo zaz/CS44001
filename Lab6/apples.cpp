@@ -13,6 +13,7 @@
 #include <deque>
 #include <string>
 #include <algorithm>
+#include <numeric>
 
 using std::cin; using std::cout; using std::endl;
 using std::string;
@@ -74,11 +75,12 @@ int main(){
          << max_element(crate.cbegin(), crate.cend())->weight
          << " oz" << endl;;
 
-    // for_each() or accumulate()
-    double sum = 0;
-    for (int i=0; i < size; ++i)
-        sum += crate[i].weight;
-    cout << "Total apple weight is: " << sum << " oz" << endl;
+    cout << "Total apple weight is: "
+         << std::accumulate(crate.cbegin(), crate.cend(), 0.0,
+                            [](double sum, const Apple &a) {
+                                return sum + a.weight;
+                            })
+         << " oz" << endl;
 
 
     // TODO transform();
