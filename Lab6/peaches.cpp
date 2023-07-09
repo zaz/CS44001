@@ -12,6 +12,7 @@
 #include <deque>
 #include <string>
 #include <algorithm>
+#include <numeric>
 
 using std::cin; using std::cout; using std::endl;
 using std::string;
@@ -78,19 +79,15 @@ int main(){
       advance(it, space);
    }
 
-   // putting all small ripe peaches in a jam
-   // use a binder to create a functor with configurable max weight
-   // accumulate() or count_if() then remove_if()
+   // all pecahes bigger than this weight will not be used for jam
    const double weightToJam = 10.0;
-   double jamWeight = 0;
-   for(auto it=peck.begin(); it != peck.end();)
-      if(it->weight < weightToJam){
-	 jamWeight += it->weight;
-	 it=peck.erase(it);
-      }else
-	 ++it;
 
-   cout << "Weight of jam is: " << jamWeight << endl;
-
+   cout << "Weight of jam is: "
+        << std::accumulate(peck.begin(), peck.end(), 0.0,
+                      [weightToJam](double sum, const Peaches &p){
+                         // XXX: I had to add the outer parentheses below.
+                         // Does C++ not give precedence to * over + ?
+                         return sum + (p.weight * (p.weight < weightToJam));
+                        })
+        << endl;
 }
-
