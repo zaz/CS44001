@@ -105,7 +105,6 @@ int main(){
 
     std::sort(crate.begin(), crate.end());
 
-    // for_each() possibly
     cout << "sorted remaining apples" << endl;
     for (const auto &e: crate) {
         e.print();
