@@ -62,20 +62,17 @@ int main(){
     });
 
     cout << "There are " << cnt << " apples heavier than "
-            << toFind << " oz" <<  endl;
+         << toFind << " oz" << endl;
 
-    // find_if()
     cout << "at positions ";
     for (int i=0; i < size; ++i)
         if (crate[i].weight > toFind)
             cout << i << ", ";
     cout << endl;
 
-    // max_element()
-    double heaviest = crate[0].weight;
-    for (int i=1; i < size; ++i)
-        if (crate[i].weight > heaviest) heaviest = crate[i].weight;
-    cout << "Heaviest apple weighs: " << heaviest << " oz" << endl;
+    cout << "Heaviest apple weighs: "
+         << max_element(crate.cbegin(), crate.cend())->weight
+         << " oz" << endl;;
 
     // for_each() or accumulate()
     double sum = 0;
