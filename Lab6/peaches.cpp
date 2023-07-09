@@ -1,8 +1,9 @@
-// jamming peaches
-// non STL-algorithm code to be replaced by algorthms
+//
+// Jamming peaches using algorithms.
+//
 // Mikhail Nesterenko
-// 9/30/2021
-
+// Modified by Zaz Brown
+//
 
 #include <iostream>
 #include <ctime>
@@ -10,17 +11,17 @@
 #include <vector>
 #include <deque>
 #include <string>
+#include <algorithm>
 
 using std::cin; using std::cout; using std::endl;
 using std::string;
 using std::vector; using std::deque;
 
 struct Peaches{
-   double weight; // oz
-   bool ripe;  // ripe or not
+   double weight;  // oz
+   bool ripe;      // ripe or not
    void print() const { cout << (ripe?"ripe":"green") << ", " <<  weight << endl; }
 };
-
 
 
 int main(){
@@ -29,19 +30,20 @@ int main(){
    const double maxWeight = 8.;
 
    cout << "Input basket size: ";
-   int size;
+   unsigned int size;
    cin >> size;
 
-   vector <Peaches> basket(size);
+   vector<Peaches> basket(size);
 
    // assign random weight and ripeness peaches in the basket
    // replace with generate()
-   for(auto it = basket.begin(); it != basket.end(); ++it){
-      it->weight = minWeight +
-	           static_cast<double>(rand())/RAND_MAX*(maxWeight - minWeight);
-      it->ripe = rand() % 2;
-   }
-
+   generate(basket.begin(), basket.end(), [minWeight, maxWeight](){
+      Peaches p;
+      p.weight = minWeight +
+            static_cast<double>(rand())/RAND_MAX*(maxWeight - minWeight);
+      p.ripe = rand() % 2;
+      return p;
+   });
 
    // for_each() possibly
    cout << "all peaches"<< endl;
