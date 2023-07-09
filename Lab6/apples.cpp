@@ -1,6 +1,5 @@
 //
-// sorting apples
-// non STL-algorithm code to be replaced by algorthms
+// Sorting apples using algorithms.
 //
 // Mikhail Nesterenko
 // Modified by Zaz Brown
