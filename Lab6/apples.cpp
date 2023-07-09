@@ -21,7 +21,7 @@ using std::vector; using std::deque;
 const double minWeight = 3.;
 const double maxWeight = 8.;
 
-struct Apples {
+struct Apple {
     double weight;  // oz
     string color;   // red or green
     void print() const { cout << color << ", " <<  weight << endl; }
@@ -35,7 +35,7 @@ int main(){
     int size;
     cin >> size;
 
-    vector<Apples> crate(size);
+    vector<Apple> crate(size);
 
     // assign random weight and color to apples in the crate
     // TODO replace with generate()
@@ -108,7 +108,7 @@ int main(){
     } while(removed);
     cout << "removed " << size - crate.size() << " elements" << endl;
 
-    std::sort(crate.begin(), crate.end(), [](const Apples &a, const Apples &b) {
+    std::sort(crate.begin(), crate.end(), [](const Apple &a, const Apple &b) {
         return a.weight < b.weight;
     });
 
