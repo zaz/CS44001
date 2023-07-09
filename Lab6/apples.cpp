@@ -49,7 +49,6 @@ int main(){
         return a;
     });
 
-   // for_each() possibly
     cout << "all apples" << endl;
     for (const auto &e: crate)
         e.print();
@@ -58,10 +57,9 @@ int main(){
     double toFind;
     cin >> toFind;
 
-    // TODO count_if()
-    int cnt = 0;
-    for (auto it = crate.cbegin(); it != crate.cend(); ++it)
-        if(it->weight > toFind) ++cnt;
+    int cnt = count_if(crate.cbegin(), crate.cend(), [toFind](const Apple &a) {
+        return a.weight > toFind;
+    });
 
     cout << "There are " << cnt << " apples heavier than "
             << toFind << " oz" <<  endl;
