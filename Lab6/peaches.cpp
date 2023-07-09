@@ -72,7 +72,7 @@ int main(){
    const int space=3;
    cout << "\nevery " << space << "rd peach in the peck" << endl;
 
-   auto times = peck.size()/space;
+   auto times = peck.size()/space + 1;
    auto it = peck.cbegin();
    for (unsigned int i=0; i != times; ++i) {
       it->print();
