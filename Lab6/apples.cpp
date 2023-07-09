@@ -82,31 +82,25 @@ int main(){
                             })
          << " oz" << endl;
 
-
-    // TODO transform();
     cout << "How much should they grow: ";
     double toGrow;
     cin >> toGrow;
-    for (unsigned int i=0; i < crate.size(); ++i)
-        crate[i].weight += toGrow;
+
+    transform(crate.begin(), crate.end(), crate.begin(),
+              [toGrow](Apple &a) {
+                  a.weight += toGrow;
+                  return a;
+              });
 
     cout << "Input minimum acceptable weight: ";
     double minAccept;
     cin >> minAccept;
 
-    // removing small apples
-    // nested loops, TODO replace with a single loop modification idiom
-    // remove_if()
-    bool removed;
-    do {
-        removed = false;
-        for (auto it = crate.begin(); it != crate.end(); ++it)
-            if (it->weight < minAccept) {
-                crate.erase(it);
-                removed = true;
-                break;
-            }
-    } while(removed);
+    crate.erase(
+        remove_if(crate.begin(), crate.end(), [minAccept](const Apple &a) {
+            return a.weight < minAccept;
+        }),
+        crate.end());
     cout << "removed " << size - crate.size() << " elements" << endl;
 
     std::sort(crate.begin(), crate.end());
