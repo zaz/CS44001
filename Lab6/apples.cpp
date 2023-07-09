@@ -12,6 +12,7 @@
 #include <vector>
 #include <deque>
 #include <string>
+#include <algorithm>
 
 using std::cin; using std::cout; using std::endl;
 using std::string;
@@ -107,16 +108,9 @@ int main(){
     } while(removed);
     cout << "removed " << size - crate.size() << " elements" << endl;
 
-    // TODO bubble sort, replace with sort()
-    bool swapped;
-    do {
-        swapped = false;
-        for (unsigned int i=0; i < crate.size()-1; ++i)
-            if (crate[i].weight > crate[i+1].weight) {
-                std::swap(crate[i], crate[i+1]);
-                swapped = true;
-            }
-    } while(swapped);
+    std::sort(crate.begin(), crate.end(), [](const Apples &a, const Apples &b) {
+        return a.weight < b.weight;
+    });
 
     // for_each() possibly
     cout << "sorted remaining apples" << endl;
