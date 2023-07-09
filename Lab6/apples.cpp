@@ -37,7 +37,7 @@ int main(){
     vector<Apples> crate(size);
 
     // assign random weight and color to apples in the crate
-    // replace with generate()
+    // TODO replace with generate()
     for (auto it = crate.begin(); it != crate.end(); ++it) {
         it->weight = minWeight +
             static_cast<double>(rand())/RAND_MAX*(maxWeight - minWeight);
@@ -53,7 +53,7 @@ int main(){
     double toFind;
     cin >> toFind;
 
-    // count_if()
+    // TODO count_if()
     int cnt = 0;
     for (auto it = crate.cbegin(); it != crate.cend(); ++it)
         if(it->weight > toFind) ++cnt;
@@ -81,20 +81,20 @@ int main(){
     cout << "Total apple weight is: " << sum << " oz" << endl;
 
 
-    // transform();
+    // TODO transform();
     cout << "How much should they grow: ";
     double toGrow;
     cin >> toGrow;
     for (unsigned int i=0; i < crate.size(); ++i)
         crate[i].weight += toGrow;
 
-    // remove_if()
     cout << "Input minimum acceptable weight: ";
     double minAccept;
     cin >> minAccept;
 
     // removing small apples
-    // nested loops, replace with a single loop modification idiom
+    // nested loops, TODO replace with a single loop modification idiom
+    // remove_if()
     bool removed;
     do {
         removed = false;
@@ -107,7 +107,7 @@ int main(){
     } while(removed);
     cout << "removed " << size - crate.size() << " elements" << endl;
 
-    // bubble sort, replace with sort()
+    // TODO bubble sort, replace with sort()
     bool swapped;
     do {
         swapped = false;
