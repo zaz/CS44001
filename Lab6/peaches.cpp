@@ -45,53 +45,38 @@ int main(){
       return p;
    });
 
-   // for_each() possibly
    cout << "all peaches"<< endl;
    for(const auto &e: basket) {
       e.print();
    }
 
-   // moving all the ripe peaches from basket to peck
-   // remove_copy_if() with back_inserter()/front_inserter() or equivalents
    deque<Peaches> peck;
-   for(auto it=basket.begin(); it != basket.end();)
-      if(it->ripe){
-	 peck.push_front(std::move(*it));
-	 it=basket.erase(it);
-      }else
-	 ++it;
+   remove_copy_if(basket.begin(), basket.end(), front_inserter(peck),
+                  [](const Peaches &p){
+      return !p.ripe;
+   });
 
-   // for_each() possibly
    cout << "peaches remainng in the basket"<< endl;
    for(const auto &e: basket) {
       e.print();
    }
-
    cout << endl;
 
-   // for_each() possibly
    cout << "peaches moved to the peck"<< endl;
    for(const auto &e: peck) {
       e.print();
    }
 
-
-   // prints every "space" peach in the peck
+   // prints every 3rd peach in the peck
    const int space=3;
-   cout << "\nevery " << space << "\'d peach in the peck"<< endl;
+   cout << "\nevery " << space << "rd peach in the peck" << endl;
 
-   // replace with advance()/next()/distance()
-   // no explicit iterator arithmetic
-   auto it=peck.cbegin(); int i = 1;
-   while(it != peck.cend()){
-      if(i == space){
-	 it->print();
-	 i=0;
-      }
-      ++i;
-      ++it;
+   auto times = peck.size()/space;
+   auto it = peck.cbegin();
+   for (unsigned int i=0; i != times; ++i) {
+      it->print();
+      advance(it, space);
    }
-
 
    // putting all small ripe peaches in a jam
    // use a binder to create a functor with configurable max weight
