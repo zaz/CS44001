@@ -17,12 +17,11 @@ using std::cin; using std::cout; using std::endl;
 using std::string;
 using std::vector; using std::deque;
 
-struct Apples{
+struct Apples {
    double weight;  // oz
    string color;   // red or green
    void print() const { cout << color << ", " <<  weight << endl; }
 };
-
 
 
 int main(){
@@ -40,12 +39,12 @@ int main(){
    // replace with generate()
    for (auto it = crate.begin(); it != crate.end(); ++it) {
       it->weight = minWeight +
-	           static_cast<double>(rand())/RAND_MAX*(maxWeight - minWeight);
+         static_cast<double>(rand())/RAND_MAX*(maxWeight - minWeight);
       it->color = rand() % 2 == 1 ? "green" : "red";
    }
 
 
-    // for_each() possibly
+   // for_each() possibly
    cout << "all appleas"<< endl;
    for (const auto &e: crate) {
       e.print();
@@ -74,14 +73,14 @@ int main(){
 
    // max_element()
    double heaviest = crate[0].weight;
-   for(int i=1; i < size; ++i)
+   for (int i=1; i < size; ++i)
       if(crate[i].weight > heaviest) heaviest = crate[i].weight;
    cout << "Heaviest apple weighs: " << heaviest << " oz" << endl;
 
 
    // for_each() or accumulate()
    double sum = 0;
-   for(int i=0; i < size; ++i)
+   for (int i=0; i < size; ++i)
       sum += crate[i].weight;
    cout << "Total apple weight is: " << sum << " oz" << endl;
 
@@ -90,7 +89,7 @@ int main(){
    cout << "How much should they grow: ";
    double toGrow;
    cin >> toGrow;
-   for(unsigned int i=0; i < crate.size(); ++i)
+   for (unsigned int i=0; i < crate.size(); ++i)
       crate[i].weight += toGrow;
 
    // remove_if()
@@ -102,27 +101,27 @@ int main(){
    // removing small apples
    // nested loops, replace with a single loop modification idiom
    bool removed;
-   do{
+   do {
       removed = false;
-      for(auto it = crate.begin(); it != crate.end(); ++it)
-	 if(it->weight < minAccept){
-	    crate.erase(it);
-	    removed = true;
-	    break;
-       }
-   }while(removed);
+      for (auto it = crate.begin(); it != crate.end(); ++it)
+         if (it->weight < minAccept) {
+            crate.erase(it);
+            removed = true;
+            break;
+         }
+   } while(removed);
    cout << "removed " << size - crate.size() << " elements" << endl;
 
 
    // bubble sort, replace with sort()
    bool swapped;
-   do{
+   do {
       swapped = false;
       for (unsigned int i=0; i < crate.size()-1; ++i)
-	 if (crate[i].weight > crate[i+1].weight) {
-	    std::swap(crate[i], crate[i+1]);
-	    swapped = true;
-	 }
+         if (crate[i].weight > crate[i+1].weight) {
+            std::swap(crate[i], crate[i+1]);
+            swapped = true;
+         }
    } while(swapped);
 
 
