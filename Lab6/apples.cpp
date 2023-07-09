@@ -41,12 +41,13 @@ int main(){
     vector<Apple> crate(size);
 
     // assign random weight and color to apples in the crate
-    // TODO replace with generate()
-    for (auto it = crate.begin(); it != crate.end(); ++it) {
-        it->weight = minWeight +
+    generate(crate.begin(), crate.end(), []() {
+        Apple a;
+        a.weight = minWeight +
             static_cast<double>(rand())/RAND_MAX*(maxWeight - minWeight);
-        it->color = rand() % 2 == 1 ? "green" : "red";
-    }
+        a.color = rand() % 2 == 1 ? "green" : "red";
+        return a;
+    });
 
    // for_each() possibly
     cout << "all apples" << endl;
