@@ -115,27 +115,50 @@ private:
 class Dice: public Game {
 public:
    void initializeGame(){
-   playersCount_ = numPlayers_;  // initalize players
+      playersCount_ = numPlayers_;  // initalize players
+      std::cout << "\nPlaying Dice:\n" << std::flush;
+   }
+
+   std::string name(int player) {
+      return player == 0 ? "The computer" : "You";
    }
 
    void makeMove(int player){
       if (maxMoves_ <= movesCount_) {
-         playerWon_= scores_[0] > scores_[1] ? 0 : 1;
+         playerWon_= scores_[0] >= scores_[1] ? 0 : 1;
          return;
       }
-      scores_[player] = 5 + (rand() % 6) + (rand() % 6) + (rand() % 6)
-                          + (rand() % 6) + (rand() % 6);
-      std::cout << "Player " << player << " rolled " << scores_[player] << std::endl;
+
+      if (rollDiceP(player)) {
+         scores_[player] = 5 + (rand() % 6) + (rand() % 6) + (rand() % 6)
+                             + (rand() % 6) + (rand() % 6);
+         std::cout << name(player) << " rolled " << scores_[player] << std::endl;
+      } else
+         std::cout << name(player) << " did not roll." << std::endl;
+      if (player == playersCount_ - 1)
+         std::cout << std::endl;
    }
 
-   void printWinner(){
-      cout << "Dice, player " << playerWon_
-           << " won in "<< movesCount_ << " moves"
-           << endl;
+   // rollDice predicate: returns whether the player will roll the dice
+   bool rollDiceP(int player) {
+      // if it is the first round, roll the dice
+      if (movesCount_ == 0) return true;
+
+      // if the player is the computer, decide randomly
+      if (player == 0) return rand() % 2;
+
+      // if the player is human, prompt for input
+      std::cout << "Roll again? [y/N] ";
+      char input;
+      std::cin >> input;
+      return input == 'y' || input == 'Y';
+   }
+
+   void printWinner() {
+      cout << name(playerWon_) << " won." << endl;
    }
 private:
    static const int numPlayers_ = 2;
-   static const int minMoves_ = 2; // nobody wins before minMoves_
    static const int maxMoves_ = 3;
    int scores_[numPlayers_];
 };
