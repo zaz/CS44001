@@ -127,7 +127,8 @@ public:
       if (maxMoves_ <= movesCount_) {
          playerWon_= scores_[0] >= scores_[1] ? 0 : 1;
          return;
-      }
+      } else if (player == 0)
+         std::cout << "Round " << movesCount_ + 1 << std::endl;
 
       if (rollDiceP(player)) {
          scores_[player] = 5 + (rand() % 6) + (rand() % 6) + (rand() % 6)
