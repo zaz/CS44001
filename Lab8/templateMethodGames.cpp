@@ -133,8 +133,13 @@ public:
          scores_[player] = 5 + (rand() % 6) + (rand() % 6) + (rand() % 6)
                              + (rand() % 6) + (rand() % 6);
          std::cout << name(player) << " rolled " << scores_[player] << std::endl;
-      } else
+         passed_ = false;
+      } else {
          std::cout << name(player) << " did not roll." << std::endl;
+         if (passed_)
+            playerWon_= scores_[0] >= scores_[1] ? 0 : 1;
+         passed_ = true;
+      }
       if (player == playersCount_ - 1)
          std::cout << std::endl;
    }
@@ -161,6 +166,7 @@ private:
    static const int numPlayers_ = 2;
    static const int maxMoves_ = 3;
    int scores_[numPlayers_];
+   bool passed_ = false;
 };
 
 int main() {
