@@ -1,3 +1,9 @@
+//
+// Singleton Logger
+//
+// Zaz Brown
+//
+
 #include <fstream>
 
 const auto logFile = "log.txt";
