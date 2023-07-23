@@ -1,6 +1,9 @@
+//
 // Games, Template Method example
+//
 // Mikhail Nesterenko
-// 2/4/2014
+// Modified by Zaz Brown
+//
 
 #include <ctime>
 #include <cstdlib>
@@ -107,6 +110,36 @@ private:
    int experience_[numPlayers_];
 };
 
+// YAGIPO - yet another game implementing primitive operations
+// a.k.a. Dice
+class Dice: public Game {
+public:
+   void initializeGame(){
+   playersCount_ = numPlayers_;  // initalize players
+   }
+
+   void makeMove(int player){
+      if (maxMoves_ <= movesCount_) {
+         playerWon_= scores_[0] > scores_[1] ? 0 : 1;
+         return;
+      }
+      scores_[player] = 5 + (rand() % 6) + (rand() % 6) + (rand() % 6)
+                          + (rand() % 6) + (rand() % 6);
+      std::cout << "Player " << player << " rolled " << scores_[player] << std::endl;
+   }
+
+   void printWinner(){
+      cout << "Dice, player " << playerWon_
+           << " won in "<< movesCount_ << " moves"
+           << endl;
+   }
+private:
+   static const int numPlayers_ = 2;
+   static const int minMoves_ = 2; // nobody wins before minMoves_
+   static const int maxMoves_ = 3;
+   int scores_[numPlayers_];
+};
+
 int main() {
    srand(time(nullptr));
 
@@ -126,4 +159,8 @@ int main() {
       gp->playGame();
       delete gp;
    }
+
+   gp = new Dice;
+   gp->playGame();
+   delete gp;
 }
