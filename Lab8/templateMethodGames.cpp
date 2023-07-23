@@ -8,7 +8,7 @@
 
 using std::cout; using std::endl;
 
-// template for any game where players take 
+// template for any game where players take
 // turns to make moves
 // and there is a winner
 class Game{
@@ -23,9 +23,9 @@ public:
       initializeGame();
 
       for(int i=0; !endOfGame(); i = (i+1) % playersCount_ ){
-	 makeMove(i);
-	 if (i==playersCount_-1) 
-	    ++movesCount_; 
+         makeMove(i);
+         if (i==playersCount_-1)
+            ++movesCount_;
       }
       printWinner();
    }
@@ -46,25 +46,25 @@ protected:
    int playerWon_;
 };
 
-// Monopoly - a concrete game implementing primitive 
+// Monopoly - a concrete game implementing primitive
 // operations for the template method
 class Monopoly: public Game {
-public:  
+public:
    // implementing concrete methods
    void initializeGame(){
       playersCount_ = rand() % numPlayers_ + 1 ; // initialize players
    }
 
    void makeMove(int player) {
-      if (movesCount_ > minMoves_){ 
-	 const int chance = minMoves_ + rand() % (maxMoves_ - minMoves_);
-	 if (chance < movesCount_) playerWon_= player;
+      if (movesCount_ > minMoves_){
+         const int chance = minMoves_ + rand() % (maxMoves_ - minMoves_);
+         if (chance < movesCount_) playerWon_= player;
       }
    }
 
    void printWinner(){
       cout << "Monopoly, player "<< playerWon_<< " won in "
-	   << movesCount_<< " moves." << endl;
+           << movesCount_<< " moves." << endl;
    }
 
 private:
@@ -79,22 +79,22 @@ class Chess: public Game {
 public:
    void initializeGame(){
       playersCount_ = numPlayers_; // initalize players
-      for(int i=0; i < numPlayers_; ++i) 
-	     experience_[i] = rand() % maxExperience_ + 1 ; 
+      for(int i=0; i < numPlayers_; ++i)
+         experience_[i] = rand() % maxExperience_ + 1 ;
    }
 
    void makeMove(int player){
       if (movesCount_ > minMoves_){
-	 const int chance = (rand() % maxMoves_) / experience_[player];
-	 if (chance < movesCount_) playerWon_= player;
+         const int chance = (rand() % maxMoves_) / experience_[player];
+         if (chance < movesCount_) playerWon_= player;
       }
    }
 
    void printWinner(){
-      cout << "Chess, player " << playerWon_ 
-	   << " with experience " << experience_[playerWon_]
-	   << " won in "<< movesCount_ << " moves over"
-	   << " player with experience " << experience_[playerWon_== 0 ? 1:0] 
+      cout << "Chess, player " << playerWon_
+           << " with experience " << experience_[playerWon_]
+           << " won in "<< movesCount_ << " moves over"
+           << " player with experience " << experience_[playerWon_== 0 ? 1:0]
            << endl;
    }
 
@@ -104,7 +104,7 @@ private:
    static const int maxMoves_ = 100; // somebody wins before maxMoves_
    static const int maxExperience_ = 5; // player's experience
                               // the higher, the greater probability of winning
-   int experience_[numPlayers_]; 
+   int experience_[numPlayers_];
 };
 
 int main() {
@@ -113,17 +113,17 @@ int main() {
    Game* gp = nullptr;
 
    // play chess 8 times
-   for (int i = 0; i < 8; ++i){ 
+   for (int i = 0; i < 8; ++i){
       gp = new Chess;
-      gp->playGame(); 
+      gp->playGame();
       delete gp;
    }
-      
+
 
    // play monopoly 8 times
    for (int i = 0; i < 8; ++i){
       gp = new Monopoly;
-      gp->playGame(); 
+      gp->playGame();
       delete gp;
    }
 }
