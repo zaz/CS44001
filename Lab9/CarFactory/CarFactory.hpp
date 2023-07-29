@@ -29,7 +29,7 @@ class Toyota : public Car{
 class CarFactory {
 public:
    CarFactory(std::string location, int numCarsInProduction):
-      location_(location), 
+      location_(location),
       numCarsInProduction_(numCarsInProduction){}
 
    Car* requestCar();
@@ -55,8 +55,8 @@ protected:
 
 class ToyotaFactory : public CarFactory {
 public:
-   ToyotaFactory (std::string location="", 
-		  int numCarsInProduction=0):
+   ToyotaFactory (std::string location="",
+                  int numCarsInProduction=0):
        CarFactory(location, numCarsInProduction){}
 protected:
    Car* makeCar() override;

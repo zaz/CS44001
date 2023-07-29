@@ -25,14 +25,14 @@ Toyota::Toyota(){
 
 // factory methods
 Car* CarFactory::requestCar() {
-	++numCarsInProduction_;
-	return makeCar();
+   ++numCarsInProduction_;
+   return makeCar();
 }
 
 Car* FordFactory::makeCar() {
-	return new Ford();
+   return new Ford();
 }
 
 Car* ToyotaFactory::makeCar() {
-	return new Toyota();
+   return new Toyota();
 }
