@@ -40,8 +40,8 @@ protected:
    virtual Car* makeCar() =0;
 
 private:
-   int numCarsInProduction_;
    std::string location_;
+   int numCarsInProduction_;
 };
 
 // two concrete factories
