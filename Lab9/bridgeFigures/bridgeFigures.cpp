@@ -2,7 +2,7 @@
 // square is either hollow or square and is painted with a particular character,
 // it is bridged over Figure --> Fill abstract body/handle
 // Mikhail Nesterenko
-// 2/12/2014
+// Modified by Zaz Brown
 
 #include <iostream>
 
