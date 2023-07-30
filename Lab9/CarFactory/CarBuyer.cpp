@@ -1,30 +1,38 @@
-// needed for lab
 // Mikhail Nesterenko
-// 3/18/2022
+// Modified by Zaz Brown
 
 #include <iostream>
 #include <vector>
 #include <cstdlib>
+#include <algorithm>
 #include "CarFactory.hpp"
 
 using std::vector;
 using std::cout; using std::endl;
 
+const unsigned int initialLotSize = 8;
+
 class CarLot{
 public:
    CarLot();
-   Car *testDriveCar(){return car4sale_;}
+   Car *testDriveCar(){return cars4sale_[0];}
 
    // if a car is bought, requests a new one
    Car *buyCar(){
-      Car *bought = car4sale_;
-      car4sale_ =
+      Car *bought = cars4sale_[0];
+      cars4sale_[0] =
         factories_[rand()%factories_.size()]->requestCar();
       return bought;
    }
 
+   unsigned int lotSize() const {return cars4sale_.size();}
+
+   Car* replenishCar() {
+      return factories_[rand() % factories_.size()] -> requestCar();
+   }
+
 private:
-   Car *car4sale_; // single car for sale at the lot
+   vector<Car*> cars4sale_; // single car for sale at the lot
    vector<CarFactory *> factories_;
 };
 
@@ -37,7 +45,9 @@ CarLot::CarLot(){
    factories_.push_back(new ToyotaFactory());
 
    // gets the first car for sale
-   car4sale_ = factories_[rand() % factories_.size()] -> requestCar();
+   cars4sale_.resize(initialLotSize);
+   std::generate_n(cars4sale_.begin(), initialLotSize,
+                   [this](){return replenishCar();});
 }
 
 
