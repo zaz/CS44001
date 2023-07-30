@@ -15,12 +15,13 @@ const unsigned int initialLotSize = 8;
 class CarLot {
 public:
    CarLot();
-   Car* testDriveCar(){return cars4sale_[0];}
+   Car* testDriveCar(){return cars4sale_[currentCar_];}
 
    // if a car is bought, requests a new one
    Car* buyCar() {
-      Car* bought = cars4sale_[0];
-      cars4sale_[0] = replenishCar();
+      Car* bought = cars4sale_[currentCar_];
+      cars4sale_[currentCar_] = replenishCar();
+      currentCar_ = 0;
       return bought;
    }
 
@@ -30,9 +31,11 @@ public:
       return factories_[rand() % factories_.size()] -> requestCar();
    }
 
+   void nextCar() {++currentCar_;}
+
 private:
    vector<Car*> cars4sale_;  // cars for sale at the lot
-   Car* currentCar_;  // the car being test driven
+   unsigned int currentCar_;  // the car being test driven
    vector<CarFactory*> factories_;
 };
 
@@ -48,49 +51,36 @@ CarLot::CarLot() {
    cars4sale_.resize(initialLotSize);
    std::generate_n(cars4sale_.begin(), initialLotSize,
                    [this](){return replenishCar();});
+
+   currentCar_ = 0;
 }
 
 
 CarLot *carLotPtr = nullptr; // global pointer instantiation
 
 // test-drives a car
-// buys it if Toyota
-void toyotaLover(int id) {
+// buys it if it is make
+void carLover(int id, std::string make, std::string name) {
    if (carLotPtr == nullptr)
       carLotPtr = new CarLot();
 
-   Car *toBuy = carLotPtr -> testDriveCar();
+   for (unsigned int i = 0; i < carLotPtr->lotSize(); ++i) {
+      Car *toBuy = carLotPtr -> testDriveCar();
 
-   cout << "Jill Toyoter" << id << endl;
-   cout << "test driving "
-        << toBuy->getMake() << " "
-        << toBuy->getModel();
+      cout << name << ' ' << id << endl;
+      cout << " test driving "
+         << toBuy->getMake() << " "
+         << toBuy->getModel();
 
-   if (toBuy->getMake() == "Toyota"){
-      cout << " love it! buying it!" << endl;
-      carLotPtr -> buyCar();
-   } else
-      cout << " did not like it!" << endl;
-}
-
-// test-drives a car
-// buys it if Ford
-void fordLover(int id) {
-   if (carLotPtr == nullptr)
-      carLotPtr = new CarLot();
-
-   Car *toBuy = carLotPtr -> testDriveCar();
-
-   cout << "Jack Fordman " << id << endl;
-   cout << " test driving "
-        << toBuy->getMake() << " "
-        << toBuy->getModel();
-
-   if (toBuy->getMake() == "Ford") {
-      cout << " love it! buying it!" << endl;
-      carLotPtr -> buyCar();
-   } else
-      cout << " did not like it!" << endl;
+      if (toBuy->getMake() == make) {
+         cout << " love it! buying it!" << endl;
+         carLotPtr -> buyCar();
+         break;
+      } else {
+         cout << " did not like it!" << endl;
+         carLotPtr -> nextCar();
+      }
+   }
 }
 
 
@@ -100,7 +90,7 @@ int main() {
    const int numBuyers=20;
    for(int i=0; i < numBuyers; ++i)
       if(rand()% 2 == 0)
-         toyotaLover(i);
+         carLover(i, "Toyota", "Jill Toyoter");
       else
-         fordLover(i);
+         carLover(i, "Ford", "Jack Fordman");
 }
