@@ -12,16 +12,15 @@ using std::cout; using std::endl;
 
 const unsigned int initialLotSize = 8;
 
-class CarLot{
+class CarLot {
 public:
    CarLot();
-   Car *testDriveCar(){return cars4sale_[0];}
+   Car* testDriveCar(){return cars4sale_[0];}
 
    // if a car is bought, requests a new one
-   Car *buyCar(){
-      Car *bought = cars4sale_[0];
-      cars4sale_[0] =
-        factories_[rand()%factories_.size()]->requestCar();
+   Car* buyCar() {
+      Car* bought = cars4sale_[0];
+      cars4sale_[0] = replenishCar();
       return bought;
    }
 
@@ -32,12 +31,13 @@ public:
    }
 
 private:
-   vector<Car*> cars4sale_; // single car for sale at the lot
-   vector<CarFactory *> factories_;
+   vector<Car*> cars4sale_;  // cars for sale at the lot
+   Car* currentCar_;  // the car being test driven
+   vector<CarFactory*> factories_;
 };
 
 
-CarLot::CarLot(){
+CarLot::CarLot() {
    // creates 2 Ford factories and 2 Toyota factories
    factories_.push_back(new FordFactory());
    factories_.push_back(new ToyotaFactory());
@@ -51,12 +51,11 @@ CarLot::CarLot(){
 }
 
 
-
 CarLot *carLotPtr = nullptr; // global pointer instantiation
 
 // test-drives a car
 // buys it if Toyota
-void toyotaLover(int id){
+void toyotaLover(int id) {
    if (carLotPtr == nullptr)
       carLotPtr = new CarLot();
 
@@ -76,7 +75,7 @@ void toyotaLover(int id){
 
 // test-drives a car
 // buys it if Ford
-void fordLover(int id){
+void fordLover(int id) {
    if (carLotPtr == nullptr)
       carLotPtr = new CarLot();
 
@@ -87,13 +86,12 @@ void fordLover(int id){
         << toBuy->getMake() << " "
         << toBuy->getModel();
 
-   if (toBuy->getMake() == "Ford"){
+   if (toBuy->getMake() == "Ford") {
       cout << " love it! buying it!" << endl;
       carLotPtr -> buyCar();
    } else
       cout << " did not like it!" << endl;
 }
-
 
 
 int main() {
@@ -105,5 +103,4 @@ int main() {
          toyotaLover(i);
       else
          fordLover(i);
-
 }
