@@ -10,7 +10,10 @@
 using std::vector;
 using std::cout; using std::endl;
 
+const int numBuyers = 20;
 const unsigned int initialLotSize = 8;
+const vector FordModels = {"Focus", "Mustang", "Explorer", "F-150"};
+const vector ToyotaModels = {"Corolla", "Camry", "Prius", "4Runner", "Yaris"};
 
 class CarLot {
 public:
@@ -31,7 +34,9 @@ public:
       return factories_[rand() % factories_.size()] -> requestCar();
    }
 
-   void nextCar() {++currentCar_;}
+   void nextCar() {
+      currentCar_ = (currentCar_ + 1) % cars4sale_.size();
+   }
 
 private:
    vector<Car*> cars4sale_;  // cars for sale at the lot
@@ -58,21 +63,40 @@ CarLot::CarLot() {
 
 CarLot *carLotPtr = nullptr; // global pointer instantiation
 
+std::string getRidiculousNameForBuyer(std::string make, std::string model) {
+   std::string name = "";
+
+   if (make.back() == 'a')
+      name = make + "nio ";
+   else
+      name = make + "anio ";
+
+   if (model.back() == 's')
+      name += model + "on";
+   else
+      name += model + "son";
+
+   return name;
+}
+
 // test-drives a car
 // buys it if it is make
-void carLover(int id, std::string make, std::string name) {
+void carLover(int id, std::string make, std::string model) {
+   std::string name = getRidiculousNameForBuyer(make, model);
+
    if (carLotPtr == nullptr)
       carLotPtr = new CarLot();
+
+   cout << id << ' ' << name << endl;
 
    for (unsigned int i = 0; i < carLotPtr->lotSize(); ++i) {
       Car *toBuy = carLotPtr -> testDriveCar();
 
-      cout << name << ' ' << id << endl;
-      cout << " test driving "
-         << toBuy->getMake() << " "
-         << toBuy->getModel();
+      cout << "  test driving "
+           << toBuy->getMake() << " "
+           << toBuy->getModel();
 
-      if (toBuy->getMake() == make) {
+      if (toBuy->getMake() == make && toBuy->getModel() == model) {
          cout << " love it! buying it!" << endl;
          carLotPtr -> buyCar();
          break;
@@ -87,10 +111,9 @@ void carLover(int id, std::string make, std::string name) {
 int main() {
    srand(time(nullptr));
 
-   const int numBuyers=20;
    for(int i=0; i < numBuyers; ++i)
       if(rand()% 2 == 0)
-         carLover(i, "Toyota", "Jill Toyoter");
+         carLover(i, "Toyota", ToyotaModels[rand()%ToyotaModels.size()]);
       else
-         carLover(i, "Ford", "Jack Fordman");
+         carLover(i, "Ford", FordModels[rand()%FordModels.size()]);
 }
