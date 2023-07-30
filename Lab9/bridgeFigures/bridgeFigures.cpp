@@ -40,6 +40,9 @@ public:
    char getBorder() override {
       return rand()%2==0 ? borderChar_ : fillChar_;
    }
+   char getInternal() override {
+      return rand()%2==0 ? borderChar_ : fillChar_;
+   }
 };
 
 // abstract handle
@@ -95,7 +98,7 @@ int main() {
    cout << "Enter fill character: ";
    char fchar; cin >> fchar;
 
-   cout << "Filled or hollow or mix? [f/h/m] ";
+   cout << "Filled, hollow, mix, or random? [f/h/m/r] ";
    char ifFilled; cin >> ifFilled;
 
    cout << "Enter size: "; int size; cin >> size;
@@ -120,10 +123,16 @@ int main() {
       userBox = new Square(size, new Filled(fchar));
    } else if (ifFilled == 'h') {
       userBox = new Square(size, new Hollow(bchar));
-   } else {
+   } else if (ifFilled == 'm') {
       userBox = new Square(size, new FullyFilled(bchar, fchar));
+   } else if (ifFilled == 'r') {
+      userBox = new Square(size, new RandomFilled(bchar, fchar));
+   } else {
+      cout << endl << "Invalid input" << endl;
+      return 1;
    }
 
    cout << endl;
    userBox -> draw();
+   cout << endl;
 }
