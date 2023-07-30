@@ -8,51 +8,55 @@
 
 using std::cout; using std::endl; using std::cin;
 
-// abstract body
-class Fill {
+// Hollow and Filled naturally (in terms of DRY) inherit from FullyFilled, so
+// there is no need for an abstract Fill class
+class FullyFilled {
 public:
-   Fill(char fillChar): fillChar_(fillChar){}
-   virtual char getBorder()=0;
-   virtual char getInternal()=0;
-   virtual ~Fill() {}
+   FullyFilled(char borderChar, char fillChar):
+      fillChar_(fillChar), borderChar_(borderChar){}
+   virtual char getBorder() {return borderChar_;}
+   virtual char getInternal() {return fillChar_;}
+   ~FullyFilled() {}
 protected:
    char fillChar_;
+   char borderChar_;
 };
 
-// concrete body
-class Hollow: public Fill {
+class Hollow: public FullyFilled {
 public:
-   Hollow(char fillChar):Fill(fillChar){}
-   char getBorder() override {return fillChar_;}
-   char getInternal() override {return ' ';}
-   ~Hollow() override {}
+   Hollow(char borderChar):FullyFilled(borderChar, ' '){}
+   // duplication of code is avoided here and below
 };
 
-
-// another concrete body
-class Filled: public Fill {
+class Filled: public FullyFilled {
 public:
-   Filled(char fillChar):Fill(fillChar){}
-   char getBorder() override {return fillChar_;}
-   char getInternal() override {return fillChar_;}
-   ~Filled() override {}
+   Filled(char bothChar):FullyFilled(bothChar, bothChar){}
+};
+
+class RandomFilled: public FullyFilled {
+public:
+   RandomFilled(char borderChar, char fillChar):
+      FullyFilled(borderChar, fillChar){}
+   char getBorder() override {
+      return rand()%2==0 ? borderChar_ : fillChar_;
+   }
 };
 
 // abstract handle
 class Figure {
 public:
-   Figure(int size, Fill* fill): size_(size), fill_(fill){}
+   Figure(int size, FullyFilled* fill): size_(size), fill_(fill){}
    virtual void draw() =0;
    virtual ~Figure(){}
 protected:
    int size_;
-   Fill *fill_;
+   FullyFilled *fill_;
 };
 
 // concrete handle
 class Square: public Figure {
 public:
-   Square(int size, Fill* fill): Figure(size, fill){}
+   Square(int size, FullyFilled* fill): Figure(size, fill){}
    void draw() override;
 
 };
@@ -71,8 +75,8 @@ void Square::draw() {
 int main() {
 
    /*
-   Fill* hollowPaintJ = new Hollow('J');
-   Fill* filledPaintStar = new Filled('*');
+   FullyFilled* hollowPaintJ = new Hollow('J');
+   FullyFilled* filledPaintStar = new Filled('*');
 
 
    Figure *smallBox = new Square(5, hollowPaintJ);
@@ -85,16 +89,21 @@ int main() {
    */
 
    // ask user for figure parameters
+   cout << "Enter border character: ";
+   char bchar; cin >> bchar;
+
    cout << "Enter fill character: ";
-            char fchar; cin >> fchar;
-   cout << "Filled or hollow? [f/h] ";
-           char ifFilled; cin >> ifFilled;
+   char fchar; cin >> fchar;
+
+   cout << "Filled or hollow or mix? [f/h/m] ";
+   char ifFilled; cin >> ifFilled;
+
    cout << "Enter size: "; int size; cin >> size;
 
    /*
    Figure *userBox = new Square(size, ifFilled == 'f'?
-               static_cast<Fill *>(new Filled(fchar)):
-               static_cast<Fill *>(new Hollow(fchar))
+               static_cast<FullyFilled *>(new Filled(fchar)):
+               static_cast<FullyFilled *>(new Hollow(fchar))
                );
    */
 
@@ -106,11 +115,15 @@ int main() {
                );
 
    */
-   Figure *userBox = ifFilled == 'f'?
-      new Square(size, new Filled(fchar)):
-      new Square(size, new Hollow(fchar));
+   Figure* userBox;
+   if (ifFilled == 'f') {
+      userBox = new Square(size, new Filled(fchar));
+   } else if (ifFilled == 'h') {
+      userBox = new Square(size, new Hollow(bchar));
+   } else {
+      userBox = new Square(size, new FullyFilled(bchar, fchar));
+   }
 
-
-   userBox -> draw();
    cout << endl;
+   userBox -> draw();
 }
