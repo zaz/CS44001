@@ -9,7 +9,7 @@
 using std::cout; using std::endl; using std::cin;
 
 // abstract body
-class Fill{
+class Fill {
 public:
    Fill(char fillChar): fillChar_(fillChar){}
    virtual char getBorder()=0;
@@ -20,7 +20,7 @@ protected:
 };
 
 // concrete body
-class Hollow: public Fill{
+class Hollow: public Fill {
 public:
    Hollow(char fillChar):Fill(fillChar){}
    char getBorder() override {return fillChar_;}
@@ -50,67 +50,67 @@ protected:
 };
 
 // concrete handle
-class Square: public Figure{
+class Square: public Figure {
 public:
    Square(int size, Fill* fill): Figure(size, fill){}
    void draw() override;
 
 };
 
-void Square::draw(){
+void Square::draw() {
    for(int i=0; i < size_; ++i){
       for(int j=0; j < size_; ++j)
-	 if(i==0 || j==0 || i==size_-1 || j==size_-1 )
-	    cout << fill_ -> getBorder();
-	 else
-	    cout << fill_ -> getInternal();
+         if(i==0 || j==0 || i==size_-1 || j==size_-1 )
+            cout << fill_ -> getBorder();
+         else
+            cout << fill_ -> getInternal();
       cout << endl;
    }
 }
 
-int main(){
+int main() {
 
    /*
    Fill* hollowPaintJ = new Hollow('J');
    Fill* filledPaintStar = new Filled('*');
 
-   
+
    Figure *smallBox = new Square(5, hollowPaintJ);
    Figure *bigBox = new Square(15, filledPaintStar);
 
    smallBox->draw();
    cout << endl;
    bigBox -> draw();
-   
+
    */
-   
+
    // ask user for figure parameters
-   cout << "Enter fill character: "; 
+   cout << "Enter fill character: ";
             char fchar; cin >> fchar;
-   cout << "Filled or hollow? [f/h] "; 
+   cout << "Filled or hollow? [f/h] ";
            char ifFilled; cin >> ifFilled;
    cout << "Enter size: "; int size; cin >> size;
-   
+
    /*
-   Figure *userBox = new Square(size, ifFilled == 'f'? 
-	       static_cast<Fill *>(new Filled(fchar)):
-	       static_cast<Fill *>(new Hollow(fchar))
-	       ); 
+   Figure *userBox = new Square(size, ifFilled == 'f'?
+               static_cast<Fill *>(new Filled(fchar)):
+               static_cast<Fill *>(new Hollow(fchar))
+               );
    */
-   
+
    /*
    Figure *userBox = new Square(size,
-		      ifFilled == 'f'?
-				new Filled(fchar):
-				new Hollow(fchar)
+                      ifFilled == 'f'?
+                                new Filled(fchar):
+                                new Hollow(fchar)
                );
 
    */
    Figure *userBox = ifFilled == 'f'?
       new Square(size, new Filled(fchar)):
       new Square(size, new Hollow(fchar));
-   
-   
+
+
    userBox -> draw();
    cout << endl;
 }
