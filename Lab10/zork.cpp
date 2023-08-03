@@ -9,7 +9,7 @@ using std::cin; using std::cout; using std::endl; using std::string;
 class State;
 
 // context
-class Character{
+class Character {
 public:
    Character();
 
@@ -19,27 +19,27 @@ public:
    string report();
 
    // part of implementation of state pattern
-   void changeState(State* state){state_=state;}
+   void changeState(State* state) {state_=state;}
 private:
    State* state_;
 };
 
 // absract state
-class State{
+class State {
 public:
    // provides default implementation
-   virtual void skipLunch(Character*){} 
+   virtual void skipLunch(Character*) {}
    // provides default implementation
-   virtual void eat(Character*){}  
-   virtual string report() =0;
-   void changeState(Character* c, State* s){
+   virtual void eat(Character*) {}
+   virtual string report() = 0;
+   void changeState(Character* c, State* s) {
       c->changeState(s);
    }
 };
 
-class Full: public State{
+class Full: public State {
 public:
-   static State* instance(){
+   static State* instance() {
       static State* onlyInstance = new Full;
       return onlyInstance;
    }
@@ -52,9 +52,9 @@ private:
 };
 
 
-class Hungry: public State{
+class Hungry: public State {
 public:
-   static State* instance(){
+   static State* instance() {
       static State* onlyInstance = new Hungry;
       return onlyInstance;
    }
@@ -64,9 +64,9 @@ public:
 };
 
 
-class Dead: public State{
+class Dead: public State {
 public:
-   static State* instance(){
+   static State* instance() {
       static State* onlyInstance = new Dead;
       return onlyInstance;
    }
@@ -79,7 +79,7 @@ public:
 
 void Full::skipLunch(Character *c) {
     changeState(c, Hungry::instance());
-} 
+}
 
 void Full::eat(Character *c) {
    changeState(c, Dead::instance());
@@ -94,14 +94,14 @@ void Hungry::skipLunch(Character *c) {
 }
 
 // Character member functions
-Character::Character(){state_=Hungry::instance();}
+Character::Character() {state_=Hungry::instance();}
 
 // handles/behaviors
-void Character::skipLunch(){state_->skipLunch(this);}
-void Character::eat(){state_->eat(this);}
-string Character::report(){return state_->report();}
+void Character::skipLunch() {state_->skipLunch(this);}
+void Character::eat() {state_->eat(this);}
+string Character::report() {return state_->report();}
 
-int main(){
+int main() {
    Character zork;
    cout << "Zork is " << zork.report() << endl;
 
@@ -109,17 +109,17 @@ int main(){
       cout << "What would you like Zork to do? Eat or skip lunch? [e/s] ";
       char action; cin >> action;
       if(action == 'e')
-	 zork.eat();
+         zork.eat();
       else
-	 zork.skipLunch();
+         zork.skipLunch();
       cout << "Zork is " << zork.report() << endl;
    }
 
-   
-   // demonstrates that two Characters 
+
+   // demonstrates that two Characters
    // may be in two different states
    Character grue;
    cout << "Zork is " << zork.report() << " while "
         << "Grue is " << grue.report() << endl;
-   
+
 }
