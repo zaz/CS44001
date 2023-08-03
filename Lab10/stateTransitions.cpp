@@ -1,6 +1,6 @@
 // demonstrates state design pattern
 // Mikhail Nesterenko
-// 2/23/2014
+// Modified by Zaz Brown
 
 #include <iostream>
 #include <string>
@@ -9,13 +9,13 @@ using std::cin; using std::cout; using std::endl; using std::string;
 class State;
 
 // context
-class Character {
+class Process {
 public:
-   Character();
+   Process();
 
    // behaviors
-   void skipLunch();
-   void eat();
+   void suspend();
+   void dispatch();
    string report();
 
    // part of implementation of state pattern
@@ -28,39 +28,39 @@ private:
 class State {
 public:
    // provides default implementation
-   virtual void skipLunch(Character*) {}
+   virtual void suspend(Process*) {}
    // provides default implementation
-   virtual void eat(Character*) {}
+   virtual void dispatch(Process*) {}
    virtual string report() = 0;
-   void changeState(Character* c, State* s) {
+   void changeState(Process* c, State* s) {
       c->changeState(s);
    }
 };
 
-class Full: public State {
+class Running: public State {
 public:
    static State* instance() {
-      static State* onlyInstance = new Full;
+      static State* onlyInstance = new Running;
       return onlyInstance;
    }
-   void skipLunch (Character*) override;
-   void eat(Character*) override;
-   string report() override {return "full";}
+   void suspend(Process*) override;
+   void dispatch(Process*) override;
+   string report() override {return "running";}
 private:
    // here and elsewhere should be stated private constructor/assignment
    // to correctly implement singleton, skipped to simplify code
 };
 
 
-class Hungry: public State {
+class Ready: public State {
 public:
    static State* instance() {
-      static State* onlyInstance = new Hungry;
+      static State* onlyInstance = new Ready;
       return onlyInstance;
    }
-   void skipLunch(Character*) override;
-   void eat(Character*) override;
-   string report() override {return "hungry";}
+   void suspend(Process*) override;
+   void dispatch(Process*) override;
+   string report() override {return "ready";}
 };
 
 
@@ -75,50 +75,50 @@ public:
 
 
 // state transitions member functions
-// Full
+// Running
 
-void Full::skipLunch(Character *c) {
-    changeState(c, Hungry::instance());
+void Running::suspend(Process *c) {
+    changeState(c, Ready::instance());
 }
 
-void Full::eat(Character *c) {
+void Running::dispatch(Process *c) {
    changeState(c, Dead::instance());
 }
 
-// Hungry
-void Hungry::eat(Character *c) {
-   changeState(c, Full::instance());
+// Ready
+void Ready::dispatch(Process *c) {
+   changeState(c, Running::instance());
 }
-void Hungry::skipLunch(Character *c) {
+void Ready::suspend(Process *c) {
    changeState(c, Dead::instance());
 }
 
-// Character member functions
-Character::Character() {state_=Hungry::instance();}
+// Process member functions
+Process::Process() {state_=Ready::instance();}
 
 // handles/behaviors
-void Character::skipLunch() {state_->skipLunch(this);}
-void Character::eat() {state_->eat(this);}
-string Character::report() {return state_->report();}
+void Process::suspend() {state_->suspend(this);}
+void Process::dispatch() {state_->dispatch(this);}
+string Process::report() {return state_->report();}
 
 int main() {
-   Character zork;
+   Process zork;
    cout << "Zork is " << zork.report() << endl;
 
    while(zork.report() != "dead"){
-      cout << "What would you like Zork to do? Eat or skip lunch? [e/s] ";
+      cout << "What would you like Zork to do? dispatch or suspend? [d/s] ";
       char action; cin >> action;
-      if(action == 'e')
-         zork.eat();
+      if(action == 'd')
+         zork.dispatch();
       else
-         zork.skipLunch();
+         zork.suspend();
       cout << "Zork is " << zork.report() << endl;
    }
 
 
-   // demonstrates that two Characters
+   // demonstrates that two Process
    // may be in two different states
-   Character grue;
+   Process grue;
    cout << "Zork is " << zork.report() << " while "
         << "Grue is " << grue.report() << endl;
 
