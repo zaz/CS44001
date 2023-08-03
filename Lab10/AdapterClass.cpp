@@ -26,6 +26,7 @@ public:
       bottom_(bottom){}
 
    void oldDraw() const {
+      cout << endl;
       for (int i=0; i < bottom_; ++i) {
          for (int j=0; j < right_; ++j)
             if (i >= top_ && j >= left_)
@@ -86,7 +87,7 @@ int main() {
    SquareAdapter square(size);
    square.draw();
 
-   cout << "What size would you like to redraw the sequare to? ";
+   cout << "What size would you like to redraw the square to? ";
    std::cin >> size;
 
    square.resize(size);
