@@ -16,20 +16,19 @@ public:
 // adaptee/implementer
 class LegacyRectangle {
 public:
-   // it may make more sense to call these:
-   LegacyRectangle(int topLeftX,       // left
-                   int topLeftY,       // top
-                   int bottomRightX,   // right
-                   int bottomRightY):  // bottom
-      topLeftX_(topLeftX),
-      topLeftY_(topLeftY),
-      bottomRightX_(bottomRightX),
-      bottomRightY_(bottomRightY){}
+   LegacyRectangle(int left,     // topLeftX
+                   int top,      // topLeftY
+                   int right,    // bottomRightX
+                   int bottom):  // bottomRightY
+      left_(left),
+      top_(top),
+      right_(right),
+      bottom_(bottom){}
 
    void oldDraw() const {
-      for (int i=0; i < bottomRightY_; ++i) {
-         for (int j=0; j < bottomRightX_; ++j)
-            if (i >= topLeftY_ && j >= topLeftX_)
+      for (int i=0; i < bottom_; ++i) {
+         for (int j=0; j < right_; ++j)
+            if (i >= top_ && j >= left_)
                cout << '*';
             else
                cout << ' ';
@@ -37,26 +36,28 @@ public:
       }
    }
 
-   void move(int topLeftX, int topLeftY, int bottomRightX, int bottomRightY) {
-      topLeftX_ = topLeftX;
-      topLeftY_ = topLeftY;
-      bottomRightX_ = bottomRightX;
-      bottomRightY_ = bottomRightY;
+   void move(int left, int top, int right, int bottom) {
+      left_ = left;
+      top_ = top;
+      right_ = right;
+      bottom_ = bottom;
    }
 
-  int getTopLeftX() const { return topLeftX_; }
-  int getTopLeftY() const { return topLeftY_; }
-  int getBottomRightX() const { return bottomRightX_; }
-  int getBottomRightY() const { return bottomRightY_; }
+   // x coordinates
+   int getLeft() const { return left_; }
+   int getRight() const { return right_; }
+   // y coordinates
+   int getTop() const { return top_; }
+   int getBottom() const { return bottom_; }
 
    // defining top/left and bottom/right coordinates
 
 // defining top/left and bottom/right coordinates
 private:
-   int topLeftX_;
-   int topLeftY_;
-   int bottomRightX_;
-   int bottomRightY_;
+   int left_;
+   int top_;
+   int right_;
+   int bottom_;
 };
 
 // adapter uses multiple inheritance to inherit
@@ -65,8 +66,12 @@ class SquareAdapter: public Square,
                      private LegacyRectangle {
 public:
    SquareAdapter(int size): LegacyRectangle(0,0,size,size){};
-   int size() const { return getBottomRightX() - getTopLeftX(); };
-
+   int size() const { return getRight() - getLeft(); };
+   void resize(int newSize) {
+      const int left = getLeft();
+      const int top = getLeft();
+      move(left, top, left+newSize, top+newSize);
+   }
    void draw() override {
       oldDraw();
    }
@@ -74,6 +79,6 @@ public:
 
 
 int main() {
-   Square *square = new SquareAdapter(13);
+   Square* square = new SquareAdapter(13);
    square->draw();
 }
