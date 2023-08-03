@@ -27,10 +27,10 @@ private:
 // absract state
 class State {
 public:
-   // provides default implementation
-   virtual void suspend(Process*) {}
-   // provides default implementation
-   virtual void dispatch(Process*) {}
+   // default to printing "Invalid action."
+   virtual void suspend(Process*)  { std::cerr << "Invalid action.\n"; }
+   virtual void dispatch(Process*) { std::cerr << "Invalid action.\n"; }
+
    virtual string report() = 0;
    void changeState(Process* c, State* s) {
       c->changeState(s);
@@ -44,7 +44,6 @@ public:
       return onlyInstance;
    }
    void suspend(Process*) override;
-   void dispatch(Process*) override;
    string report() override {return "running";}
 private:
    // here and elsewhere should be stated private constructor/assignment
@@ -58,7 +57,6 @@ public:
       static State* onlyInstance = new Ready;
       return onlyInstance;
    }
-   void suspend(Process*) override;
    void dispatch(Process*) override;
    string report() override {return "ready";}
 };
@@ -75,22 +73,13 @@ public:
 
 
 // state transitions member functions
-// Running
 
 void Running::suspend(Process *c) {
-    changeState(c, Ready::instance());
+   changeState(c, Ready::instance());
 }
 
-void Running::dispatch(Process *c) {
-   changeState(c, Dead::instance());
-}
-
-// Ready
 void Ready::dispatch(Process *c) {
    changeState(c, Running::instance());
-}
-void Ready::suspend(Process *c) {
-   changeState(c, Dead::instance());
 }
 
 // Process member functions
