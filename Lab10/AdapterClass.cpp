@@ -79,6 +79,16 @@ public:
 
 
 int main() {
-   Square* square = new SquareAdapter(13);
-   square->draw();
+   cout << "What size square would you like to draw? ";
+   int size;
+   std::cin >> size;
+
+   SquareAdapter square(size);
+   square.draw();
+
+   cout << "What size would you like to redraw the sequare to? ";
+   std::cin >> size;
+
+   square.resize(size);
+   square.draw();
 }
