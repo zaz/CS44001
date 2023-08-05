@@ -69,8 +69,10 @@ public:
    void    exit(Process*) override;
    string report() override {return "running";}
 private:
-   // here and elsewhere should be stated private constructor/assignment
-   // to correctly implement singleton, skipped to simplify code
+   // copying and creation prohibited
+   Running(){};
+   Running(const Running&){};
+   Running& operator=(const Running&){return *this;};
 };
 
 class Blocked: public State {
@@ -81,6 +83,11 @@ public:
    }
    void unblock(Process*) override;
    string report() override {return "blocked";}
+private:
+   // copying and creation prohibited
+   Blocked(){};
+   Blocked(const Blocked&){};
+   Blocked& operator=(const Blocked&){return *this;};
 };
 
 class Dead: public State {
@@ -90,6 +97,11 @@ public:
       return onlyInstance;
    }
    string report() override {return "dead";}
+private:
+   // copying and creation prohibited
+   Dead(){};
+   Dead(const Dead&){};
+   Dead& operator=(const Dead&){return *this;};
 };
 
 
