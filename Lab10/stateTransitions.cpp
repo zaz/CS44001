@@ -126,30 +126,43 @@ void  Process::unblock() {state_-> unblock(this);}
 void     Process::exit() {state_->    exit(this);}
 string Process::report() {return state_->report();}
 
-int main() {
-   {
-      Process myProcess;
-      cout << myProcess.name() << " is " << myProcess.report() << endl;
+void runAProcess() {
+   Process myProcess;
+   cout << myProcess.name() << " is " << myProcess.report() << endl;
 
-      while(myProcess.report() != "dead"){
-         cout << "What would you like "
-              << myProcess.name()
-              << " to do? Dispatch, suspend, block, unblock, or exit? [d/s/b/u/x] ";
-         char action; cin >> action;
-         if (action == 'd')
-            myProcess.dispatch();
-         else if (action == 's')
-            myProcess.suspend();
-         else if (action == 'b')
-            myProcess.block();
-         else if (action == 'u')
-            myProcess.unblock();
-         else if (action == 'x') {
-            myProcess.exit();
-         } else
-            std::cerr << "Invalid action.\n" << std::flush;
-         cout << myProcess.name() << " is " << myProcess.report() << endl;
-      }
-   }  // this } deletes zork
-   // and furthers the war on dynamic memory allocation
+   while(myProcess.report() != "dead"){
+      cout << "What would you like "
+           << myProcess.name()
+           << " to do? Dispatch, suspend, block, unblock, or exit? [d/s/b/u/x] ";
+      char action; cin >> action;
+      if (action == 'd')
+         myProcess.dispatch();
+      else if (action == 's')
+         myProcess.suspend();
+      else if (action == 'b')
+         myProcess.block();
+      else if (action == 'u')
+         myProcess.unblock();
+      else if (action == 'x') {
+         myProcess.exit();
+      } else
+         std::cerr << "Invalid action.\n" << std::flush;
+      cout << myProcess.name() << " is " << myProcess.report() << endl;
+   }
+   cout << endl;
+}  // this } deletes zork
+// and furthers the war on dynamic memory allocation
+
+int main() {
+   runAProcess();
+
+   char answer = 'y';
+   // loop, promping user if they want to run another process
+   while (answer == 'y') {
+      cout << "Would you like to run another process? [y/N] ";
+      cin >> answer;
+      if (answer != 'y' && answer != 'Y')
+         break;
+      runAProcess();
+   }
 }
