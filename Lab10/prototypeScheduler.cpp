@@ -1,4 +1,4 @@
-// State Transitions
+// Prototype Scheduler
 // Mikhail Nesterenko
 // Modified by Zaz Brown
 
