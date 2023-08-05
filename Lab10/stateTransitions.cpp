@@ -19,13 +19,18 @@ public:
    void block();
    void unblock();
    void exit();
+   string name() {return "Process " + std::to_string(n_);}
    string report();
 
    // part of implementation of state pattern
    void changeState(State* state) {state_=state;}
+   static unsigned int nProcesses;
 private:
    State* state_;
+   unsigned int n_;
 };
+
+unsigned int Process::nProcesses = 0;
 
 // absract state
 class State {
@@ -111,7 +116,7 @@ void Running::exit(Process *c) {
 }
 
 // Process member functions
-Process::Process() {state_=Ready::instance();}
+Process::Process() : n_(nProcesses) {state_=Ready::instance(); ++nProcesses;}
 
 // handles/behaviors
 void  Process::suspend() {state_-> suspend(this);}
@@ -123,25 +128,27 @@ string Process::report() {return state_->report();}
 
 int main() {
    {
-      Process zork;
-      cout << "Zork is " << zork.report() << endl;
+      Process myProcess;
+      cout << myProcess.name() << " is " << myProcess.report() << endl;
 
-      while(zork.report() != "dead"){
-         cout << "What would you like Zork to do? Dispatch, suspend, block, unblock, or exit? [d/s/b/u/x] ";
+      while(myProcess.report() != "dead"){
+         cout << "What would you like "
+              << myProcess.name()
+              << " to do? Dispatch, suspend, block, unblock, or exit? [d/s/b/u/x] ";
          char action; cin >> action;
          if (action == 'd')
-            zork.dispatch();
+            myProcess.dispatch();
          else if (action == 's')
-            zork.suspend();
+            myProcess.suspend();
          else if (action == 'b')
-            zork.block();
+            myProcess.block();
          else if (action == 'u')
-            zork.unblock();
+            myProcess.unblock();
          else if (action == 'x') {
-            zork.exit();
+            myProcess.exit();
          } else
             std::cerr << "Invalid action.\n" << std::flush;
-         cout << "Zork is " << zork.report() << endl;
+         cout << myProcess.name() << " is " << myProcess.report() << endl;
       }
    }  // this } deletes zork
    // and furthers the war on dynamic memory allocation
