@@ -4,7 +4,11 @@
 
 #include <iostream>
 #include <string>
+#include <queue>
+#include <algorithm>
 using std::cin; using std::cout; using std::endl; using std::string;
+
+const unsigned int initialProcesses = 23;
 
 class State;
 
@@ -21,6 +25,19 @@ public:
    void exit();
    string name() {return "Process " + std::to_string(n_);}
    string report();
+
+   // method required for prototype pattern
+   Process* clone() {return new Process(*this);}
+
+   friend std::ostream& operator<<(std::ostream& os, const Process& process) {
+      if (process.n_ < 10)
+         os << ' ';
+      os << process.n_;
+      return os;
+   }
+
+   // copy constructor must increment n_
+   Process(const Process& p) : n_(nProcesses) {state_=p.state_; ++nProcesses;}
 
    // part of implementation of state pattern
    void changeState(State* state) {state_=state;}
@@ -127,7 +144,7 @@ void Running::exit(Process *c) {
    changeState(c, Dead::instance());
 }
 
-// Process member functions
+// Process constructor must increment n_
 Process::Process() : n_(nProcesses) {state_=Ready::instance(); ++nProcesses;}
 
 // handles/behaviors
@@ -138,43 +155,97 @@ void  Process::unblock() {state_-> unblock(this);}
 void     Process::exit() {state_->    exit(this);}
 string Process::report() {return state_->report();}
 
-void runAProcess() {
-   Process myProcess;
-   cout << myProcess.name() << " is " << myProcess.report() << endl;
+void runAProcess(Process& prototypeProcess) {
+   Process* myProcess = prototypeProcess.clone();
+   cout << myProcess->name() << " is " << myProcess->report() << endl;
 
-   while(myProcess.report() != "dead"){
+   while(myProcess->report() != "dead"){
       cout << "What would you like "
-           << myProcess.name()
+           << myProcess->name()
            << " to do? Dispatch, suspend, block, unblock, or exit? [d/s/b/u/x] ";
       char action; cin >> action;
       if (action == 'd')
-         myProcess.dispatch();
+         myProcess->dispatch();
       else if (action == 's')
-         myProcess.suspend();
+         myProcess->suspend();
       else if (action == 'b')
-         myProcess.block();
+         myProcess->block();
       else if (action == 'u')
-         myProcess.unblock();
+         myProcess->unblock();
       else if (action == 'x') {
-         myProcess.exit();
+         myProcess->exit();
       } else
          std::cerr << "Invalid action.\n" << std::flush;
-      cout << myProcess.name() << " is " << myProcess.report() << endl;
+      cout << myProcess->name() << " is " << myProcess->report() << endl;
    }
    cout << endl;
 }  // this } deletes zork
 // and furthers the war on dynamic memory allocation
 
 int main() {
-   runAProcess();
+   // create a prototype process, "Process 0"
+   Process prototypeProcess;
 
-   char answer = 'y';
-   // loop, promping user if they want to run another process
-   while (answer == 'y') {
-      cout << "Would you like to run another process? [y/N] ";
-      cin >> answer;
-      if (answer != 'y' && answer != 'Y')
-         break;
-      runAProcess();
+   // we use deque because it is enumerable, which is useful for printing
+   std::deque<Process*> ready;
+   // we could use generate_n with back_inserter, but that would be less succinct
+   for (unsigned int i = 0; i < initialProcesses; ++i)
+      ready.push_back(prototypeProcess.clone());
+
+   Process* running = ready.front();
+   ready.pop_front();
+   running->dispatch();
+
+   std::deque<Process*> blocked;
+
+   for (int i = 0; i < 20; ++i) {
+      cout << "Running: " << *running << endl;
+
+      // XXX QUESTION: why does this print 33 every other element?
+      // for (auto i = ready.front(); i != ready.back(); ++i)
+      //    cout << *i << ' ';
+      // cout << endl;
+      //
+      // Prints:
+      // 2 33  3 33  4 33  5 33  6 33  7 33  8 33  9 33 10 33 11 33 12 33 13 33 14 33 15 33 16 33 17 33 18 33 19 33 20 33 21 33 22 33
+
+      cout << "Ready:   ";
+      for (auto process : ready)
+         cout << *process << ' ';
+      cout << endl;
+
+      cout << "Blocked: ";
+      for (auto process : blocked)
+         cout << *process << ' ';
+      cout << endl;
+
+      // randomly, with 1/3 chance:
+      unsigned int action = rand() % 3;
+      // move a process from running to blocked
+      if (action == 0) {
+         cout << "Blocking  " << *running << endl;
+         running->block();
+         blocked.push_back(running);
+         running = ready.front();
+         ready.pop_front();
+         running->dispatch();
+      // move a process from running to ready
+      } else if (action == 1) {
+         cout << "Suspending " << *running << endl;
+         running->suspend();
+         ready.push_back(running);
+         running = ready.front();
+         ready.pop_front();
+         running->dispatch();
+      // destroy the running process
+      } else {
+         cout << "Exiting    " << *running << endl;
+         delete running;
+         running = ready.front();
+         ready.pop_front();
+         running->dispatch();
+      }
+
+      cout << endl;
    }
 }
