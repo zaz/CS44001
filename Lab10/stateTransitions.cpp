@@ -122,32 +122,27 @@ void     Process::exit() {state_->    exit(this);}
 string Process::report() {return state_->report();}
 
 int main() {
-   Process zork;
-   cout << "Zork is " << zork.report() << endl;
-
-   while(zork.report() != "dead"){
-      cout << "What would you like Zork to do? Dispatch, suspend, block, unblock, or exit? [d/s/b/u/x] ";
-      char action; cin >> action;
-      if (action == 'd')
-         zork.dispatch();
-      else if (action == 's')
-         zork.suspend();
-      else if (action == 'b')
-         zork.block();
-      else if (action == 'u')
-         zork.unblock();
-      else if (action == 'x')
-         zork.exit();
-      else
-         std::cerr << "Invalid action.\n" << std::flush;
+   {
+      Process zork;
       cout << "Zork is " << zork.report() << endl;
-   }
 
-
-   // demonstrates that two Process
-   // may be in two different states
-   Process grue;
-   cout << "Zork is " << zork.report() << " while "
-        << "Grue is " << grue.report() << endl;
-
+      while(zork.report() != "dead"){
+         cout << "What would you like Zork to do? Dispatch, suspend, block, unblock, or exit? [d/s/b/u/x] ";
+         char action; cin >> action;
+         if (action == 'd')
+            zork.dispatch();
+         else if (action == 's')
+            zork.suspend();
+         else if (action == 'b')
+            zork.block();
+         else if (action == 'u')
+            zork.unblock();
+         else if (action == 'x') {
+            zork.exit();
+         } else
+            std::cerr << "Invalid action.\n" << std::flush;
+         cout << "Zork is " << zork.report() << endl;
+      }
+   }  // this } deletes zork
+   // and furthers the war on dynamic memory allocation
 }
