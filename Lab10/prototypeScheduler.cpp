@@ -8,7 +8,7 @@
 #include <algorithm>
 using std::cin; using std::cout; using std::endl; using std::string;
 
-const unsigned int initialProcesses = 23;
+const unsigned int initialProcesses = 4;
 
 class State;
 
