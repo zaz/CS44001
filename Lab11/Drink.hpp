@@ -10,10 +10,15 @@ enum class DrinkSize {small, medium, large};
 
 class Drink{
 public:
-    Drink(DrinkSize size=DrinkSize::small, int price=0):
-       size_(size), price_(price) {}
+    Drink(DrinkSize size=DrinkSize::small): size_(size) {
+        switch(size_){
+            case DrinkSize::small:  price_ = 5; break;
+            case DrinkSize::medium: price_ = 7; break;
+            case DrinkSize::large: price_ = 10; break;
+        }
+    }
     virtual int getPrice() const { return price_; };
-    std::string getSize() const {
+    virtual std::string getSize() const {
          switch(size_){
              case DrinkSize::small: return "small";
              case DrinkSize::medium: return "medium";
@@ -21,8 +26,12 @@ public:
          }
          return "ambiguously sized";
     };
-    std::string getName() const {
+    virtual std::string getName() const {
         return getSize() + " " + drinkType;
+    };
+    // this allows arbitrary additions such as "with sugar", "honey", "decaf"
+    virtual std::string getFullName() const {
+        return getName();
     };
 private:
     DrinkSize size_;
