@@ -198,8 +198,12 @@ int main() {
 
    std::deque<Process*> blocked;
 
-   for (int i = 0; i < 20; ++i) {
-      cout << "Running: " << *running << endl;
+   unsigned int action;
+   while (true) {
+      if (running == nullptr)
+         cout << "Running: " << endl;
+      else
+         cout << "Running: " << *running << endl;
 
       // XXX QUESTION: why does this print 33 every other element?
       // for (auto i = ready.front(); i != ready.back(); ++i)
@@ -219,31 +223,45 @@ int main() {
          cout << *process << ' ';
       cout << endl;
 
-      // randomly, with 1/3 chance:
-      unsigned int action = rand() % 3;
-      // move a process from running to blocked
-      if (action == 0) {
-         cout << "Blocking  " << *running << endl;
-         running->block();
-         blocked.push_back(running);
+      if (running == nullptr && ready.size() == 0 && blocked.size() == 0)
+         break;
+
+      std::cin.get();
+
+      if (running != nullptr) {
+         // randomly, with 1/3 chance:
+         action = rand() % 3;
+         // move a process from running to blocked
+         if (action == 0) {
+            cout << "Block   " << *running << endl;
+            running->block();
+            blocked.push_back(running);
+         // move a process from running to ready
+         // note that if there are no ready processes, this is a no-op
+         // (when combined with the code in if (read.size > 0) { ... })
+         } else if (action == 1) {
+            cout << "Suspend " << *running << endl;
+            running->suspend();
+            ready.push_back(running);
+         // destroy the running process
+         } else {
+            cout << "Exit    " << *running << endl;
+            delete running;
+         }
+      }
+      running = nullptr;
+      if (ready.size() > 0) {
          running = ready.front();
          ready.pop_front();
          running->dispatch();
-      // move a process from running to ready
-      } else if (action == 1) {
-         cout << "Suspending " << *running << endl;
-         running->suspend();
-         ready.push_back(running);
-         running = ready.front();
-         ready.pop_front();
-         running->dispatch();
-      // destroy the running process
-      } else {
-         cout << "Exiting    " << *running << endl;
-         delete running;
-         running = ready.front();
-         ready.pop_front();
-         running->dispatch();
+      }
+
+      // with 10% chance, unblock the next process in blocked queue
+      if (blocked.size() > 0 && rand() % 5 == 0) {
+         cout << "Unblock " << *blocked.front() << endl;
+         blocked.front()->unblock();
+         ready.push_back(blocked.front());
+         blocked.pop_front();
       }
 
       cout << endl;
