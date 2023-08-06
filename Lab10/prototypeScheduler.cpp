@@ -155,33 +155,6 @@ void  Process::unblock() {state_-> unblock(this);}
 void     Process::exit() {state_->    exit(this);}
 string Process::report() {return state_->report();}
 
-void runAProcess(Process& prototypeProcess) {
-   Process* myProcess = prototypeProcess.clone();
-   cout << myProcess->name() << " is " << myProcess->report() << endl;
-
-   while(myProcess->report() != "dead"){
-      cout << "What would you like "
-           << myProcess->name()
-           << " to do? Dispatch, suspend, block, unblock, or exit? [d/s/b/u/x] ";
-      char action; cin >> action;
-      if (action == 'd')
-         myProcess->dispatch();
-      else if (action == 's')
-         myProcess->suspend();
-      else if (action == 'b')
-         myProcess->block();
-      else if (action == 'u')
-         myProcess->unblock();
-      else if (action == 'x') {
-         myProcess->exit();
-      } else
-         std::cerr << "Invalid action.\n" << std::flush;
-      cout << myProcess->name() << " is " << myProcess->report() << endl;
-   }
-   cout << endl;
-}  // this } deletes zork
-// and furthers the war on dynamic memory allocation
-
 int main() {
    // create a prototype process, "Process 0"
    Process prototypeProcess;
@@ -197,6 +170,8 @@ int main() {
    running->dispatch();
 
    std::deque<Process*> blocked;
+
+   cout << "Press RETURN to step through the simulation.\n\n" << std::flush;
 
    unsigned int action;
    while (true) {
