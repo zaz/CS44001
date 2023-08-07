@@ -6,7 +6,7 @@
 #include "Drink.hpp"
 #include "Barista.hpp"
 
-void serveNextCustomer(Barista* barista) {
+Drink* serveNextCustomer(Barista* barista) {
     std::cout << "Welcome to Coffee Shack, can I get you [l]arge, [m]edium, or"
               << " [s]mall coffee? ";
     char size;
@@ -32,7 +32,7 @@ void serveNextCustomer(Barista* barista) {
     // I hope you're proud of me
     Drink* baseDrink = new Drink(myDrinkSize);
 
-    DrinkWithAddition* myDrink = new DrinkWithAddition(baseDrink);
+    DrinkWithAddition* drink = new DrinkWithAddition(baseDrink);
 
     char ingredient;
     do {
@@ -40,13 +40,13 @@ void serveNextCustomer(Barista* barista) {
         std::cin >> ingredient;
         switch (ingredient) {
             case 's':
-                myDrink = barista->add(myDrink, "sugar");
+                drink = barista->add(drink, "sugar");
                 break;
             case 'c':
-                myDrink = barista->add(myDrink, "cream");
+                drink = barista->add(drink, "cream");
                 break;
             case 'h':
-                myDrink = barista->add(myDrink, "honey");
+                drink = barista->add(drink, "honey");
                 break;
             case 'd':
                 break;
@@ -59,11 +59,11 @@ void serveNextCustomer(Barista* barista) {
     std::cout << "Can I get your name? ";
     std::string name;
     std::cin >> name;
-    myDrink->setCustomerName(name);
+    drink->setCustomerName(name);
     Customer* customer = new Customer(name);
     barista->registerCustomer(customer);
 
-    barista->notifyCustomers(myDrink);
+    return drink;
 }
 
 int main() {
@@ -73,6 +73,8 @@ int main() {
     // tasks such as adding sugar to coffee
     Barista* barista = new JuniorBarista(new SeniorBarista(new Manager));
 
-    serveNextCustomer(barista);
+    Drink* drink = serveNextCustomer(barista);
+    barista->notifyCustomers(drink);
+
     return 0;
 }
