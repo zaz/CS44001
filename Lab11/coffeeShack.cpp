@@ -40,7 +40,14 @@ int main() {
 
     Drink myDrink(myDrinkSize);
 
-    std::cout << myDrink.getName()
+    std::cout << "Can I get your name? ";
+    std::string name;
+    std::cin >> name;
+    myDrink.setCustomerName(name);
+
+    std::cout << myDrink.getCustomerName()
+              << ", your "
+              << myDrink.getDescription()
               << " is ready. It will be $"
               << myDrink.getPrice()
               << ", please."

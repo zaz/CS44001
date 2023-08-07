@@ -30,10 +30,17 @@ public:
         return getSize() + " " + drinkType;
     };
     // this allows arbitrary additions such as "with sugar", "honey", "decaf"
-    virtual std::string getFullName() const {
+    virtual std::string getDescription() const {
         return getName();
+    };
+    virtual void setCustomerName(std::string name) {
+        customerName_ = name;
+    };
+    virtual std::string getCustomerName() const {
+        return customerName_;
     };
 private:
     DrinkSize size_;
     int price_;
+    std::string customerName_;
 };
