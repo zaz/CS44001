@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "Drink.hpp"
+#include "Barista.hpp"
 
 int main() {
     std::cout << "Welcome to Coffee Shack, can I get you [l]arge, [m]edium, or"
@@ -32,19 +33,22 @@ int main() {
 
     DrinkWithAddition* myDrink = new DrinkWithAddition(baseDrink);
 
+    // set up the Chain of Command
+    Barista *barista = new JuniorBarista(new SeniorBarista(new Manager));
+
     char ingredient;
     do {
         std::cout << "Would you like to add [s]ugar, [c]ream, [h]oney, or [d]one? ";
         std::cin >> ingredient;
         switch (ingredient) {
             case 's':
-                myDrink = new DrinkWithAddition(myDrink, "sugar", 1);
+                myDrink = barista->add(myDrink, "sugar");
                 break;
             case 'c':
-                myDrink = new DrinkWithAddition(myDrink, "cream", 2);
+                myDrink = barista->add(myDrink, "cream");
                 break;
             case 'h':
-                myDrink = new DrinkWithAddition(myDrink, "honey", 3);
+                myDrink = barista->add(myDrink, "honey");
                 break;
             case 'd':
                 break;

@@ -7,8 +7,9 @@ flags = -Wall -Wextra -std=c++17
 .PHONY: clean test
 
 # build files
-coffeeShack: coffeeShack.cpp
-	$(compiler) $(flags) coffeeShack.cpp Drink.hpp -o coffeeShack
+coffeeShack: coffeeShack.cpp Drink.hpp Barista.hpp Prices.hpp
+	$(compiler) $(flags) coffeeShack.cpp Drink.hpp Barista.hpp Prices.hpp \
+		-o coffeeShack
 
 # delete built files
 clean:

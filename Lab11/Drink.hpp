@@ -5,6 +5,9 @@
 #include <string>
 #include <iostream>
 
+#ifndef DRINK_H_
+#define DRINK_H_
+
 std::string drinkType = "coffee";
 
 enum class DrinkSize {small, medium, large};
@@ -62,3 +65,5 @@ private:
     std::string addition_;
     int extraCost_;
 };
+
+#endif // DRINK_H_
