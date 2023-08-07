@@ -3,8 +3,11 @@ compiler = g++
 # compiler flags
 flags = -Wall -Wextra -std=c++17
 
-# "clean" and "test" are not produced by make
-.PHONY: clean test
+# "clean", "test", and "all" are not produced by make
+.PHONY: clean test all
+
+# default: build all
+all: coffeeShack
 
 # build files
 coffeeShack: coffeeShack.cpp Drink.hpp Barista.hpp Prices.hpp
@@ -16,5 +19,5 @@ clean:
 	rm -f coffeeShack
 
 test:
-	make coffeeShack
-	./coffeeShack
+	make all
+	tests/coffeeShack.sh
