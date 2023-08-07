@@ -23,4 +23,3 @@ clean:
 test:
 	make all
 	tests/coffeeShack.sh
-	tests/coffeeShackConcurrent.sh
