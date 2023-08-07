@@ -1,6 +1,8 @@
 #include <iostream>
+#include <unordered_set>
 #include "Drink.hpp"
 #include "Prices.hpp"
+#include "Customer.hpp"
 
 using std::string;
 
@@ -19,7 +21,15 @@ public:
             return drink;
         }
     }
+    void notifyCustomers(Drink* drink) const {
+        for (auto e: customers_)
+            e->notify(drink);
+    }
+    void registerCustomer(Customer* customer) {
+        customers_.insert(customer);
+    }
 private:
+    std::unordered_set <Customer*> customers_;
     Barista *successor_;
 };
 

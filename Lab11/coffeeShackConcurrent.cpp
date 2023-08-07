@@ -45,6 +45,9 @@ void customerWalksIn() {
     DrinkWithAddition* myDrink = new DrinkWithAddition(baseDrink);
 
     // set up the Chain of Command
+    // barista is the junior barista doing most of the work
+    // she temporarily defers to more senior baristas for the more complicated
+    // tasks such as adding sugar to coffee
     Barista *barista = new JuniorBarista(new SeniorBarista(new Manager));
 
     char ingredient;
@@ -73,8 +76,11 @@ void customerWalksIn() {
     std::string name;
     std::cin >> name;
     myDrink->setCustomerName(name);
+    Customer* customer = new Customer(name);
+    barista->registerCustomer(customer);
 
     drinkReady(myDrink);
+    barista->notifyCustomers(myDrink);
 }
 
 int main() {
