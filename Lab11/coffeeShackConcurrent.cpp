@@ -3,8 +3,11 @@
 
 #include <iostream>
 #include <vector>
+#include <deque>
 #include "Drink.hpp"
 #include "Barista.hpp"
+
+unsigned int nCustomers = 4;
 
 Drink* serveNextCustomer(Barista* barista) {
     std::cout << "Welcome to Coffee Shack, can I get you [l]arge, [m]edium, or"
@@ -73,8 +76,23 @@ int main() {
     // tasks such as adding sugar to coffee
     Barista* barista = new JuniorBarista(new SeniorBarista(new Manager));
 
-    Drink* drink = serveNextCustomer(barista);
-    barista->notifyCustomers(drink);
+    std::deque<Drink*> drinks;
+
+    for (unsigned int i = 0; i < nCustomers;) {
+        if (!drinks.empty() && rand() % 2 == 0) {
+            barista->notifyCustomers(drinks.front());
+            drinks.pop_front();
+        } else {
+            drinks.push_back(serveNextCustomer(barista));
+            i++;
+        }
+        std::cout << std::endl;
+    }
+    // once no more customers are in line, serve the rest of the drinks
+    while (!drinks.empty()) {
+        barista->notifyCustomers(drinks.front());
+        drinks.pop_front();
+    }
 
     return 0;
 }
