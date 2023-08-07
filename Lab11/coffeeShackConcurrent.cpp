@@ -6,6 +6,16 @@
 #include "Drink.hpp"
 #include "Barista.hpp"
 
+void drinkReady(Drink* drink) {
+    std::cout << drink->getCustomerName()
+              << ", your "
+              << drink->getDescription()
+              << " is ready. It will be $"
+              << drink->getPrice()
+              << ", please."
+              << std::endl;
+}
+
 void customerWalksIn() {
     std::cout << "Welcome to Coffee Shack, can I get you [l]arge, [m]edium, or"
               << " [s]mall coffee? ";
@@ -64,13 +74,7 @@ void customerWalksIn() {
     std::cin >> name;
     myDrink->setCustomerName(name);
 
-    std::cout << myDrink->getCustomerName()
-              << ", your "
-              << myDrink->getDescription()
-              << " is ready. It will be $"
-              << myDrink->getPrice()
-              << ", please."
-              << std::endl;
+    drinkReady(myDrink);
 }
 
 int main() {
