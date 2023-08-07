@@ -3,6 +3,7 @@
 // Modified by Zaz Brown
 
 #include <string>
+#include <iostream>
 
 std::string drinkType = "coffee";
 
@@ -43,4 +44,21 @@ private:
     DrinkSize size_;
     int price_;
     std::string customerName_;
+};
+
+class DrinkWithAddition: public Drink {
+public:
+    // include the trivial case, a drink with no addition
+    DrinkWithAddition(Drink* drink):
+        drink_(drink), addition_(""), extraCost_(0) {}
+    DrinkWithAddition(Drink* drink, std::string addition, int cost):
+        drink_(drink), addition_(" + " + addition), extraCost_(cost) {}
+    int getPrice() const override { return drink_->getPrice() + extraCost_; };
+    std::string getDescription() const override {
+        return drink_->getDescription() + addition_;
+    };
+private:
+    Drink* drink_;
+    std::string addition_;
+    int extraCost_;
 };
