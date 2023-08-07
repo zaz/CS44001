@@ -6,17 +6,7 @@
 #include "Drink.hpp"
 #include "Barista.hpp"
 
-void drinkReady(Drink* drink) {
-    std::cout << drink->getCustomerName()
-              << ", your "
-              << drink->getDescription()
-              << " is ready. It will be $"
-              << drink->getPrice()
-              << ", please."
-              << std::endl;
-}
-
-void customerWalksIn() {
+void serveNextCustomer(Barista* barista) {
     std::cout << "Welcome to Coffee Shack, can I get you [l]arge, [m]edium, or"
               << " [s]mall coffee? ";
     char size;
@@ -43,12 +33,6 @@ void customerWalksIn() {
     Drink* baseDrink = new Drink(myDrinkSize);
 
     DrinkWithAddition* myDrink = new DrinkWithAddition(baseDrink);
-
-    // set up the Chain of Command
-    // barista is the junior barista doing most of the work
-    // she temporarily defers to more senior baristas for the more complicated
-    // tasks such as adding sugar to coffee
-    Barista *barista = new JuniorBarista(new SeniorBarista(new Manager));
 
     char ingredient;
     do {
@@ -79,11 +63,16 @@ void customerWalksIn() {
     Customer* customer = new Customer(name);
     barista->registerCustomer(customer);
 
-    drinkReady(myDrink);
     barista->notifyCustomers(myDrink);
 }
 
 int main() {
-    customerWalksIn();
+    // set up the Chain of Command
+    // barista is the junior barista doing most of the work
+    // she temporarily defers to more senior baristas for the more complicated
+    // tasks such as adding sugar to coffee
+    Barista* barista = new JuniorBarista(new SeniorBarista(new Manager));
+
+    serveNextCustomer(barista);
     return 0;
 }

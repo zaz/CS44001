@@ -22,6 +22,13 @@ public:
         }
     }
     void notifyCustomers(Drink* drink) const {
+        std::cout << drink->getCustomerName()
+                << ", your "
+                << drink->getDescription()
+                << " is ready. It will be $"
+                << drink->getPrice()
+                << ", please."
+                << std::endl;
         for (auto e: customers_)
             e->notify(drink);
     }
