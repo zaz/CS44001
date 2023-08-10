@@ -17,39 +17,39 @@ public:
    void insert(int line, const string &str) {
       int index = line-1;
       if (index <= lines_.size()+1)
-	 lines_.insert(lines_.begin()+index, str); 
+         lines_.insert(lines_.begin()+index, str);
       else
-	 cout << "line out of range" << endl; 
+         cout << "line out of range" << endl;
    }
 
    void remove(int line) {
       int index = line-1;
       if(index < lines_.size())
-	 lines_.erase(lines_.begin()+index); 
+         lines_.erase(lines_.begin()+index);
       else
-	 cout << "line out of range" << endl; 
-   } 
+         cout << "line out of range" << endl;
+   }
 
    void show() {
       for(int i = 0; i < lines_.size(); ++i)
-	 cout << i + 1 << ". " << lines_[i] << endl; 
+         cout << i + 1 << ". " << lines_[i] << endl;
    }
 
-   class Memento *createMemento() const;  
-   void rollBack(class Memento *); 
+   class Memento *createMemento() const;
+   void rollBack(class Memento *);
 
 private:
-   vector<string> lines_; 
-}; 
+   vector<string> lines_;
+};
 
 class Memento {
 public:
    Memento(const Document& doc): doc_(doc) {}
-   const Document& getState() const {return doc_;}  
+   const Document& getState() const {return doc_;}
 private:
    const Document doc_;
 };
- 
+
 Memento *Document::createMemento() const{
    return new Memento(*this); // copying the Document itself
 }
@@ -65,11 +65,11 @@ int main() {
          "Lorem Ipsum is simply dummy text of the printing and typesetting",
          "industry. Lorem Ipsum has been the industry's standard dummy text",
          "ever since the 1500s, when an unknown printer took a galley of",
-	 "type and scrambled it to make a type specimen book. It has",
-	 "survived five centuries."});
+         "type and scrambled it to make a type specimen book. It has",
+         "survived five centuries."});
 
    char option;
-   
+
    do{
       static Memento *checkpoint = nullptr;
 
@@ -79,13 +79,13 @@ int main() {
       cout << "Enter option (i)nsert line, (e)rase line, (c)heckpoint, (r)ollback: ";
       cin >> option;
 
-      int line; string str; 
+      int line; string str;
       switch(option) {
       case 'i':
          cout << "line number to insert: ";
          cin >> line;
          cout << "line to insert: ";
-	 cin.get();
+         cin.get();
          getline(cin, str);
          doc.insert(line, str);
          break;
@@ -95,15 +95,15 @@ int main() {
          doc.remove(line);
          break;
       case 'c':
-	 checkpoint = doc.createMemento();
-	 break;
+         checkpoint = doc.createMemento();
+         break;
       case 'r':
-	 if (checkpoint != nullptr){
-	    doc.rollBack(checkpoint);
-	    delete checkpoint;
-	    checkpoint = nullptr;
-	 }else
-	    cout << "No checkpoint created" << endl;
+         if (checkpoint != nullptr){
+            doc.rollBack(checkpoint);
+            delete checkpoint;
+            checkpoint = nullptr;
+         }else
+            cout << "No checkpoint created" << endl;
          break;
       }
    }while(option == 'i' || option == 'e' || option == 'c' || option == 'r');
