@@ -104,7 +104,7 @@ public:
          com->unexecute();
          delete com; // don't forget to delete command
       }else
-         cout << "no commands to undo" << endl;
+         std::cerr << "No commands to undo.\n" << std::flush;
    }
 
    void show() {doc_.show();}
@@ -128,7 +128,8 @@ int main() {
       his.show();
       cout << endl;
 
-      cout << "Enter option (i)nsert line, (e)rase line, (u)ndo last command: ";
+      cout << "Enter option (i)nsert line, (e)rase line, (u)ndo last command "
+           << "(c)heckpoint\n             roll(b)ack (h)istory (r)edo command: ";
       cin >> option;
 
       int line; string str;
@@ -151,7 +152,24 @@ int main() {
       case 'u':
          his.undo();
          break;
+
+      case 'c':
+          std::cerr << "Not implemented.\n" << std::flush;
+          break;
+
+      case 'b':
+          std::cerr << "Not implemented.\n" << std::flush;
+          break;
+
+      case 'h':
+          std::cerr << "Not implemented.\n" << std::flush;
+          break;
+
+      case 'r':
+          std::cerr << "Not implemented.\n" << std::flush;
+          break;
       }
 
-   }while(option == 'i' || option == 'e' || option == 'u');
+   } while (option == 'i' || option == 'e' || option == 'u' || option == 'c'
+                          || option == 'b' || option == 'h' || option == 'r');
 }
