@@ -35,8 +35,8 @@ class Man: public Person{
 public:
    Man(string lastName, string firstName, Person *spouse,
        Person *father, Person *mother):
-      lastName_(lastName),
-      Person(firstName, spouse, father, mother){}
+      Person(firstName, spouse, father, mother),
+      lastName_(lastName) {}
    const string & getLastName() const {return lastName_;}
    void accept(class PersonVisitor *visitor) override;
 private:
@@ -51,8 +51,8 @@ public:
        string firstName,
        Person *spouse,
        Person *father, Person *mother):
-       children_(children),
-       Person(firstName, spouse, father, mother){}
+       Person(firstName, spouse, father, mother),
+       children_(children) {}
    const vector<Person *> & getChildren() const {return children_;}
    void setChildren(const vector<Person *> &children){ children_ = children;}
    void accept(class PersonVisitor *visitor) override;
