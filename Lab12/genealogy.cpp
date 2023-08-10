@@ -7,7 +7,7 @@
 #include <vector>
 
 using std::cout; using std::endl;
-using std::string; 
+using std::string;
 using std::vector;
 
 class Person{ // component
@@ -19,7 +19,7 @@ public:
    void setSpouse(Person *spouse){spouse_=spouse;}
    Person *getFather() const {return father_;}
 
-   virtual void accept(class PersonVisitor *)=0;  
+   virtual void accept(class PersonVisitor *)=0;
    virtual ~Person(){}
 private:
    const string firstName_;
@@ -30,12 +30,12 @@ private:
 
 
 // leaf
-// man has a last name 
+// man has a last name
 class Man: public Person{
 public:
-   Man(string lastName, string firstName, Person *spouse, 
-       Person *father, Person *mother): 
-      lastName_(lastName), 
+   Man(string lastName, string firstName, Person *spouse,
+       Person *father, Person *mother):
+      lastName_(lastName),
       Person(firstName, spouse, father, mother){}
    const string & getLastName() const {return lastName_;}
    void accept(class PersonVisitor *visitor) override;
@@ -46,11 +46,11 @@ private:
 // composite
 // woman has a list of children
 class Woman: public Person{
-public: 
-   Woman(vector<Person *> children, 
-       string firstName, 
-       Person *spouse, 
-       Person *father, Person *mother): 
+public:
+   Woman(vector<Person *> children,
+       string firstName,
+       Person *spouse,
+       Person *father, Person *mother):
        children_(children),
        Person(firstName, spouse, father, mother){}
    const vector<Person *> & getChildren() const {return children_;}
@@ -58,7 +58,7 @@ public:
    void accept(class PersonVisitor *visitor) override;
 private:
    vector<Person *> children_;
-}; 
+};
 
 // abstract visitor
 class PersonVisitor{
@@ -74,22 +74,22 @@ void Man::accept(PersonVisitor *visitor) {
 }
 
 // visitor method for the component: exectues visits and
-// defines traversal 
-void Woman::accept(PersonVisitor *visitor){ 
+// defines traversal
+void Woman::accept(PersonVisitor *visitor){
    // children traversal through mother only
-   // father's children are not traversed so as not 
+   // father's children are not traversed so as not
    // to traverse them twice: for mother and father
 
    visitor->visit(this);
 
    // traversing descendants
-   for(auto child : children_) 
-      child->accept(visitor);   
+   for(auto child : children_)
+      child->accept(visitor);
 }
 
 // concrete visitors
 // the last name for a man is stored in object
-// the last name a woman is determined by her 
+// the last name a woman is determined by her
 // spouse if she is married
 // or by her father if she is not
 class NamePrinter: public PersonVisitor{
@@ -100,11 +100,11 @@ public:
    void visit(Woman *w) override {
       cout << w->getFirstName() << " ";
       if (w->getSpouse() != nullptr)
-	 cout << static_cast<Man *>(w->getSpouse())->getLastName();
+         cout << static_cast<Man *>(w->getSpouse())->getLastName();
       else if (w->getFather() != nullptr)
-	 cout << static_cast<Man *> (w->getFather())->getLastName();
+         cout << static_cast<Man *> (w->getFather())->getLastName();
       else
-	 cout << "Doe";
+         cout << "Doe";
       cout << endl;
    }
 };
@@ -116,7 +116,7 @@ public:
       cout << m->getFirstName() << ": ";
       Woman *spouse = static_cast<Woman *>(m->getSpouse());
       if(spouse != nullptr)
-	 printNames(spouse->getChildren());
+         printNames(spouse->getChildren());
       cout << endl;
    }
    void visit(Woman *w) override {
@@ -127,7 +127,7 @@ public:
 private:
    void printNames(const vector<Person *> &children){
       for(const auto c: children)
-	 cout << c->getFirstName() << ", ";
+         cout << c->getFirstName() << ", ";
    }
 };
 
@@ -135,26 +135,26 @@ private:
 // demonstrating the operation
 int main(){
 
-   // setting up the genealogical tree      
+   // setting up the genealogical tree
    // the tree is as follows
-   //    
    //
-   //       James Smith  <--spouse-->   Mary 
-   //	                                  |
-   //	                                 children -------------------------
-   //	                                  |              |                |
-   //	                                  |              |                |
-   //	   William Johnson <--spouse-> Patricia      Robert Smith       Linda
-   //	                                  |
-   //	                                 children------------
-   //	                                  |                 |
+   //
+   //       James Smith  <--spouse-->   Mary
+   //                                          |
+   //                                         children -------------------------
+   //                                          |              |                |
+   //                                          |              |                |
+   //           William Johnson <--spouse-> Patricia      Robert Smith       Linda
+   //                                          |
+   //                                         children------------
+   //                                          |                 |
    //                                     |                 |
-   //	   Jennifer  <--spouse-->  Michael Johnson      Barbara
-   //	       |
-   //	     children
-   //	       |
+   //           Jennifer  <--spouse-->  Michael Johnson      Barbara
+   //               |
+   //             children
+   //               |
    //          |
-   //	     Susan
+   //             Susan
 
 
    // first generation
@@ -168,13 +168,13 @@ int main(){
    ps->setSpouse(wj); wj->setSpouse(ps);
 
    vector<Person *> marysKids  = {ps,
-			          new Man("Smith", "Robert", nullptr, js, ms),
-			          new Woman({}, "Linda", nullptr, js, ms)};
+                                  new Man("Smith", "Robert", nullptr, js, ms),
+                                  new Woman({}, "Linda", nullptr, js, ms)};
    ms->setChildren(marysKids);
 
    // third generation
    Man *mj = new Man("Johnson", "Michael", nullptr, wj, ps);
-   vector<Person *> patsKids   = {mj, new Woman({}, "Barbara", nullptr, wj, ps)}; 
+   vector<Person *> patsKids   = {mj, new Woman({}, "Barbara", nullptr, wj, ps)};
    ps->setChildren(patsKids);
 
    Woman *jj = new Woman({}, "Jennifer", nullptr, nullptr, nullptr);
@@ -182,7 +182,7 @@ int main(){
 
    jj->setSpouse(mj); mj->setSpouse(jj);
    jj->setChildren(jensKids);
-   
+
 
    // defining two visitors
    ChildrenPrinter *cp = new ChildrenPrinter;
@@ -191,7 +191,7 @@ int main(){
    // executing the traversal with the composite
    // and the specific visitor
 
-   
+
    cout << "\nNAME LIST\n";
    ms->accept(np);
    cout << endl << endl;
@@ -200,10 +200,10 @@ int main(){
 
    cout << "CHILDREN LIST\n";
    ms->accept(cp);
-   
+
 
 
    cout << "\nJAMES' CHILDREN\n";
    js->accept(cp);
-   
+
 }
