@@ -7,15 +7,19 @@ flags = -Wall -Wextra -std=c++17
 .PHONY: clean test all
 
 # default: build all
-all: genealogy
+all: genealogy history
 
 # build files
 genealogy: genealogy.cpp
 	$(compiler) $(flags) genealogy.cpp -o genealogy
 
+history: history.cpp
+	$(compiler) $(flags) history.cpp -o history
+
 # delete built files
 clean:
-	rm -f genealogy
+	rm -f genealogy history
 
-test: genealogy
+test: genealogy history
 	./genealogy
+	./history
