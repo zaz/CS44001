@@ -1,7 +1,6 @@
-// implements command history (multiple undos)
-// demonstrates command pattern
+// History
 // Mikhail Nesterenko
-// 04/13/2023
+// Modified by Zaz Brown
 
 #include <iostream>
 #include <vector>
@@ -19,7 +18,7 @@ public:
 
    // actions
    void insert(int line, const string &str) {
-      const int index = line-1;
+      const unsigned int index = line-1;
       if (index <= lines_.size())
          lines_.insert(lines_.begin() + index, str);
       else
@@ -27,7 +26,7 @@ public:
    }
 
    const string remove(int line) {
-      const int index = line-1;
+      const unsigned int index = line-1;
       string deletedLine="";
       if(index < lines_.size()){
          deletedLine = lines_[index];
@@ -38,7 +37,7 @@ public:
    }
 
    void show() {
-      for(int i = 0; i < lines_.size(); ++i)
+      for(unsigned int i = 0; i < lines_.size(); ++i)
          cout << i + 1 << ". " << lines_[i] << endl;
    }
 
