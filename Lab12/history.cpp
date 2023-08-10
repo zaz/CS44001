@@ -46,12 +46,13 @@ private:
 };
 
 // abstract command
-class Command{
+class Command {
 public:
    Command(Document *doc) : doc_(doc){}
    virtual void execute() = 0;
    virtual void unexecute() = 0;
    virtual ~Command(){}
+   virtual string show() const = 0;
 protected:
    Document *doc_;
 };
@@ -63,6 +64,9 @@ public:
       Command(doc), line_(line),  str_(str) {}
    void execute() override { doc_->insert(line_, str_);}
    void unexecute() override {doc_->remove(line_);}
+   string show() const override {
+      return "insert " + std::to_string(line_) + ": " + str_;
+   }
 private:
    int line_;
    string str_;
@@ -75,15 +79,18 @@ public:
       Command(doc), line_(line), str_("") {}
    void execute() override {str_ = doc_->remove(line_);}
    void unexecute() override {doc_->insert(line_, str_);}
+   string show() const override {
+      return "erase " + std::to_string(line_) + ": " + str_;
+   }
 private:
    int line_;
    string str_;
 };
 
 // client
-class DocumentWithHistory{
+class DocumentWithHistory {
 public:
-   DocumentWithHistory(const vector<string> & text={}) : doc_(text){}
+   DocumentWithHistory(const vector<string> & text={}) : doc_(text) {}
 
    void insert(int line, string str) {
       Command *com = new InsertCommand(&doc_, line, str);
@@ -98,16 +105,23 @@ public:
    }
 
    void undo() {
-      if(doneCommands_.size() != 0) {
+      if (doneCommands_.size() != 0) {
          Command *com = doneCommands_.top();
          doneCommands_.pop();
          com->unexecute();
          delete com; // don't forget to delete command
-      }else
+      } else
          std::cerr << "No commands to undo.\n" << std::flush;
    }
 
    void show() {doc_.show();}
+   void printHistory() const {
+      std::stack<Command*> temp = doneCommands_;
+      while (!temp.empty()){
+         cout << temp.top()->show() << endl;
+         temp.pop();
+      }
+   }
 
 private:
    Document doc_;
@@ -162,7 +176,7 @@ int main() {
           break;
 
       case 'h':
-          std::cerr << "Not implemented.\n" << std::flush;
+          his.printHistory();
           break;
 
       case 'r':
