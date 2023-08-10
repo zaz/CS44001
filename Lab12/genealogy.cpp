@@ -129,10 +129,10 @@ void Woman::accept(PersonVisitor *visitor) {
 class NamePrinter: public PersonVisitor {
 public:
    void visit(Man *m) override {
-      cout << m->getFullName() << " \n" << std::flush;
+      cout << m->getFullName() + " \n" << std::flush;
    }
    void visit(Woman *w) override {
-      cout << w->getFullName() << " \n" << std::flush;
+      cout << w->getFullName() + " \n" << std::flush;
    }
 };
 
@@ -140,21 +140,21 @@ public:
 class ChildrenPrinter: public PersonVisitor {
 public:
    void visit(Man* m) override {
-      cout << m->getFirstName() << ": ";
+      cout << m->getFullName() << ": ";
       Woman* spouse = static_cast<Woman*>(m->getSpouse());
       if(spouse != nullptr)
          printNames(spouse->getChildren());
       cout << endl;
    }
    void visit(Woman* w) override {
-      cout << w->getFirstName() << ": ";
+      cout << w->getFullName() << ": ";
       printNames(w->getChildren());
       cout << endl;
    }
 private:
    void printNames(const vector<Person*> &children) {
       for(const auto c: children)
-         cout << c->getFirstName() << ", ";
+         cout << c->getFullName() << ", ";
    }
 };
 
