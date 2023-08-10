@@ -23,6 +23,14 @@ public:
       else
          return firstName_ + ' ' + middleName;
    }
+   virtual const string getLastName() const = 0;
+   const string getFullName() const {
+      const string lastName = getLastName();
+      if (lastName == "")
+         return getFirstNames();
+      else
+         return getFirstNames() + ' ' + getLastName();
+   }
    Person* getSpouse() const {return spouse_;}
    void setSpouse(Person *spouse) {spouse_=spouse;}
    Person* getFather() const {return father_;}
@@ -51,7 +59,7 @@ public:
       if (father == nullptr) return "";
       else return father->getFirstName();
    }
-   const string & getLastName() const {return lastName_;}
+   const string getLastName() const override {return lastName_;}
    void accept(class PersonVisitor *visitor) override;
 private:
    const string lastName_;
@@ -71,6 +79,13 @@ public:
       const Person* mother = getMother();
       if (mother == nullptr) return "";
       else return mother->getFirstName();
+   }
+   const string getLastName() const override {
+      if (getSpouse() != nullptr)
+         return (getSpouse())->getLastName();
+      else if (getFather() != nullptr)
+         return (getFather())->getLastName();
+      return "";
    }
    const vector<Person*> & getChildren() const {return children_;}
    void setChildren(const vector<Person *> &children) {children_ = children;}
@@ -114,17 +129,10 @@ void Woman::accept(PersonVisitor *visitor) {
 class NamePrinter: public PersonVisitor {
 public:
    void visit(Man *m) override {
-      cout << m->getFirstName() << " " << m->getLastName() << endl;
+      cout << m->getFullName() << " \n" << std::flush;
    }
    void visit(Woman *w) override {
-      cout << w->getFirstName() << " ";
-      if (w->getSpouse() != nullptr)
-         cout << static_cast<Man *>(w->getSpouse())->getLastName();
-      else if (w->getFather() != nullptr)
-         cout << static_cast<Man *> (w->getFather())->getLastName();
-      else
-         cout << "Doe";
-      cout << endl;
+      cout << w->getFullName() << " \n" << std::flush;
    }
 };
 
