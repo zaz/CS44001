@@ -14,7 +14,7 @@ using std::cout; using std::cin; using std::endl;
 class Document {
 public:
 
-   Document(const vector <string> & lines={}): lines_(lines){}
+   Document(const vector <string> & lines={}): lines_(lines) {}
 
    // actions
    void insert(int line, const string &str) {
@@ -28,16 +28,16 @@ public:
    const string remove(int line) {
       const unsigned int index = line-1;
       string deletedLine="";
-      if(index < lines_.size()){
+      if (index < lines_.size()) {
          deletedLine = lines_[index];
          lines_.erase(lines_.begin() + index);
-      }else
+      } else
          cout << "line out of range" << endl;
       return deletedLine;
    }
 
    void show() {
-      for(unsigned int i = 0; i < lines_.size(); ++i)
+      for (unsigned int i = 0; i < lines_.size(); ++i)
          cout << i + 1 << ". " << lines_[i] << endl;
    }
 
@@ -48,7 +48,7 @@ private:
 // abstract command
 class Command {
 public:
-   Command(Document *doc) : doc_(doc){}
+   Command(Document *doc) : doc_(doc) {}
    virtual void execute() = 0;
    virtual void unexecute() = 0;
    virtual ~Command(){}
@@ -98,7 +98,7 @@ public:
       doneCommands_.push(com);
    }
 
-   void erase(int line){
+   void erase(int line) {
       Command *com = new EraseCommand(&doc_, line);
       com->execute();
       doneCommands_.push(com);
@@ -117,7 +117,7 @@ public:
    void show() {doc_.show();}
    void printHistory() const {
       std::stack<Command*> temp = doneCommands_;
-      while (!temp.empty()){
+      while (!temp.empty()) {
          cout << temp.top()->show() << endl;
          temp.pop();
       }
@@ -138,7 +138,7 @@ int main() {
          "survived five centuries."});
 
    char option;
-   do{
+   do {
       his.show();
       cout << endl;
 

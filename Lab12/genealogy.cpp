@@ -67,9 +67,9 @@ private:
 
 // composite
 // woman has a list of children
-class Woman: public Person{
+class Woman: public Person {
 public:
-   Woman(vector<Person *> children,
+   Woman(vector<Person*> children,
        string firstName,
        Person *spouse,
        Person *father, Person *mother):
@@ -117,7 +117,7 @@ void Woman::accept(PersonVisitor *visitor) {
    visitor->visit(this);
 
    // traversing descendants
-   for(auto child : children_)
+   for (auto child : children_)
       child->accept(visitor);
 }
 
@@ -142,7 +142,7 @@ public:
    void visit(Man* m) override {
       cout << m->getFullName() << ": ";
       Woman* spouse = static_cast<Woman*>(m->getSpouse());
-      if(spouse != nullptr)
+      if (spouse != nullptr)
          printNames(spouse->getChildren());
       cout << endl;
    }
@@ -153,7 +153,7 @@ public:
    }
 private:
    void printNames(const vector<Person*> &children) {
-      for(const auto c: children)
+      for (const auto c: children)
          cout << c->getFullName() << ", ";
    }
 };
@@ -201,7 +201,7 @@ int main() {
 
    // third generation
    Man* mj = new Man("Johnson", "Michael", nullptr, wj, ps);
-   vector<Person *> patsKids   = {mj, new Woman({}, "Barbara", nullptr, wj, ps)};
+   vector<Person*> patsKids   = {mj, new Woman({}, "Barbara", nullptr, wj, ps)};
    ps->setChildren(patsKids);
 
    Woman* jj = new Woman({}, "Jennifer", nullptr, nullptr, nullptr);
