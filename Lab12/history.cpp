@@ -139,7 +139,7 @@ public:
          return;
       }
       std::stack<Command*> temp = doneCommands_;
-      for (unsigned int i = 0; i < size - n; ++i) temp.pop();
+      for (unsigned int i = 0; i < n-1; ++i) temp.pop();
       temp.top()->execute();
       clearFuture();
    }
@@ -165,10 +165,12 @@ public:
    void show() {doc_.show();}
    void printHistory() const {
       std::stack<Command*> temp = doneCommands_;
-      while (!temp.empty()) {
-         cout << temp.top()->show() << endl;
+      unsigned int nCommands = temp.size();
+      for (unsigned int i = 0; i < nCommands; ++i) {
+         cout << '-' << i+1 << ". " << temp.top()->show() << endl;
          temp.pop();
       }
+      cout << endl;
    }
 
 private:
@@ -203,12 +205,14 @@ int main() {
          cout << "line to insert: ";
          cin.get(); // removes end-of-line character so getline() works correctly
          getline(cin, str);
+         cout << endl;
          his.insert(line, str);
          break;
 
       case 'e':
          cout << "line number to remove: ";
          cin >> line;
+         cout << endl;
          his.erase(line);
          break;
 
