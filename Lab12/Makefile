@@ -21,5 +21,5 @@ clean:
 	rm -f genealogy history
 
 test: genealogy history
-	./genealogy
+	./genealogy | diff -U 3 tests/genealogy.out -
 	./history
