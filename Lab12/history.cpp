@@ -116,6 +116,11 @@ public:
          std::cerr << "No commands to undo.\n" << std::flush;
    }
 
+   // Note that this is "redo" in the conventional sense (Ctrl+R in vi) and not
+   // in the sense suggested in the instructions (which I call "repeat").
+   // I did this because I wanted to go above and beyond, and definitely not
+   // because I didn't read the instructions carefully before I started
+   // implementing.
    void redo() {
       if (undoneCommands_.size() != 0) {
          Command *com = undoneCommands_.top();
@@ -124,6 +129,19 @@ public:
          doneCommands_.push(com);
       } else
          std::cerr << "No commands to redo.\n" << std::flush;
+   }
+
+   // This repeats a previous command. (r)
+   void repeatCommand(unsigned int n) {
+      unsigned int size = doneCommands_.size();
+      if (n > size) {
+         std::cerr << "Command " << n << " does not exist.\n" << std::flush;
+         return;
+      }
+      std::stack<Command*> temp = doneCommands_;
+      for (unsigned int i = 0; i < size - n; ++i) temp.pop();
+      temp.top()->execute();
+      clearFuture();
    }
 
    void rollback() {
@@ -174,7 +192,7 @@ int main() {
       cout << endl;
 
       cout << "Enter option (i)nsert line, (e)rase line, (u)ndo last command "
-           << "(c)heckpoint\n             roll(b)ack (h)istory (r)edo command: ";
+           << "(c)heckpoint\n             roll(b)ack (h)istory (r)epeat command: ";
       cin >> option;
 
       int line; string str;
@@ -211,7 +229,10 @@ int main() {
          break;
 
       case 'r':
-         his.redo();
+         cout << "command to repeat: ";
+         unsigned int n;
+         cin >> n;
+         his.repeatCommand(n);
          break;
       }
 
