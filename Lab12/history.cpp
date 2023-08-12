@@ -114,6 +114,13 @@ public:
          std::cerr << "No commands to undo.\n" << std::flush;
    }
 
+   void clearHistory() {
+      while (!doneCommands_.empty()) {
+         delete doneCommands_.top();
+         doneCommands_.pop();
+      }
+   }
+
    void show() {doc_.show();}
    void printHistory() const {
       std::stack<Command*> temp = doneCommands_;
@@ -168,20 +175,20 @@ int main() {
          break;
 
       case 'c':
-          std::cerr << "Not implemented.\n" << std::flush;
-          break;
+         his.clearHistory();
+         break;
 
       case 'b':
-          std::cerr << "Not implemented.\n" << std::flush;
-          break;
+         std::cerr << "Not implemented.\n" << std::flush;
+         break;
 
       case 'h':
-          his.printHistory();
-          break;
+         his.printHistory();
+         break;
 
       case 'r':
-          std::cerr << "Not implemented.\n" << std::flush;
-          break;
+         std::cerr << "Not implemented.\n" << std::flush;
+         break;
       }
 
    } while (option == 'i' || option == 'e' || option == 'u' || option == 'c'
