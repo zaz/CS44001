@@ -114,6 +114,10 @@ public:
          std::cerr << "No commands to undo.\n" << std::flush;
    }
 
+   void rollback() {
+      while (!doneCommands_.empty()) undo();
+   }
+
    void clearHistory() {
       while (!doneCommands_.empty()) {
          delete doneCommands_.top();
@@ -179,7 +183,7 @@ int main() {
          break;
 
       case 'b':
-         std::cerr << "Not implemented.\n" << std::flush;
+         his.rollback();
          break;
 
       case 'h':
