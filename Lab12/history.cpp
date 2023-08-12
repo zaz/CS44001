@@ -92,16 +92,18 @@ class DocumentWithHistory {
 public:
    DocumentWithHistory(const vector<string> & text={}) : doc_(text) {}
 
-   void insert(int line, string str) {
-      Command *com = new InsertCommand(&doc_, line, str);
+   void doCommand(Command* com) {
       com->execute();
       doneCommands_.push(com);
+      clearFuture();
+   }
+
+   void insert(int line, string str) {
+      doCommand(new InsertCommand(&doc_, line, str));
    }
 
    void erase(int line) {
-      Command *com = new EraseCommand(&doc_, line);
-      com->execute();
-      doneCommands_.push(com);
+      doCommand(new EraseCommand(&doc_, line));
    }
 
    void undo() {
@@ -109,9 +111,19 @@ public:
          Command *com = doneCommands_.top();
          doneCommands_.pop();
          com->unexecute();
-         delete com; // don't forget to delete command
+         undoneCommands_.push(com);
       } else
          std::cerr << "No commands to undo.\n" << std::flush;
+   }
+
+   void redo() {
+      if (undoneCommands_.size() != 0) {
+         Command *com = undoneCommands_.top();
+         undoneCommands_.pop();
+         com->execute();
+         doneCommands_.push(com);
+      } else
+         std::cerr << "No commands to redo.\n" << std::flush;
    }
 
    void rollback() {
@@ -122,6 +134,13 @@ public:
       while (!doneCommands_.empty()) {
          delete doneCommands_.top();
          doneCommands_.pop();
+      }
+   }
+
+   void clearFuture() {
+      while (!undoneCommands_.empty()) {
+         delete undoneCommands_.top();
+         undoneCommands_.pop();
       }
    }
 
@@ -137,6 +156,7 @@ public:
 private:
    Document doc_;
    std::stack<Command*> doneCommands_;
+   std::stack<Command*> undoneCommands_;
 };
 
 // invoker
@@ -191,7 +211,7 @@ int main() {
          break;
 
       case 'r':
-         std::cerr << "Not implemented.\n" << std::flush;
+         his.redo();
          break;
       }
 
